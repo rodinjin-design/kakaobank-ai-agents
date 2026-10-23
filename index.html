@@ -192,6 +192,14 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .bio-cap{font-size:15px;font-weight:600}
 .bio-note{font-size:12px;color:#8A867B;margin-top:6px;min-height:18px}
 @media (prefers-reduced-motion:reduce){.bio-ic .scanl,.bio-ok{animation:none}}
+.xr{display:flex;flex-direction:column;gap:14px;padding:2px 0 4px}
+.xr-ic{flex:none;width:40px;height:40px;border-radius:50%;background:#DDE4F5;color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+.xr-ic.to{background:#DCF1E7;color:#1E8F5F}
+.xr-l{display:flex;align-items:center;gap:12px}
+.xr-l b{font-size:20px;font-weight:700;letter-spacing:-.2px}
+.xr small{display:block;margin-top:6px;color:var(--mute);font-size:15px}
+.xr-amt{font-size:28px;font-weight:700;letter-spacing:-.3px;margin-top:6px}
+.xr-sub{font-size:15px;color:var(--mute);word-break:keep-all;margin-top:-6px;line-height:1.5}
 /* composer */
 .foot{flex:none;padding:6px 20px 16px}
 .composer{background:#fff;border:1px solid var(--line);border-radius:26px;box-shadow:0 8px 28px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:6px;padding:14px 10px 10px 18px}
@@ -398,6 +406,15 @@ function gaugeCard(c){
   var have=Math.round(BAL/c.margin*100);
   return vis('청약 증거금','<div class="hero"><b>'+won(c.topup)+'</b><span>부족해요</span></div><div class="gauge" role="img" aria-label="필요 증거금 중 보유 '+have+'%"><div class="have" style="width:'+have+'%"></div><div class="need" style="width:'+(100-have)+'%"></div></div>'+legs2([['증권 계좌 잔고',won(BAL),0,'var(--blue)'],['부족액',won(c.topup),1,'var(--warn)']])+chips2(['공모가 '+won(PRICE),'최소 '+QTY+'주','증거금률 '+Math.round(MARGIN_RATE*100)+'%','필요 증거금 '+won(c.margin)]),'공모가 × '+QTY+'주 × 50%로 계산했어요. '+won(c.topup)+'만 채우면 돼요.');
 }
+
+var TAILS={kb:'3921',sh:'7704'};
+function transferInline(c){
+  var left=c.src.bal-c.topup;
+  return '<div class="xr fade"><div><div class="xr-l"><span class="xr-ic">'+c.src.l.charAt(0)+'</span><b>'+c.src.l+' 계좌에서</b></div><small>'+c.src.l+' 입출금통장 ····'+TAILS[c.src.id]+'</small></div>'
+   +'<div><div class="xr-l"><span class="xr-ic to">증</span><b>내 증권 계좌로</b></div><small>카카오페이증권 ····5108</small></div>'
+   +'<div class="xr-amt">'+won(c.topup)+'</div>'
+   +'<div class="xr-sub">출금가능금액 '+won(c.src.bal)+'<br>이체해도 '+c.src.l+'에 '+won(left)+'이 남아요. 증거금 '+won(c.margin)+'이 정확히 채워져요.</div></div>';
+}
 function transferCard(c){
   var left=c.src.bal-c.topup;
   return vis('이체 미리보기','<div class="flowx"><div class="acct"><em>보내는 계좌</em><b>'+c.src.l+'</b><span class="bal"><s>'+won(c.src.bal)+'</s><br><strong>→ '+won(left)+'</strong></span></div><div class="arr"><span>'+won(c.topup)+'</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A63D8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="acct"><em>받는 계좌</em><b>카카오페이증권</b><span class="bal"><s>'+won(BAL)+'</s><br><strong>→ '+won(BAL+c.topup)+'</strong></span></div></div>','이체해도 '+c.src.l+'에 '+won(left)+'이 남아요. 증거금 '+won(c.margin)+'이 정확히 채워져요.');
@@ -468,7 +485,7 @@ function stepHTML(c){
   }
   if(s===2){
     h+='<p class="ai'+F+'">어느 계좌에서 <b>'+won(c.topup)+'</b>을 이체할까요?</p>';
-    h+=transferCard(c);
+    h+=transferInline(c);
     h+=st.authing==='auth'?'':'<div class="replies fade">'+SRC.map(function(x){return gp('data-k="src" data-v="'+x.id+'"',x.l+' · '+won(x.bal)+'에서 이체하기',st.src===x.id)}).join('')+'</div>';
   }
   if(s===3){
