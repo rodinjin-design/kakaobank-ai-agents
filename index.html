@@ -640,7 +640,7 @@ document.addEventListener('click',function(e){
     var o={_still:1};o[k2]=v;return set(o);                  // 다른 선택지 → 넛지를 그쪽으로 옮김
   }
   if(b.id==='send')return sendText();
-  if(b.id==='home'){clearT();resetSel();homeShown=false;return set({phase:'home',msgs:[],step:0})}
+  if(b.id==='home'){if(window.parent!==window){parent.postMessage({type:'new-chat'},'*');return}clearT();resetSel();homeShown=false;return set({phase:'home',msgs:[],step:0})}
   if(b.id==='back')return prevStep();
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
@@ -720,7 +720,7 @@ document.addEventListener('click',function(e){
   if(drwOpen&&e.target.closest('#app')){e.stopPropagation();e.preventDefault();drwClose();return}
   if(drwOpen&&e.target.closest('[data-ov="close"]')){e.stopPropagation();drwClose();return}
   var nb=e.target.closest('#drw-new');
-  if(nb){e.stopPropagation();drwClose();var t=document.createElement('button');t.id='home';t.style.display='none';document.body.appendChild(t);t.click();t.remove();return}
+  if(nb){e.stopPropagation();drwClose();parent.postMessage({type:'new-chat'},'*');return}
   var b=e.target.closest('[data-ov="chats"],#chats');if(b){ovCloseNow();ovChats()}
 },true);
 function ovCloseNow(){document.body.classList.remove('drw-open');var o=$('#ov');o.innerHTML='';o.className=''}
@@ -1268,7 +1268,7 @@ document.addEventListener('click',function(e){
     var o={_still:1};o[k2]=v;return set(o);                  // 다른 버튼 → 넛지를 그쪽으로 옮김
   }
   if(b.id==='send')return sendText();
-  if(b.id==='home'){timers.forEach(clearTimeout);resetSel();return set({phase:'home',msgs:[],step:0})}
+  if(b.id==='home'){if(window.parent!==window){parent.postMessage({type:'new-chat'},'*');return}timers.forEach(clearTimeout);resetSel();return set({phase:'home',msgs:[],step:0})}
   if(b.id==='back')return prevStep();
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
@@ -1348,7 +1348,7 @@ document.addEventListener('click',function(e){
   if(drwOpen&&e.target.closest('#app')){e.stopPropagation();e.preventDefault();drwClose();return}
   if(drwOpen&&e.target.closest('[data-ov="close"]')){e.stopPropagation();drwClose();return}
   var nb=e.target.closest('#drw-new');
-  if(nb){e.stopPropagation();drwClose();var t=document.createElement('button');t.id='home';t.style.display='none';document.body.appendChild(t);t.click();t.remove();return}
+  if(nb){e.stopPropagation();drwClose();parent.postMessage({type:'new-chat'},'*');return}
   var b=e.target.closest('[data-ov="chats"],#chats');if(b){ovCloseNow();ovChats()}
 },true);
 function ovCloseNow(){document.body.classList.remove('drw-open');var o=$('#ov');o.innerHTML='';o.className=''}
@@ -1402,6 +1402,13 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ava{flex:none;height:44px;display:flex;align-items:center}
 .ai{font-size:18px;line-height:1.5;font-weight:400;letter-spacing:-.2px;word-break:keep-all;margin:0}
 .ai b{font-weight:700}
+.flow.hm{justify-content:flex-start;padding-top:56px}
+.hl{display:flex;flex-direction:column;gap:4px;margin-top:auto}
+.hl-r{position:relative;display:flex;flex-direction:column;padding:12px 12px;margin:0 -12px;border-radius:14px;color:var(--ink);text-decoration:none}
+.hl-r:active{background:rgba(25,27,31,.05)}
+.hl-t{font-size:18px;font-weight:700;letter-spacing:-.2px}
+.hl-s{font-size:13.5px;color:var(--sub);margin-top:2px;word-break:keep-all}
+.hl-go{position:absolute;right:6px;top:50%;margin-top:-16px;width:32px;height:32px;border-radius:50%;background:var(--nudge);display:flex;align-items:center;justify-content:center;animation:glow 1.8s ease-in-out infinite}
 .ai-s{font-size:14px;color:var(--sub);word-break:keep-all;margin-top:6px;display:block;letter-spacing:0}
 .aimsg{font-size:16px;margin:0;word-break:keep-all}
 .me{align-self:flex-end;background:var(--ink);color:#fff;border-radius:22px;padding:11px 18px;font-size:15px;font-weight:500;max-width:80%}
@@ -1682,12 +1689,15 @@ function dots(t){return '<div class="status fade"><span class="tdots" aria-hidde
 
 /* ---------- home ---------- */
 function homeHTML(){
-  var h='<div class="screen"><div class="topbar"><button class="listb" id="chats" aria-label="챗 목록">'+LISTI+'</button><span></span>'+MORE+'</div><div class="scroll" id="sc"><div class="flow">';
+  var h='<div class="screen"><div class="topbar"><button class="listb" id="chats" aria-label="챗 목록">'+LISTI+'</button><span></span>'+MORE+'</div><div class="scroll" id="sc"><div class="flow'+(st.phase==='home'?' hm':'')+'">';
   h+='<div class="ava fade">'+STAR(44,'g1')+'</div>';
   if(st.phase==='home'){
     h+='<p class="ai fade">안녕하세요! <b>무엇을 도와드릴까요?</b><span class="ai-s">아래에서 고르거나 직접 입력해 주세요.</span></p>';
     st.msgs.forEach(function(m){h+=m.w==='me'?'<div class="me fade">'+esc(m.t)+'</div>':'<p class="aimsg fade">'+esc(m.t)+'</p>'});
-    h+='<div class="replies fade">';
+    h+='<div class="hl fade">';
+    CHATS.forEach(function(c){h+='<a class="hl-r" data-hid="'+c.id+'" href="'+c.url+'" target="_top"><span class="hl-t">'+c.t+'</span><span class="hl-s">'+c.s+'</span>'+'</a>'});
+    h+='</div>';
+    h+='<div class="replies fade" style="display:none">';
     menu.forEach(function(m,k){h+=gp('data-menu="'+k+'"',m,k===0)});
     h+='</div>';
   }else{
@@ -1701,8 +1711,8 @@ function startHandoff(text){
   timers.forEach(clearTimeout);timers=[];
   resetSel();
   set({phase:'handoff',user:text,hs:0});
-  timers.push(setTimeout(function(){if(st.phase==='handoff')set({hs:1})},1200));
-  timers.push(setTimeout(function(){if(st.phase==='handoff')set({phase:'agent',step:0,authing:false})},2400));
+  timers.push(setTimeout(function(){if(st.phase==='handoff')set({hs:1})},900));
+  timers.push(setTimeout(function(){if(st.phase==='handoff')set({phase:'agent',step:0,authing:false})},3000));
 }
 
 function taxCard(c){
@@ -1775,7 +1785,7 @@ function resultHTML(c){
 function agentHTML(){
   var c=calc();
   var h='<div class="screen"><div class="topbar"><button class="icon-btn" id="back" aria-label="뒤로"'+(st.authing?' disabled':'')+'>'+BACK+'</button><span class="agent-title"><span class="bw">'+BADGE(22,'b1')+'</span>'+AGENT+'</span>'+MORE+'</div>';
-  h+='<div class="scroll" id="sc"><div class="flow">'+saidHTML()+stepHTML(c)+'</div></div>'+composer(AGENT+'에게 질문하세요')+(st.bio?bioHTML(st.mode==='once'?'이체 승인':'자동이체 승인',st.mode==='once'?PIG+'으로 '+fmt(REMAIN)+'을 이체해요':'월 '+fmt(st.amt)+' 자동이체를 설정해요'):'')+'</div>';
+  h+='<div class="scroll" id="sc"><div class="flow">'+(st.step===0?'<div class="ava">'+STAR(44,'g1')+'</div>':'')+saidHTML()+stepHTML(c)+'</div></div>'+composer(AGENT+'에게 질문하세요')+(st.bio?bioHTML(st.mode==='once'?'이체 승인':'자동이체 승인',st.mode==='once'?PIG+'으로 '+fmt(REMAIN)+'을 이체해요':'월 '+fmt(st.amt)+' 자동이체를 설정해요'):'')+'</div>';
   return h;
 }
 
@@ -1870,7 +1880,7 @@ function sendText(){
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||b.disabled)return;
-  if(b.dataset.menu!==undefined){var k=+b.dataset.menu;k===0?startHandoff('세금 계산해줘'):homeReply(menu[k]);return}
+  if(b.dataset.menu!==undefined){var k=+b.dataset.menu;k===0?(timers.forEach(clearTimeout),timers=[],resetSel(),set({phase:'agent',step:0,authing:false})):homeReply(menu[k]);return}
   if(b.dataset.k){
     var k2=b.dataset.k,v=b.dataset.v;if(k2==='amt')v=+v;
     if(k2==='auth'||st[k2]===v){var sp=b.querySelector('span');st.said=sp?sp.textContent.trim():'';return nextStep()}   // 노란 넛지가 붙은 버튼 → 다음 단계
@@ -1935,7 +1945,7 @@ function drwRows(q){
   var h='',n=0;
   CHATS.forEach(function(c){
     if(q&&(c.t+' '+c.s).toLowerCase().indexOf(q.toLowerCase())<0)return;n++;
-    var cur=c.id===CUR;
+    var cur=c.id===CUR&&st.phase!=='home';
     h+='<a class="drw-r'+(cur?' on':'')+'" data-id="'+c.id+'" href="'+c.url+'" target="_top" rel="noopener"'+(cur?' aria-current="true"':'')+'><span class="drw-rt">'+c.t+'</span><span class="drw-rs">'+c.s+'</span></a>';
   });
   return n?h:'<p class="drw-empty">검색 결과가 없어요</p>';
@@ -1953,13 +1963,15 @@ function drwClose(){
 }
 document.addEventListener('click',function(e){
   var rr=e.target.closest('.drw-r');
-  if(rr&&window.parent!==window){e.preventDefault();e.stopPropagation();var gid=rr.getAttribute('data-id');drwClose();if(gid!==CUR)setTimeout(function(){window.parent.postMessage({type:'chat-go',id:gid},'*')},200);return}
+  if(rr&&window.parent!==window){e.preventDefault();e.stopPropagation();var gid=rr.getAttribute('data-id');drwClose();if(gid===CUR&&st.phase==='home'){var m0=document.querySelector('[data-menu="0"]');if(m0)m0.click();return}if(gid!==CUR)setTimeout(function(){window.parent.postMessage({type:'chat-go',id:gid},'*')},200);return}
   if(drwOpen&&e.target.closest('#app')){e.stopPropagation();e.preventDefault();drwClose();return}
   if(drwOpen&&e.target.closest('[data-ov="close"]')){e.stopPropagation();drwClose();return}
   var nb=e.target.closest('#drw-new');
   if(nb){e.stopPropagation();drwClose();var t=document.createElement('button');t.id='home';t.style.display='none';document.body.appendChild(t);t.click();t.remove();return}
   var b=e.target.closest('[data-ov="chats"],#chats');if(b){ovCloseNow();ovChats()}
 },true);
+document.addEventListener('click',function(e){var r=e.target.closest&&e.target.closest('.hl-r');if(!r)return;e.preventDefault();var id=r.getAttribute('data-hid');if(id===CUR){var m=document.querySelector('[data-menu="0"]');if(m)m.click()}else if(window.parent!==window){window.parent.postMessage({type:'chat-go',id:id},'*')}});
+window.addEventListener('message',function(e){if(e.data&&e.data.type==='reset-home'){drwOpen&&drwClose();var t=document.createElement('button');t.id='home';t.style.display='none';document.body.appendChild(t);t.click();t.remove()}});
 function ovCloseNow(){document.body.classList.remove('drw-open');var o=$('#ov');o.innerHTML='';o.className=''}
 document.addEventListener('input',function(e){if(e.target.id==='drw-q'){$('#drw-list').innerHTML=drwRows(e.target.value.trim())}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&drwOpen)drwClose()});
@@ -2557,7 +2569,7 @@ document.addEventListener('click',function(e){
     var o={_still:1};o[k2]=v;return set(o);                    // 다른 선택지 → 넛지를 그쪽으로 옮김
   }
   if(b.id==='send')return sendText();
-  if(b.id==='home'){clearT();resetSel();talkShown=false;return set({phase:'home',msgs:[],step:0})}
+  if(b.id==='home'){if(window.parent!==window){parent.postMessage({type:'new-chat'},'*');return}clearT();resetSel();talkShown=false;return set({phase:'home',msgs:[],step:0})}
   if(b.id==='back')return prevStep();
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
@@ -2637,7 +2649,7 @@ document.addEventListener('click',function(e){
   if(drwOpen&&e.target.closest('#app')){e.stopPropagation();e.preventDefault();drwClose();return}
   if(drwOpen&&e.target.closest('[data-ov="close"]')){e.stopPropagation();drwClose();return}
   var nb=e.target.closest('#drw-new');
-  if(nb){e.stopPropagation();drwClose();var t=document.createElement('button');t.id='home';t.style.display='none';document.body.appendChild(t);t.click();t.remove();return}
+  if(nb){e.stopPropagation();drwClose();parent.postMessage({type:'new-chat'},'*');return}
   var b=e.target.closest('[data-ov="chats"],#chats');if(b){ovCloseNow();ovChats()}
 },true);
 function ovCloseNow(){document.body.classList.remove('drw-open');var o=$('#ov');o.innerHTML='';o.className=''}
@@ -2663,9 +2675,12 @@ function show(id){
   IDS.forEach(function(k){if(frames[k])frames[k].classList.toggle('on',k===id)});
   cur=id;try{history.replaceState(null,'','#'+id)}catch(e){}
 }
-window.addEventListener('message',function(e){var d=e.data;if(d&&d.type==='chat-go')show(d.id)});
+window.addEventListener('message',function(e){var d=e.data;if(!d)return;
+  if(d.type==='chat-go')show(d.id);
+  if(d.type==='new-chat'){var fresh=!frames.tax;show('tax');if(!fresh){try{frames.tax.contentWindow.postMessage({type:'reset-home'},'*')}catch(x){}}}
+});
 window.addEventListener('hashchange',function(){var h=location.hash.slice(1);if(h&&h!==cur)show(h)});
-show((location.hash||'').slice(1)||IDS[0]);
+show((location.hash||'').slice(1)||'tax');
 })();
 </script>
 
