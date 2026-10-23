@@ -2680,7 +2680,7 @@ window.addEventListener('message',function(e){var d=e.data;if(!d)return;
   if(d.type==='new-chat'){var fresh=!frames.tax;show('tax');if(!fresh){try{frames.tax.contentWindow.postMessage({type:'reset-home'},'*')}catch(x){}}}
 });
 window.addEventListener('hashchange',function(){var h=location.hash.slice(1);if(h&&h!==cur)show(h)});
-show((location.hash||'').slice(1)||'tax');
+show('tax');
 })();
 </script>
 
