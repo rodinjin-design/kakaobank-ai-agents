@@ -21,7 +21,7 @@ body{background:#fff;overflow:hidden}
 /* Layout: same phone shell as the salary prototype. Home → handoff → 4 agent steps (top-up, apply, allocation + sell condition, order) → journey. The pill to tap next always shows the yellow nudge. */
 :root{
 --bg:#FFFFFF; --ink:#2B2A27; --sub:#6B7280; --mute:#8A867B; --line:#E6E2D6;
---blue:#3A63D8; --blue2:#8FA8E8; --sand:#C9C4B6; --nudge:#F7EE6E; --btn:#111111; --warn:#B54708; --soft:#F5F5F6;
+--blue:#3A63D8; --blue2:#8FA8E8; --sand:#C9C4B6; --nudge:#F7EE6E; --btn:#111111; --warn:#C7414A; --soft:#F5F5F6;
 --font:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',system-ui,sans-serif;
 color-scheme:light;
 }
@@ -94,6 +94,17 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .cki{flex:none;width:20px;height:20px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-top:1px}
 .notif{background:#fff;border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(60,50,30,.08);border:1px solid var(--line)}
 .nh{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub)}
+.tl{position:relative;display:flex;flex-direction:column;margin-top:6px}
+.tl .notif{position:relative;border:0!important;box-shadow:none!important;background:transparent!important;border-radius:0;padding:0 0 26px 32px!important;gap:6px}
+.tl .notif:last-child{padding-bottom:6px!important}
+.tl .tli{position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;background:var(--blue);border:0;color:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;z-index:1}
+.tl .tli svg{width:11px;height:11px}
+.tl .notif::after{content:"";position:absolute;left:8px;top:26px;bottom:6px;width:2px;background:#E1E4EA}
+.tl .notif:last-child::after{display:none}
+.tl .notif b{font-size:15px;margin-top:2px;color:#5B6270;font-weight:600}
+.tl .notif p{font-size:13px;line-height:1.55;color:#8A909C}
+.tl .nh{margin-top:0;flex-wrap:wrap}
+
 .nh .day{width:auto;padding:2px 10px}
 .notif b{font-size:16px;word-break:keep-all}
 .notif p{margin:0;font-size:14px;color:#3B4252;word-break:keep-all}
@@ -172,7 +183,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .xr{gap:26px!important}
 .xr + .replies{margin-top:30px!important}
 .calh{flex-direction:column;align-items:flex-start;gap:6px}
-.calh span{font-size:14px}
+.calh span{font-size:17px!important;font-weight:600!important;color:var(--ink)!important}
 .xr-g{border:1px solid rgba(25,27,31,.12);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(30,50,80,.13);padding:6px 18px}
 .xr-r{padding:16px 0}
 .xr-r + .xr-r{border-top:1px solid rgba(25,27,31,.1)}
@@ -437,7 +448,8 @@ function composer(ph){return '<div class="foot"><div class="composer"><textarea 
 function sr(a,b,o){return '<div class="sumrow"><span>'+a+'</span><span'+(o==='b'?' style="font-weight:700;color:var(--ink)"':o==='hl'?' style="font-weight:700;color:var(--warn)"':'')+'>'+b+'</span></div>'}
 function agst(t,done){return '<div class="status fade"><span style="display:inline-flex;'+(done?'':'animation:pulse 1.2s infinite')+'">'+BADGE(20,'hb')+'</span><span>'+t+'</span>'+(done?'<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2FB67C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':'')+'</div>'}
 function dots(t){return '<div class="status fade"><span class="tdots" aria-hidden="true"><i></i><i></i><i></i></span><span class="stt">'+t+'</span></div>'}
-function notif(cls,day,ags,title,body){return '<div class="notif '+cls+'"><div class="nh"><span class="day">'+day+'</span>'+ags+'</div><b>'+title+'</b><p>'+body+'</p></div>'}
+var TLI=['<path d="M6 7h12M6 12h12M6 17h8"/>','<path d="M5 12.5l4.5 4.5L19 7.5"/>','<rect x="5" y="10.5" width="14" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5"/>'];
+function notif(cls,day,ags,title,body,ic){return '<div class="notif '+cls+'"><i class="tli"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+TLI[1]+'</svg></i><div class="nh"><span class="day">'+day+'</span>'+ags+'</div><b>'+title+'</b><p>'+body+'</p></div>'}
 function info(rows,k){return '<div class="chart fade">'+(k?'<span class="k">'+k+'</span>':'')+'<div class="rows" style="margin-top:6px">'+rows+'</div></div>'}
 /* ---------- 인텔리전트 정보 카드 ---------- */
 var SP_I='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3.2Q13.4 10.6 20.8 12Q13.4 13.4 12 20.8Q10.6 13.4 3.2 12Q10.6 10.6 12 3.2Z" fill="#3A63D8"/></svg>';
@@ -447,7 +459,7 @@ function legs2(a){return '<div class="legs">'+a.map(function(x){return '<span'+(
 function chips2(a){return '<div class="chips2">'+a.map(function(t){return '<span class="c2">'+t+'</span>'}).join('')+'</div>'}
 function calCard(){
   var pct=Math.round((11-9)/(16-9)*100);   // 09:00~16:00 중 지금 11:00
-  return vis('캘린더 일정','<div class="calh"><b>오늘 16:00 마감</b><span>'+STOCK+' 공모주 청약</span></div><div class="calt"><div class="track"><div class="fill" style="width:'+pct+'%"></div><i class="mk" style="left:'+pct+'%"></i></div><div class="legs cal3"><span>09:00 시작</span><span style="color:var(--blue);font-weight:700">지금 11:00</span><span>16:00 마감</span></div></div>');
+  return vis('캘린더 일정','<div class="calh"><span>'+STOCK+' 공모주 청약</span><b>오늘 16:00 마감</b></div><div class="calt"><div class="track"><div class="fill" style="width:'+pct+'%"></div><i class="mk" style="left:'+pct+'%"></i></div><div class="legs cal3"><span>09:00 시작</span><span style="color:var(--blue);font-weight:700">지금 11:00</span><span>16:00 마감</span></div></div>');
 }
 function gaugeCard(c){
   var have=Math.round(BAL/c.margin*100);
@@ -564,9 +576,11 @@ function stepHTML(c){
     var n=st.n;
     h+='<p class="ai">때가 되면 <b>먼저 알려 드려요.</b></p>';
     h+='<div class="vis">'+trackSteps(Math.min(n,4),['주문 접수','체결','출금 가능','세이프박스'])+'</div>';
+    h+='<div class="tl">';
     if(n>=1)h+=notif(n===1?'fade':'','오늘','<span class="ag">주문</span>','매도 주문이 접수됐어요',STOCK+' '+c.alloc+'주를 '+won(c.target)+'에 지정가로 걸어뒀어요. 가격이 닿을 때까지 지켜볼게요.');
-    if(n>=2)h+=notif(n===2?'fade':'','상장일','<span class="ag">체결</span>','목표가 '+won(c.target)+'에 닿았어요',c.alloc+'주가 모두 체결됐어요. 체결금액은 '+won(c.gross)+'이에요.');
-    if(n>=3)h+=notif(n===3?'fade':'','출금 가능일','<span class="ag">세이프박스</span><span class="ag">카카오톡 알림</span>','매도대금을 세이프박스로 옮겼어요','수수료·세금을 뺀 '+won(c.net)+'이 출금 가능해져서 바로 옮겼고, 카카오톡으로도 알려 드렸어요.');
+    if(n>=2)h+=notif(n===2?'fade':'','상장일','<span class="ag">체결</span>','목표가 '+won(c.target)+'에 닿았어요',c.alloc+'주가 모두 체결됐어요. 체결금액은 '+won(c.gross)+'이에요.',1);
+    if(n>=3)h+=notif(n===3?'fade':'','출금 가능일','<span class="ag">세이프박스</span><span class="ag">카카오톡 알림</span>','매도대금을 세이프박스로 옮겼어요','수수료·세금을 뺀 '+won(c.net)+'이 출금 가능해져서 바로 옮겼고, 카카오톡으로도 알려 드렸어요.',2);
+    h+='</div>';
     if(n>=4){
       h+='<div class="card fade"><div class="ck"><i>'+CHECK(14)+'</i>공모주 한 바퀴를 마쳤어요</div><div class="big">+'+won(c.profit)+'</div><div class="sub">배정 금액 대비 예상 수익이에요. 수수료·세금은 뺐어요.</div>'+waterfall(c)+'<div class="note">시연용 화면이에요. 종목과 금액은 예시예요.</div></div>';
       h+='<div class="endrow fade"><button class="next" id="home">처음으로</button></div>';
@@ -1469,7 +1483,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .chart,.vis,.card,.gl,.notif{border:1px solid rgba(25,27,31,.12)!important;box-sizing:border-box;box-shadow:0 10px 28px rgba(30,50,80,.13)!important}
 .ai + *:not(.hl){margin-top:34px}
 .flow.hm{justify-content:flex-start;padding-top:56px}
-.hl{display:flex;flex-direction:column;gap:4px;margin-top:auto}
+.hl{display:flex;flex-direction:column;gap:4px;margin-top:auto;padding-left:18px;padding-right:18px}
 .hl-r{position:relative;display:flex;flex-direction:column;padding:12px 12px;margin:0 -12px;border-radius:14px;color:var(--ink);text-decoration:none}
 .hl-r:active{background:rgba(25,27,31,.05)}
 .hl-t{font-size:18px;font-weight:700;letter-spacing:-.2px}
