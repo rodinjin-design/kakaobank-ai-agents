@@ -1047,6 +1047,40 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ag,.day{display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;height:22px;line-height:1!important;padding:2px 8.5px 0 9.5px!important;text-align:center;letter-spacing:0}.day{width:46px;padding:2px 0 0!important}
 .src{flex:none;display:inline-flex;align-items:center;justify-content:center;height:22px;padding:2px 8.5px 0 9.5px;border-radius:11px;background:#E8EFFC;color:var(--blue);font-size:11px;font-weight:700;line-height:1}
 .leg .n{align-self:flex-start}
+
+.composer.cur{position:relative}
+.composer.cur #in::placeholder{color:transparent!important}
+.composer .tp{position:absolute;left:19px;top:15px;right:19px;font-size:16px;line-height:26px;color:var(--blue);white-space:nowrap;overflow:hidden;pointer-events:none}
+.composer .tp b{font-weight:400}
+.composer .tp .qs-car{height:20px;vertical-align:-4px}
+#qs{position:fixed;inset:0;z-index:60}
+#qs .qs-bg{position:absolute;inset:0;background:rgba(20,24,32,.38);opacity:0;transition:opacity .35s}
+#qs.on .qs-bg{opacity:1}
+#qs .qs-sh{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:20px 18px 24px;transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.85,.2,1);display:flex;flex-direction:column;gap:16px;box-shadow:0 -12px 40px rgba(20,30,60,.18);min-height:48%}
+#qs.on .qs-sh{transform:none}
+#qs .qs-h{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600;color:#1B1F2A}
+#qs .qs-x{border:0;background:none;padding:4px;color:#1B1F2A;cursor:pointer}
+#qs .qs-c{flex:1;display:flex;flex-direction:column;gap:12px;min-height:150px}
+#qs .qs-u{align-self:flex-end;max-width:84%;background:#EEF2FF;color:#3A55D4;border-radius:20px;padding:12px 16px;font-size:16px;line-height:1.45}
+#qs .qs-a{display:flex;align-items:flex-end;gap:8px}
+#qs .qs-av{flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+#qs .qs-b{background:#F3F4F8;border-radius:20px;padding:12px 16px;font-size:16px;line-height:1.5;color:#1B1F2A;max-width:82%;word-break:keep-all;animation:fadeup .3s both}
+#qs .qs-b b{color:var(--blue)}
+#qs .qs-ok{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:13px;font-weight:600;color:#14B08C}
+#qs .qs-dots{display:inline-flex;gap:4px;padding:4px 2px}
+#qs .qs-dots i{width:6px;height:6px;border-radius:50%;background:#B7BCC8;animation:qsd 1s infinite}
+#qs .qs-dots i:nth-child(2){animation-delay:.15s}#qs .qs-dots i:nth-child(3){animation-delay:.3s}
+@keyframes qsd{0%,60%,100%{opacity:.3}30%{opacity:1}}
+@keyframes fadeup{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#qs .qs-in{display:flex;align-items:center;gap:10px;background:#F3F4F8;border-radius:28px;padding:10px 10px 10px 18px;min-height:48px}
+#qs .qs-t{flex:1;min-width:0;font-size:16px;color:#1B1F2A;white-space:nowrap;overflow:hidden}
+#qs .qs-t b{font-weight:400}
+#qs .qs-ph{font-style:normal;color:#9AA0AE}
+#qs .qs-car{display:inline-block;width:2px;height:18px;background:var(--blue);vertical-align:-3px;margin-left:1px;animation:qsc 1s steps(1) infinite;text-decoration:none}
+@keyframes qsc{50%{opacity:0}}
+#qs .qs-m{color:#1B1F2A;display:flex}
+#qs .qs-s{width:38px;height:38px;border-radius:50%;background:#E4E7EE;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .2s}
+#qs .qs-s.on{background:#2B2A27}
 .leg .wasn{text-decoration:line-through}
 .leg.kid{position:relative;padding-left:26px!important}
 .leg.kid::before{content:"";position:absolute;left:8px;top:-14px;width:12px;height:34px;border-left:2px solid #D3D6DC;border-bottom:2px solid #D3D6DC;border-bottom-left-radius:8px}
@@ -1117,7 +1151,7 @@ var menu=['월급 나눠 담기','투자 정보 검색하기','자산계획 세�
 
 /* 각 단계의 선택값. 기본값 = 시연 경로(노란 넛지가 처음부터 붙는 버튼) */
 var PLANS=[{id:'trip',label:'11월 제주 여행 110만원',nm:'제주 여행',amt:1100000,d:'항공 42만·숙소 68만',src:'카드 내역',when:'10/19 승인'},{id:'event',label:'지인 결혼식 30만원',nm:'결혼식 축의금',amt:300000,d:'지인 결혼식',src:'캘린더',when:'11/16'},{id:'none',label:'특별한 계획 없어요',nm:'',amt:0,d:''}];
-var DEFAULTS={go:'plan',plan:'trip',rev:'ok',ratio:'r1',acct:'safe',mode:'monthly'};
+var DEFAULTS={go:'plan',plan:'trip',rev:'ok',ratio:'r1',acct:'safe',mode:'monthly',cut:'inv'};
 var st={phase:'home',step:0,msgs:[],user:'',hs:0,authing:false,bio:null};
 function resetSel(){st.said='';for(var k in DEFAULTS)st[k]=DEFAULTS[k]}
 resetSel();
@@ -1135,7 +1169,7 @@ function calc(){
   var pl=PLANS.filter(function(x){return x.id===st.plan})[0];
   var base={save:save,inv:inv,live:live,spare:live-FIXED};
   var use=st.go==='plan'&&pl.amt>0, res=use?pl.amt:0, cutI=0, cutS=0;
-  if(use){var short=Math.max(0,res-base.spare);if(short>0){cutI=Math.min(inv,Math.ceil(short/10000)*10000);var rest=Math.max(0,short-cutI);cutS=Math.ceil(rest/10000)*10000}}
+  if(use){var short=Math.max(0,res-base.spare);if(short>0){if(st.cut==='save'){cutS=Math.ceil(short/10000)*10000}else{cutI=Math.min(inv,Math.ceil(short/10000)*10000);var rest=Math.max(0,short-cutI);cutS=Math.ceil(rest/10000)*10000}}}
   var save2=save-cutS, inv2=inv-cutI, live2=SALARY-save2-inv2;
   return {r:r,base:base,plan:pl,use:use,res:res,cutI:cutI,cutS:cutS,save:save2,inv:inv2,live:live2,free:live2-res,spare:live2-res-FIXED,acct:acct,mode:mode,year:acct.bal+save2*12};
 }
@@ -1197,8 +1231,9 @@ function chartHTML(c,title,nonote,diff){
   var sd=function(n,o){return ''};
   var was=function(n,o){return diff&&n!==o?'<small class="was">'+fmt(o)+'</small>':''};
   var sn=function(n,o){return diff?(n===o?' <em class="same">제안과 동일</em>':' <em class="same wasn">'+fmt(o)+'</em>'):''};
-  h+=leg('var(--blue)','저축'+sn(c.save,c.base.save),p(c.save),c.save,sd(c.save,c.base.save))+leg('var(--ink)','투자'+sn(c.inv,c.base.inv),p(c.inv),c.inv,sd(c.inv,c.base.inv));
-  if(c.res)h+=leg('var(--green)',c.plan.nm+' 계획',p(c.res),c.res,'','','kid');
+  var kid=c.res?leg('var(--green)',c.plan.nm+' 계획',p(c.res),c.res,'','','kid'):'';
+  var cs=st.cut==='save';
+  h+=leg('var(--blue)','저축'+sn(c.save,c.base.save),p(c.save),c.save,sd(c.save,c.base.save))+(cs?kid:'')+leg('var(--ink)','투자'+sn(c.inv,c.base.inv),p(c.inv),c.inv,sd(c.inv,c.base.inv))+(cs?'':kid);
   h+=leg('#C9C4B6','생활비',p(lv),lv);
   if(nonote)return h+'</div>';
   if(diff)return h+'</div>';
@@ -1222,7 +1257,7 @@ function stepHTML(c){
     h+='<div class="replies fade">'+PLANS.map(function(x){return gp('data-k="plan" data-v="'+x.id+'"',x.label,st.plan===x.id)}).join('')+'</div>';
   }
   if(s===2){
-    h+='<p class="ai fade">'+(c.cutI||c.cutS?'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 먼저 떼고 다시 나눴어요.':'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 떼어 두고, 나머지는 그대로 나눠요.')+'<span class="ai-s">'+(c.cutI||c.cutS?'생활비로 모자란 '+fmt(c.cutI+c.cutS)+'은 '+(c.cutS?'투자와 저축에서':'투자에서')+' 줄였어요.':'생활비 여유가 충분해서 저축·투자는 그대로예요.')+(c.spare<0?'<br>고정지출 예정 '+fmt(FIXED)+'보다 '+fmt(-c.spare)+' 부족해요.':'<br>고정지출을 내고도 '+fmt(c.spare)+'이 남아요.')+' 계획 자금은 결제일에 알려 드려요.</span></p>';
+    h+='<p class="ai fade">'+(c.cutI||c.cutS?'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 먼저 떼고 다시 나눴어요.':'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 떼어 두고, 나머지는 그대로 나눠요.')+'<span class="ai-s">'+(c.cutI||c.cutS?'생활비로 모자란 '+fmt(c.cutI+c.cutS)+'은 '+(c.cutI&&c.cutS?'투자와 저축에서':c.cutS?'저축에서':'투자에서')+' 줄였어요.':'생활비 여유가 충분해서 저축·투자는 그대로예요.')+(c.spare<0?'<br>고정지출 예정 '+fmt(FIXED)+'보다 '+fmt(-c.spare)+' 부족해요.':'<br>고정지출을 내고도 '+fmt(c.spare)+'이 남아요.')+' 계획 자금은 결제일에 알려 드려요.</span></p>';
     h+=chartHTML(c,'이번 달 계획 반영',0,1);
     h+='<div class="replies fade">'+gp('data-k="rev" data-v="ok"','이대로 진행',true)+gp('data-k="rev" data-v="ratio"','비율 직접 고르기',false)+'</div>';
   }
@@ -1328,10 +1363,68 @@ function patch(html){
   });
   for(var i=nc.length;i<oc.length;i++)os.removeChild(oc[i]);
 }
+/* ---------- 바텀시트: 대화로 수정 ---------- */
+var qsT=[];
+function qsClear(){qsT.forEach(clearTimeout);qsT=[]}
+function qsAt(f,ms){qsT.push(setTimeout(f,ms))}
+function openAsk(){
+  if($('#qs'))return;
+  var c0=calc(),amt=c0.cutI||c0.cutS,TXT='투자금액 말고 저축에서 채워줘';
+  var d=document.createElement('div');d.id='qs';
+  d.innerHTML='<div class="qs-bg"></div><div class="qs-sh" role="dialog" aria-label="에이전트에게 요청"><div class="qs-h"><span>월급 분배 에이전트</span><button class="qs-x" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="qs-c" id="qsc"></div><div class="qs-in"><span class="qs-t" id="qst"><i class="qs-ph">수정할 내용을 말씀해 주세요</i></span><span class="qs-m">'+MIC+'</span><span class="qs-s" id="qss"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div></div>';
+  document.body.appendChild(d);
+  d.querySelector('.qs-x').onclick=function(){closeAsk()};
+  d.querySelector('.qs-bg').onclick=function(){closeAsk()};
+  requestAnimationFrame(function(){requestAnimationFrame(function(){d.classList.add('on')})});
+  var t=$('#qst'),i=0;
+  qsAt(function type(){
+    i++;t.innerHTML='<b>'+TXT.slice(0,i)+'</b><u class="qs-car"></u>';
+    if(i<TXT.length)qsAt(type,70);
+    else{$('#qss').classList.add('on');qsAt(sendIt,500)}
+  },800);
+  function sendIt(){
+    var cc=$('#qsc');
+    cc.insertAdjacentHTML('beforeend','<div class="qs-u fade">'+TXT+'</div>');
+    t.innerHTML='<i class="qs-ph">수정할 내용을 말씀해 주세요</i>';$('#qss').classList.remove('on');
+    qsAt(function(){
+      cc.insertAdjacentHTML('beforeend','<div class="qs-a" id="qsa"><span class="qs-av">'+STAR(26,'qsg')+'</span><div class="qs-b"><span class="qs-dots"><i></i><i></i><i></i></span></div></div>');
+      qsAt(function(){
+        var b=$('#qsa .qs-b');
+        b.innerHTML='투자는 그대로 두고, 저축에서 <b>'+fmt(amt)+'</b>을 줄여 채웠어요.<span class="qs-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>실행했어요</span>';
+        qsAt(function(){closeAsk(true)},1700);
+      },900);
+    },450);
+  }
+}
+function closeAsk(apply){
+  var d=$('#qs');if(!d)return;qsClear();
+  d.classList.remove('on');
+  qsAt(function(){d.remove();if(apply)set({cut:'save'})},380);
+}
+document.addEventListener('pointerdown',function(e){
+  if(st.phase==='agent'&&st.step===2&&st.cut!=='save'&&e.target.closest&&e.target.closest('.composer')&&!e.target.closest('button')){e.preventDefault();var ta=$('#in');if(ta)ta.blur();openAsk()}
+},true);
+document.addEventListener('focusin',function(e){if(st.phase==='agent'&&st.step===2&&st.cut!=='save'&&e.target.id==='in'){e.target.blur();openAsk()}},true);
+/* ---------- 입력창 placeholder 타이핑 ---------- */
+var tpT=[],tpKey='';
+function tpSync(){
+  var cp=$('.composer'),on=st.phase==='agent'&&st.step===2;
+  if(!cp)return;
+  cp.classList.toggle('cur',on);
+  var el=cp.querySelector('.tp');
+  if(!on){tpT.forEach(clearTimeout);tpT=[];tpKey='';if(el)el.remove();return}
+  var ta=cp.querySelector('#in'),txt=ta?ta.getAttribute('placeholder'):'';
+  if(el)return;
+  el=document.createElement('div');el.className='tp';cp.appendChild(el);
+  if(tpKey==='done'){el.innerHTML='<b>'+txt+'</b><u class="qs-car"></u>';return}
+  tpKey='run';var i=0;
+  (function step(){i++;el.innerHTML='<b>'+txt.slice(0,i)+'</b><u class="qs-car"></u>';if(i<txt.length)tpT.push(setTimeout(step,65));else tpKey='done'})();
+}
 function render(){
   patch(st.phase==='agent'?agentHTML():homeHTML());
   $('#app').classList.toggle('still',!!st._still);st._still=0;
   fitBubbles();
+  tpSync();
   var sc=$('#sc');if(sc){var key=st.phase+':'+st.step;if(window._lk!==key){window._lk=key;sc.scrollTop=0}else sc.scrollTop=sc.scrollHeight}
 }
 function nextStep(){
