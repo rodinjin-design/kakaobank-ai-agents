@@ -2681,7 +2681,7 @@ function show(id){
   cur=id;try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 window.addEventListener('message',function(e){var d=e.data;if(!d)return;
-  if(d.type==='chat-go'){var fr0=!frames[d.id];show(d.id);
+  if(d.type==='chat-go'){if(frames[d.id]&&d.id!==cur){try{stage.removeChild(frames[d.id])}catch(x){}delete frames[d.id]}var fr0=!frames[d.id];show(d.id);
     if(d.id==='tax'){var go=function(){try{frames.tax.contentWindow.postMessage({type:'start-tax'},'*')}catch(x){}};
       if(fr0){frames.tax.addEventListener('load',function(){setTimeout(go,50)})}else go()}}
   if(d.type==='new-chat'){var fresh=!frames.tax;show('tax');if(!fresh){try{frames.tax.contentWindow.postMessage({type:'reset-home'},'*')}catch(x){}}}
