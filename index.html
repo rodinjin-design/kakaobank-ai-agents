@@ -1047,6 +1047,31 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ag,.day{display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;height:22px;line-height:1!important;padding:2px 8.5px 0 9.5px!important;text-align:center;letter-spacing:0}.day{width:46px;padding:2px 0 0!important}
 .src{flex:none;display:inline-flex;align-items:center;justify-content:center;height:22px;padding:2px 8.5px 0 9.5px;border-radius:11px;background:#E8EFFC;color:var(--blue);font-size:11px;font-weight:700;line-height:1}
 .leg .n{align-self:flex-start}
+.leg .wasn{text-decoration:line-through}
+.leg.kid{position:relative;padding-left:26px!important}
+.leg.kid::before{content:"";position:absolute;left:8px;top:-14px;width:12px;height:34px;border-left:2px solid #D3D6DC;border-bottom:2px solid #D3D6DC;border-bottom-left-radius:8px}
+.leg .same{font-style:normal;font-size:14px;font-weight:500;color:var(--sub);margin-left:6px}
+.leg .a .was{display:block;font-size:12px;font-weight:500;color:var(--sub);text-decoration:line-through;margin-top:1px}
+.leg .n small{display:block;font-size:12px;font-weight:500;color:var(--sub);margin-top:1px}
+.pl3{padding:12px 0!important}
+.chart > .pl3:first-child{padding-top:0!important}
+.chart > .pl3:last-child{padding-bottom:0!important}
+.pl3 .pm .l0{margin-bottom:6px}
+.pl3 .l1{display:flex!important;align-items:baseline;gap:8px;flex-wrap:nowrap}
+.pl3 .l1 b{flex:none;font-size:16px}
+.pl3 .dd{flex:1;min-width:0;font-style:normal;font-size:12.5px;line-height:1.35;color:var(--sub);word-break:keep-all}
+.pl3 .l1 .a{flex:none;margin-left:auto;font-weight:700}
+.leg{font-size:16px!important;padding:6px 0!important;gap:12px!important}
+.leg .n{font-weight:700!important;align-self:center!important}
+.leg .p{color:inherit!important;font-size:16px;font-weight:600;width:46px!important}
+.leg .a{color:inherit!important;font-size:16px;min-width:104px!important}
+.leg .sw{width:12px!important;height:12px!important}
+.bar{height:16px!important;border-radius:8px!important}
+.leg{border-top:0!important}
+.leg .sw{display:none!important}
+.leg .n{margin-left:0}
+.ai + .chart{margin-top:18px!important}
+.chart .bar{margin:6px 0 4px!important}
 .pl2{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line)}.pl2:first-of-type{border-top:0}.pl2 .sw{margin-top:6px;flex:none;width:10px;height:10px;border-radius:3px}.pl2 .pm{flex:1;min-width:0}.pl2 .l1{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14.5px}.pl2 .l1 .a{font-weight:700}.pl2 .l2{display:flex;align-items:center;gap:8px;margin-top:6px}.pl2 .l2 em{font-style:normal;font-size:12px;color:var(--sub);min-width:0}
 
 @keyframes ringSp{0%{opacity:1;transform:rotate(0) scale(1)}55%{opacity:1;transform:rotate(360deg) scale(1)}70%,100%{opacity:0;transform:rotate(400deg) scale(.6)}}
@@ -1162,17 +1187,22 @@ function startHandoff(text){
   timers.push(setTimeout(function(){if(st.phase==='handoff')set({phase:'agent',step:0,authing:false})},2400));
 }
 
-function leg(col,name,p,a){return '<div class="leg"><i class="sw" style="background:'+col+'"></i><span class="n">'+name+'</span><span class="p">'+p+'%</span><span class="a">'+fmt(a)+'</span></div>'}
+function leg(col,name,p,a,sub,was,cls){var tc=col==='#C9C4B6'?'#9A937F':col==='var(--ink)'?'#14B08C':col;return '<div class="leg'+(cls?' '+cls:'')+'" style="color:'+tc+'"><i class="sw" style="background:'+col+'"></i><span class="n">'+name+(sub?'<small>'+sub+'</small>':'')+'</span><span class="p">'+p+'%</span><span class="a">'+fmt(a)+(was||'')+'</span></div>'}
 function pc(x){return Math.max(0,x/SALARY*100).toFixed(2)}
-function chartHTML(c,title){
+function chartHTML(c,title,nonote,diff){
   var h='<div class="chart fade"><span class="k">'+(title||'월급 '+fmt(SALARY)+' 기준')+'</span>';
   var lv=c.live-c.res;
   h+='<div class="bar" role="img" aria-label="월급 분배"><div style="width:'+pc(c.save)+'%;background:var(--blue)"></div><div style="width:'+pc(c.inv)+'%;background:var(--ink)"></div>'+(c.res?'<div style="width:'+pc(c.res)+'%;background:var(--green)"></div>':'')+'<div style="width:'+pc(lv)+'%;background:#C9C4B6"></div></div>';
   var p=function(x){return Math.round(x/SALARY*100)};
-  h+=leg('var(--blue)','저축',p(c.save),c.save)+leg('var(--ink)','투자',p(c.inv),c.inv);
-  if(c.res)h+=leg('var(--green)','계획 · '+c.plan.nm,p(c.res),c.res);
+  var sd=function(n,o){return ''};
+  var was=function(n,o){return diff&&n!==o?'<small class="was">'+fmt(o)+'</small>':''};
+  var sn=function(n,o){return diff?(n===o?' <em class="same">제안과 동일</em>':' <em class="same wasn">'+fmt(o)+'</em>'):''};
+  h+=leg('var(--blue)','저축'+sn(c.save,c.base.save),p(c.save),c.save,sd(c.save,c.base.save))+leg('var(--ink)','투자'+sn(c.inv,c.base.inv),p(c.inv),c.inv,sd(c.inv,c.base.inv));
+  if(c.res)h+=leg('var(--green)',c.plan.nm+' 계획',p(c.res),c.res,'','','kid');
   h+=leg('#C9C4B6','생활비',p(lv),lv);
-  h+=c.spare<0?'<span class="small warn">고정지출 예정 '+fmt(FIXED)+'보다 '+fmt(-c.spare)+' 부족해요.</span>':'<span class="small">고정지출 예정 '+fmt(FIXED)+'을 내고도 '+fmt(c.spare)+'이 남아요.</span>';
+  if(nonote)return h+'</div>';
+  if(diff)return h+'</div>';
+  h+=c.spare<0?'<span class="small warn">고정지출 예정 '+fmt(FIXED)+'보다 '+fmt(-c.spare)+' 부족해요.</span>':'<span class="small">고정지출 예정 '+fmt(FIXED)+'을 내고도 '+fmt(c.spare)+'이 남아요.'+(diff?' 계획 자금은 입출금통장에 따로 표시해 두고, 결제일에 알려 드려요.':'')+'</span>';
   return h+'</div>';
 }
 function dr(a,b,c2){return '<div class="drow"><span>'+a+'</span><span class="df">'+b+'</span><span class="dt'+(c2?' dn':'')+'">'+c2+'</span></div>'}
@@ -1182,19 +1212,18 @@ function stepHTML(c){
   var s=st.step,h='';
   if(s===0){
     var c0=calc0();
-    h+='<p class="ai fade">지난달 비율로 <b>이렇게 나눠 볼게요.</b><span class="ai-s">'+fmt(SALARY)+'을 저축·투자·생활비로 나눈 제안이에요.</span></p>';
-    h+=chartHTML(c0,'분배 제안 · 지난달과 같은 비율');
+    h+='<p class="ai fade">지난달 비율로 <b>이렇게 나눠 볼게요.</b><span class="ai-s">'+fmt(SALARY)+'을 저축·투자·생활비로 나눴어요.<br>고정지출 '+fmt(FIXED)+'을 내고도 '+fmt(c0.spare)+'이 남아요.</span></p>';
+    h+=chartHTML(c0,'분배 제안 · 지난달과 같은 비율',1);
     h+='<div class="replies fade">'+gp('data-k="go" data-v="plan"','이번 달 계획에 맞춰 수정',st.go==='plan')+gp('data-k="go" data-v="split"','제안대로 나눠 담기',st.go==='split')+gp('data-k="go" data-v="skip"','이번 달은 넘어가기',st.go==='skip')+'</div>';
   }
   if(s===1){
-    h+='<p class="ai fade"><b>이번 달 계획</b>을 알려 주세요.<span class="ai-s">카드 승인 내역과 캘린더에서 이번 달 큰 지출 두 가지를 찾았어요. 계획 금액은 먼저 떼어 둘게요.</span></p>';
-    h+='<div class="chart fade"><span class="k">내역에서 확인한 이번 달 계획</span>'+PLANS.slice(0,2).map(function(x){return '<div class="pl2"><i class="sw" style="background:var(--green)"></i><div class="pm"><div class="l1"><b>'+x.nm+'</b><span class="a">'+fmt(x.amt)+'</span></div><div class="l2"><span class="src">'+x.src+'</span><em>'+x.d+' · '+x.when+'</em></div></div></div>'}).join('')+'<span class="small">고정지출 예정 '+fmt(FIXED)+' · 지금 비율대로면 '+fmt(calc0().spare)+'이 남아요.</span></div>';
+    h+='<p class="ai fade"><b>이번 달 계획</b>을 알려 주세요.<span class="ai-s">카드 내역과 캘린더에서 큰 지출 두 가지를 찾았어요. 고정지출을 빼면 지금 비율로 '+fmt(calc0().spare)+'이 남아요.</span></p>';
+    h+='<div class="chart fade">'+PLANS.slice(0,2).map(function(x){return '<div class="pl2 pl3"><div class="pm"><div class="l0"><span class="src">'+x.src+'</span></div><div class="l1"><b>'+x.nm+'</b><em class="dd">'+x.d+' · '+x.when+'</em><span class="a">'+fmt(x.amt)+'</span></div></div></div>'}).join('')+'</div>';
     h+='<div class="replies fade">'+PLANS.map(function(x){return gp('data-k="plan" data-v="'+x.id+'"',x.label,st.plan===x.id)}).join('')+'</div>';
   }
   if(s===2){
-    h+='<p class="ai fade">'+(c.cutI||c.cutS?'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 먼저 떼고 다시 나눴어요.':'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 떼어 두고, 나머지는 그대로 나눠요.')+'<span class="ai-s">'+(c.cutI||c.cutS?'생활비로 모자란 '+fmt(c.cutI+c.cutS)+'은 '+(c.cutS?'투자와 저축에서':'투자에서')+' 줄였어요.':'생활비 여유가 충분해서 저축·투자는 그대로예요.')+'</span></p>';
-    h+=chartHTML(c,'이번 달 계획 반영');
-    h+='<div class="chart fade"><span class="k">제안에서 달라진 점</span>'+dr('저축',fmt(c.base.save),c.save!==c.base.save?fmt(c.save):'동일')+dr('투자',fmt(c.base.inv),c.inv!==c.base.inv?fmt(c.inv):'동일')+dr('계획 자금','—',fmt(c.res))+'<span class="small">계획 자금은 '+LIVE+'에 따로 표시해 두고, 결제일에 알려 드려요.</span></div>';
+    h+='<p class="ai fade">'+(c.cutI||c.cutS?'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 먼저 떼고 다시 나눴어요.':'<b>'+c.plan.nm+' '+fmt(c.res)+'</b>을 떼어 두고, 나머지는 그대로 나눠요.')+'<span class="ai-s">'+(c.cutI||c.cutS?'생활비로 모자란 '+fmt(c.cutI+c.cutS)+'은 '+(c.cutS?'투자와 저축에서':'투자에서')+' 줄였어요.':'생활비 여유가 충분해서 저축·투자는 그대로예요.')+(c.spare<0?'<br>고정지출 예정 '+fmt(FIXED)+'보다 '+fmt(-c.spare)+' 부족해요.':'<br>고정지출을 내고도 '+fmt(c.spare)+'이 남아요.')+' 계획 자금은 결제일에 알려 드려요.</span></p>';
+    h+=chartHTML(c,'이번 달 계획 반영',0,1);
     h+='<div class="replies fade">'+gp('data-k="rev" data-v="ok"','이대로 진행',true)+gp('data-k="rev" data-v="ratio"','비율 직접 고르기',false)+'</div>';
   }
   if(s===3){
@@ -1303,7 +1332,7 @@ function render(){
   patch(st.phase==='agent'?agentHTML():homeHTML());
   $('#app').classList.toggle('still',!!st._still);st._still=0;
   fitBubbles();
-  var sc=$('#sc');if(sc)sc.scrollTop=sc.scrollHeight;
+  var sc=$('#sc');if(sc){var key=st.phase+':'+st.step;if(window._lk!==key){window._lk=key;sc.scrollTop=0}else sc.scrollTop=sc.scrollHeight}
 }
 function nextStep(){
   var s=st.step;
