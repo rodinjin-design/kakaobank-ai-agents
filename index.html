@@ -51,6 +51,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ava{flex:none;height:44px;display:flex;align-items:center}
 .ai{font-size:18px;line-height:1.5;font-weight:400;letter-spacing:-.2px;word-break:keep-all;margin:0}
 .ai b{font-weight:700}
+.ai{font-size:22px!important;line-height:1.42!important;letter-spacing:-.4px}
+.gp .go{background:#FFE600!important;animation:none!important;box-shadow:none!important}
+.chart,.vis,.card,.gl,.notif{border:1px solid rgba(25,27,31,.12)!important;box-sizing:border-box;box-shadow:0 10px 28px rgba(30,50,80,.13)!important}
+.ai + *:not(.hl){margin-top:34px}
 .ai{text-wrap:balance}
 .ai-s{font-size:14px;color:var(--sub);word-break:keep-all;margin-top:6px;display:block;letter-spacing:0}
 .aimsg{font-size:16px;margin:0;word-break:keep-all}
@@ -134,7 +138,18 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .vk{font-size:12px;font-weight:600;color:var(--blue)}
 .hero{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .hero b{font-size:28px;letter-spacing:-.5px;font-variant-numeric:tabular-nums;word-break:keep-all}
-.hero span{font-size:13px;color:var(--sub)}
+.hero span{font-size:20px;font-weight:700;color:var(--sub)}
+.gnote{font-size:13px;color:var(--sub);margin:-6px 0 4px;word-break:keep-all}
+.ai + .nogi{margin-top:12px}
+.nogi .ins svg{display:none}
+.ai + .xr{margin-top:12px}
+.xr{gap:26px!important}
+.xr-g{border:1px solid rgba(25,27,31,.12);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(30,50,80,.13);padding:6px 18px}
+.xr-r{padding:16px 0}
+.xr-r + .xr-r{border-top:1px solid rgba(25,27,31,.1)}
+.xr-a{padding:18px 0 14px;border-top:1px solid rgba(25,27,31,.1)}
+.xr-a .xr-amt{margin-top:0;font-size:22px}
+.xr-a .xr-sub{margin-top:6px;font-size:14px;white-space:nowrap}
 .track{position:relative;height:12px;border-radius:6px;background:#EDEAE1}
 .track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--blue)}
 .mk{position:absolute;top:50%;width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid var(--blue);transform:translate(-50%,-50%);box-sizing:border-box;box-shadow:0 2px 8px rgba(58,99,216,.35)}
@@ -177,6 +192,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .wf b{font-variant-numeric:tabular-nums;min-width:84px;text-align:right}
 /* biometric sheet + 2-line bubbles */
 .me{line-height:1.45;text-wrap:balance;border-radius:20px}
+.me{background:#EEF2FF!important;color:#3A55D4!important}
 .gp{padding:8px 18px;border-radius:24px}
 .gp>span{line-height:1.4;text-wrap:balance;word-break:keep-all}
 .bio{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end}
@@ -405,16 +421,16 @@ function calCard(){
 }
 function gaugeCard(c){
   var have=Math.round(BAL/c.margin*100);
-  return vis('청약 증거금','<div class="hero"><b>'+won(c.topup)+'</b><span>부족해요</span></div><div class="gauge" role="img" aria-label="필요 증거금 중 보유 '+have+'%"><div class="have" style="width:'+have+'%"></div><div class="need" style="width:'+(100-have)+'%"></div></div>'+legs2([['증권 계좌 잔고',won(BAL),0,'var(--blue)'],['부족액',won(c.topup),1,'var(--warn)']])+chips2(['공모가 '+won(PRICE),'최소 '+QTY+'주','증거금률 '+Math.round(MARGIN_RATE*100)+'%','필요 증거금 '+won(c.margin)]),'공모가 × '+QTY+'주 × 50%로 계산했어요. '+won(c.topup)+'만 채우면 돼요.');
+  return vis('청약 증거금','<div class="gnote">공모가 × '+QTY+'주 × 50% 기준이에요.</div><div class="hero"><b>'+won(c.topup)+'</b><span>부족해요</span></div><div class="gauge" role="img" aria-label="필요 증거금 중 보유 '+have+'%"><div class="have" style="width:'+have+'%"></div><div class="need" style="width:'+(100-have)+'%"></div></div>'+legs2([['증권 계좌 잔고',won(BAL),0,'var(--blue)'],['부족액',won(c.topup),1,'var(--warn)']])+chips2(['공모가 '+won(PRICE),'최소 '+QTY+'주','증거금률 '+Math.round(MARGIN_RATE*100)+'%','필요 증거금 '+won(c.margin)])).replace('class="vis fade"','class="vis fade nogi"');
 }
 
 var TAILS={kb:'3921',sh:'7704'};
 function transferInline(c){
   var left=c.src.bal-c.topup;
-  return '<div class="xr fade"><div><div class="xr-l"><span class="xr-ic">'+c.src.l.charAt(0)+'</span><b>'+c.src.l+' 계좌에서</b></div><small>'+c.src.l+' 입출금통장 ····'+TAILS[c.src.id]+'</small></div>'
-   +'<div><div class="xr-l"><span class="xr-ic to">증</span><b>내 증권 계좌로</b></div><small>카카오페이증권 ····5108</small></div>'
-   +'<div class="xr-amt">'+won(c.topup)+'</div>'
-   +'<div class="xr-sub">출금가능금액 '+won(c.src.bal)+'<br>이체해도 '+c.src.l+'에 '+won(left)+'이 남아요. 증거금 '+won(c.margin)+'이 정확히 채워져요.</div></div>';
+  return '<div class="xr fade"><div class="xr-g"><div class="xr-r"><div class="xr-l"><span class="xr-ic">'+c.src.l.charAt(0)+'</span><b>'+c.src.l+' 계좌에서</b></div><small>'+c.src.l+' 입출금통장 ····'+TAILS[c.src.id]+'</small></div>'
+   +'<div class="xr-r"><div class="xr-l"><span class="xr-ic to">증</span><b>내 증권 계좌로</b></div><small>카카오페이증권 ····5108</small></div>'
+   +'<div class="xr-a"><div class="xr-amt">'+won(c.topup)+'</div>'
+   +'<div class="xr-sub">출금가능 '+won(c.src.bal)+' · 이체 후 '+won(left)+' 남아요.</div></div></div></div>';
 }
 function transferCard(c){
   var left=c.src.bal-c.topup;
@@ -480,13 +496,12 @@ function stepHTML(c){
   var s=st.step,F=(s===7)?'':' fade',h='';
   if(s===1){
     h+='<div class="me">'+esc(st.user||'청약 자금 확인하기')+'</div>';
-    h+='<p class="ai'+F+'">최소 '+QTY+'주 기준 필요 증거금은 <b>'+won(c.margin)+'</b>이에요. 증권 계좌 잔고가 '+won(BAL)+'이라 <b>'+won(c.topup)+'</b>이 부족해요.</p>';
+    h+='<p class="ai'+F+'">필요 증거금 <b>'+won(c.margin)+'</b> 중 <b>'+won(c.topup)+'</b>이 부족해요.</p>';
     h+=gaugeCard(c);
     h+='<div class="replies fade">'+gp('data-k="go" data-v="ok"','부족액 이체하기',true)+'</div>';
   }
   if(s===2){
-    h+='<p class="ai'+F+'">어느 계좌에서 <b>'+won(c.topup)+'</b>을 이체할까요?</p>';
-    h+=transferInline(c);
+        h+=transferInline(c);
     h+=st.authing==='auth'?'':'<div class="replies fade">'+SRC.map(function(x){return gp('data-k="src" data-v="'+x.id+'"',x.l+' · '+won(x.bal)+'에서 이체하기',st.src===x.id)}).join('')+'</div>';
   }
   if(s===3){
@@ -775,6 +790,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ava{flex:none;height:44px;display:flex;align-items:center}
 .ai{font-size:18px;line-height:1.5;font-weight:400;letter-spacing:-.2px;word-break:keep-all;margin:0}
 .ai b{font-weight:700}
+.ai{font-size:22px!important;line-height:1.42!important;letter-spacing:-.4px}
+.gp .go{background:#FFE600!important;animation:none!important;box-shadow:none!important}
+.chart,.vis,.card,.gl,.notif{border:1px solid rgba(25,27,31,.12)!important;box-sizing:border-box;box-shadow:0 10px 28px rgba(30,50,80,.13)!important}
+.ai + *:not(.hl){margin-top:34px}
 .ai-s{font-size:14px;color:var(--sub);word-break:keep-all;margin-top:6px;display:block;letter-spacing:0}
 .aimsg{font-size:16px;margin:0;word-break:keep-all}
 .me{align-self:flex-end;background:var(--ink);color:#fff;border-radius:22px;padding:11px 18px;font-size:15px;font-weight:500;max-width:80%}
@@ -841,6 +860,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .fbin{width:100%;box-sizing:border-box;margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--ink);background:#fff}
 /* biometric sheet + 2-line bubbles */
 .me{line-height:1.45;text-wrap:balance;border-radius:20px}
+.me{background:#EEF2FF!important;color:#3A55D4!important}
 .gp{padding:8px 18px;border-radius:24px}
 .gp>span{line-height:1.4;text-wrap:balance;word-break:keep-all}
 .bio{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end}
@@ -1404,6 +1424,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ava{flex:none;height:44px;display:flex;align-items:center}
 .ai{font-size:18px;line-height:1.5;font-weight:400;letter-spacing:-.2px;word-break:keep-all;margin:0}
 .ai b{font-weight:700}
+.ai{font-size:22px!important;line-height:1.42!important;letter-spacing:-.4px}
+.gp .go{background:#FFE600!important;animation:none!important;box-shadow:none!important}
+.chart,.vis,.card,.gl,.notif{border:1px solid rgba(25,27,31,.12)!important;box-sizing:border-box;box-shadow:0 10px 28px rgba(30,50,80,.13)!important}
+.ai + *:not(.hl){margin-top:34px}
 .flow.hm{justify-content:flex-start;padding-top:56px}
 .hl{display:flex;flex-direction:column;gap:4px;margin-top:auto}
 .hl-r{position:relative;display:flex;flex-direction:column;padding:12px 12px;margin:0 -12px;border-radius:14px;color:var(--ink);text-decoration:none}
@@ -1477,6 +1501,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .fbin{width:100%;box-sizing:border-box;margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--ink);background:#fff}
 /* biometric sheet + 2-line bubbles */
 .me{line-height:1.45;text-wrap:balance;border-radius:20px}
+.me{background:#EEF2FF!important;color:#3A55D4!important}
 .gp{padding:8px 18px;border-radius:24px}
 .gp>span{line-height:1.4;text-wrap:balance;word-break:keep-all}
 .bio{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end}
@@ -2027,6 +2052,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .ava{flex:none;height:44px;display:flex;align-items:center}
 .ai{font-size:18px;line-height:1.5;font-weight:400;letter-spacing:-.2px;word-break:keep-all;margin:0}
 .ai b{font-weight:700}
+.ai{font-size:22px!important;line-height:1.42!important;letter-spacing:-.4px}
+.gp .go{background:#FFE600!important;animation:none!important;box-shadow:none!important}
+.chart,.vis,.card,.gl,.notif{border:1px solid rgba(25,27,31,.12)!important;box-sizing:border-box;box-shadow:0 10px 28px rgba(30,50,80,.13)!important}
+.ai + *:not(.hl){margin-top:34px}
 .ai-s{font-size:14px;color:var(--sub);word-break:keep-all;margin-top:6px;display:block;letter-spacing:0}
 .aimsg{font-size:16px;margin:0;word-break:keep-all}
 .me{align-self:flex-end;background:var(--ink);color:#fff;border-radius:22px;padding:11px 18px;font-size:15px;font-weight:500;max-width:84%;word-break:keep-all}
@@ -2087,6 +2116,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .mcol{display:flex;flex-direction:column;gap:3px;min-width:0}
 .nm{font-size:12px;color:var(--sub);padding-left:4px}
 .bub{background:var(--soft);border-radius:20px;padding:10px 16px;font-size:15px;line-height:1.5;word-break:keep-all;min-width:0}
+.replies{margin-top:34px}
 .pair{display:inline-flex}.pair>span+span{margin-left:-8px;box-shadow:0 0 0 2px #fff}
 /* more menu + add-to-home sheet */
 #ov{display:none}
@@ -2112,6 +2142,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outlin
 .fbin{width:100%;box-sizing:border-box;margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--ink);background:#fff}
 /* biometric sheet + 2-line bubbles */
 .me{line-height:1.45;text-wrap:balance;border-radius:20px}
+.me{background:#EEF2FF!important;color:#3A55D4!important}
 .gp{padding:8px 18px;border-radius:24px}
 .gp>span{line-height:1.4;text-wrap:balance;word-break:keep-all}
 .bio{position:absolute;inset:0;z-index:30;display:flex;align-items:flex-end}
