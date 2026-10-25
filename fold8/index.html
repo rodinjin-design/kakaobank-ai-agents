@@ -43,7 +43,8 @@ body{background:#fff;overflow:hidden}
 (function(){var st=document.getElementById('stage');
 function fit(){var vv=window.visualViewport,w=Math.min(innerWidth,document.documentElement.clientWidth||innerWidth),h=Math.min(innerHeight,(vv&&vv.height)||innerHeight,document.documentElement.clientHeight||innerHeight),z=1;
  if(w>450)z=Math.max(1,Math.min(1.45,w/450,h/740));
- st.style.zoom=z;st.style.maxWidth='none';st.style.width=Math.min(480,w/z)+'px';st.style.height=(h/z)+'px';st.style.margin='0 auto'}
+ var cs=getComputedStyle(document.documentElement),pv=(parseFloat(cs.paddingTop)||0)+(parseFloat(cs.paddingBottom)||0),ph=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);
+ st.style.zoom=z;st.style.maxWidth='none';st.style.width=Math.min(480,(w-ph)/z)+'px';st.style.height=Math.max(300,(h-pv)/z)+'px';st.style.margin='0 auto'}
 function fit2(){fit();[80,250,600,1200].forEach(function(d){setTimeout(fit,d)})}
 fit();addEventListener('resize',fit2);if(window.visualViewport)visualViewport.addEventListener('resize',fit2);addEventListener('orientationchange',fit2);
 /* 접었다 펼칠 때 resize 이벤트가 빠지는 경우를 대비: 복귀·포커스 시 다시 맞추고, 화면 크기가 바뀌면 바로 감지 */
