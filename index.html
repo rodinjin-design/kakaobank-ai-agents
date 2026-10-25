@@ -716,7 +716,7 @@ document.addEventListener('click',function(e){
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
 
 /* ---------- 더보기 · 홈 화면에 바로가기 추가 ---------- */
-var APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
+var FOLD_URL='https://kakaobank-ai-agents.vercel.app/fold8/', APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
 var APP_ICON=function(s){return '<span style="flex:none;display:inline-block;width:'+s+'px;height:'+s+'px;border-radius:'+Math.round(s*.225)+'px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.16)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="100%" height="100%"><defs><linearGradient id="kbi" x1="0.1" y1="0.05" x2="0.9" y2="0.95"><stop offset="0" stop-color="#4FC4FC"/><stop offset=".38" stop-color="#6DD3BE"/><stop offset=".72" stop-color="#A5DC43"/><stop offset="1" stop-color="#D8E24B"/></linearGradient></defs><rect width="180" height="180" fill="#111111"/><g transform="translate(36 36) scale(4.5)"><path d="M12 4.6Q14.2 9.8 19.4 12Q14.2 14.2 12 19.4Q9.8 14.2 4.6 12Q9.8 9.8 12 4.6Z" fill="url(#kbi)" stroke="url(#kbi)" stroke-width="4.4" stroke-linejoin="round"/><rect x="11.05" y="8.3" width="1.9" height="7.4" rx=".25" fill="#111111"/></g></svg></span>'};
 var MORE='<button class="icon-btn" id="more" aria-label="더보기" aria-haspopup="true"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="#2B2A27"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></button>';
 var plat=/iPhone|iPad|iPod/.test(navigator.userAgent)?'ios':/Android/.test(navigator.userAgent)?'and':'ios';
@@ -724,7 +724,8 @@ var deferred=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
 var SHARE_I='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B2A27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 15V3M8 7l4-4 4 4M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1"/></svg>';
 var STEPS={ios:['Safari에서 이 페이지를 열어요. 카카오톡이나 앱 안에서 열었다면 Safari로 옮겨 주세요.','아래쪽 공유 버튼 '+SHARE_I+' 을 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 오른쪽 위 “추가”를 눌러요.'],
-          and:['Chrome에서 이 페이지를 열어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.']};
+          and:['Chrome이나 삼성 인터넷에서 이 페이지를 열어요. 카카오톡 같은 앱 안에서 열었다면 브라우저로 옮겨 주세요.','Chrome은 오른쪽 위 ⋮, 삼성 인터넷은 아래쪽 ≡ 메뉴를 눌러요.','Chrome은 “홈 화면에 추가”, 삼성 인터넷은 “현재 페이지 추가”에서 “홈 화면”을 눌러요. 안 보이면 “앱 설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.'],
+          fold:['Chrome에서 폴드8 전용 주소를 열어요. 카카오톡 안에서 열면 설치가 안 돼요. 아래 “링크 복사”로 주소를 복사해 Chrome에 붙여 넣어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“앱 설치”를 눌러요. 안 보이면 “홈 화면에 추가”를 누르고 “설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “설치”를 눌러요.','설치 후에는 홈 화면의 아이콘으로 열어요. 그래야 주소창과 아래쪽 메뉴 없이 전체 화면이에요.']};
 function ovClose(){var o=$('#ov');o.innerHTML='';o.className=''}
 function ovMenu(){
   var o=$('#ov');o.className='on';
@@ -733,9 +734,9 @@ function ovMenu(){
 function ovSheet(){
   var o=$('#ov');o.className='on dim';
   var h='<div class="ov-bg" data-ov="close"></div><div class="sheetp fade" role="dialog" aria-label="홈 화면에 추가"><div class="sp-h">'+APP_ICON(64)+'<div><b>홈 화면에 추가</b><span>'+APP_NAME+'</span></div></div>';
-  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button></div><ol class="sp-steps">';
+  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button><button data-plat="fold" aria-pressed="'+(plat==='fold')+'">Z폴드8</button></div><ol class="sp-steps">';
   STEPS[plat].forEach(function(t){h+='<li>'+t+'</li>'});
-  h+='</ol><p class="sp-note">이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.</p><div class="sp-btns">';
+  h+='</ol><p class="sp-note">'+(plat==='fold'?'폴드8 전용 화면이에요. 예전에 추가한 아이콘이 있으면 지우고 다시 설치해 주세요.':'이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.')+'</p><div class="sp-btns">';
   h+='<button class="chipb" data-ov="copy"><span id="copy-t">링크 복사</span></button>';
   h+=deferred?'<button class="next" data-ov="install">바로 추가</button>':'<button class="next" data-ov="close">확인</button>';
   h+='</div><div id="copy-fb"></div></div>';
@@ -744,8 +745,8 @@ function ovSheet(){
 function ovCopy(){
   var t=$('#copy-t');
   var done=function(){if(t){t.textContent='복사됐어요';setTimeout(function(){if($('#copy-t'))$('#copy-t').textContent='링크 복사'},1600)}};
-  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+APP_URL+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
-  try{navigator.clipboard.writeText(APP_URL).then(done,fb)}catch(e){fb()}
+  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+(plat==='fold'?FOLD_URL:APP_URL)+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
+  try{navigator.clipboard.writeText(plat==='fold'?FOLD_URL:APP_URL).then(done,fb)}catch(e){fb()}
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('button,[data-ov]');if(!b)return;
@@ -1472,7 +1473,7 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
 /* ---------- 더보기 · 홈 화면에 바로가기 추가 ---------- */
-var APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
+var FOLD_URL='https://kakaobank-ai-agents.vercel.app/fold8/', APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
 var APP_ICON=function(s){return '<span style="flex:none;display:inline-block;width:'+s+'px;height:'+s+'px;border-radius:'+Math.round(s*.225)+'px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.16)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="100%" height="100%"><defs><linearGradient id="kbi" x1="0.1" y1="0.05" x2="0.9" y2="0.95"><stop offset="0" stop-color="#4FC4FC"/><stop offset=".38" stop-color="#6DD3BE"/><stop offset=".72" stop-color="#A5DC43"/><stop offset="1" stop-color="#D8E24B"/></linearGradient></defs><rect width="180" height="180" fill="#111111"/><g transform="translate(36 36) scale(4.5)"><path d="M12 4.6Q14.2 9.8 19.4 12Q14.2 14.2 12 19.4Q9.8 14.2 4.6 12Q9.8 9.8 12 4.6Z" fill="url(#kbi)" stroke="url(#kbi)" stroke-width="4.4" stroke-linejoin="round"/><rect x="11.05" y="8.3" width="1.9" height="7.4" rx=".25" fill="#111111"/></g></svg></span>'};
 var MORE='<button class="icon-btn" id="more" aria-label="더보기" aria-haspopup="true"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="#2B2A27"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></button>';
 var plat=/iPhone|iPad|iPod/.test(navigator.userAgent)?'ios':/Android/.test(navigator.userAgent)?'and':'ios';
@@ -1480,7 +1481,8 @@ var deferred=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
 var SHARE_I='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B2A27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 15V3M8 7l4-4 4 4M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1"/></svg>';
 var STEPS={ios:['Safari에서 이 페이지를 열어요. 카카오톡이나 앱 안에서 열었다면 Safari로 옮겨 주세요.','아래쪽 공유 버튼 '+SHARE_I+' 을 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 오른쪽 위 “추가”를 눌러요.'],
-          and:['Chrome에서 이 페이지를 열어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.']};
+          and:['Chrome이나 삼성 인터넷에서 이 페이지를 열어요. 카카오톡 같은 앱 안에서 열었다면 브라우저로 옮겨 주세요.','Chrome은 오른쪽 위 ⋮, 삼성 인터넷은 아래쪽 ≡ 메뉴를 눌러요.','Chrome은 “홈 화면에 추가”, 삼성 인터넷은 “현재 페이지 추가”에서 “홈 화면”을 눌러요. 안 보이면 “앱 설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.'],
+          fold:['Chrome에서 폴드8 전용 주소를 열어요. 카카오톡 안에서 열면 설치가 안 돼요. 아래 “링크 복사”로 주소를 복사해 Chrome에 붙여 넣어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“앱 설치”를 눌러요. 안 보이면 “홈 화면에 추가”를 누르고 “설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “설치”를 눌러요.','설치 후에는 홈 화면의 아이콘으로 열어요. 그래야 주소창과 아래쪽 메뉴 없이 전체 화면이에요.']};
 function ovClose(){var o=$('#ov');o.innerHTML='';o.className=''}
 function ovMenu(){
   var o=$('#ov');o.className='on';
@@ -1489,9 +1491,9 @@ function ovMenu(){
 function ovSheet(){
   var o=$('#ov');o.className='on dim';
   var h='<div class="ov-bg" data-ov="close"></div><div class="sheetp fade" role="dialog" aria-label="홈 화면에 추가"><div class="sp-h">'+APP_ICON(64)+'<div><b>홈 화면에 추가</b><span>'+APP_NAME+'</span></div></div>';
-  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button></div><ol class="sp-steps">';
+  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button><button data-plat="fold" aria-pressed="'+(plat==='fold')+'">Z폴드8</button></div><ol class="sp-steps">';
   STEPS[plat].forEach(function(t){h+='<li>'+t+'</li>'});
-  h+='</ol><p class="sp-note">이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.</p><div class="sp-btns">';
+  h+='</ol><p class="sp-note">'+(plat==='fold'?'폴드8 전용 화면이에요. 예전에 추가한 아이콘이 있으면 지우고 다시 설치해 주세요.':'이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.')+'</p><div class="sp-btns">';
   h+='<button class="chipb" data-ov="copy"><span id="copy-t">링크 복사</span></button>';
   h+=deferred?'<button class="next" data-ov="install">바로 추가</button>':'<button class="next" data-ov="close">확인</button>';
   h+='</div><div id="copy-fb"></div></div>';
@@ -1500,8 +1502,8 @@ function ovSheet(){
 function ovCopy(){
   var t=$('#copy-t');
   var done=function(){if(t){t.textContent='복사됐어요';setTimeout(function(){if($('#copy-t'))$('#copy-t').textContent='링크 복사'},1600)}};
-  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+APP_URL+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
-  try{navigator.clipboard.writeText(APP_URL).then(done,fb)}catch(e){fb()}
+  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+(plat==='fold'?FOLD_URL:APP_URL)+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
+  try{navigator.clipboard.writeText(plat==='fold'?FOLD_URL:APP_URL).then(done,fb)}catch(e){fb()}
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('button,[data-ov]');if(!b)return;
@@ -2102,7 +2104,7 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
 /* ---------- 더보기 · 홈 화면에 바로가기 추가 ---------- */
-var APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
+var FOLD_URL='https://kakaobank-ai-agents.vercel.app/fold8/', APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
 var APP_ICON=function(s){return '<span style="flex:none;display:inline-block;width:'+s+'px;height:'+s+'px;border-radius:'+Math.round(s*.225)+'px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.16)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="100%" height="100%"><defs><linearGradient id="kbi" x1="0.1" y1="0.05" x2="0.9" y2="0.95"><stop offset="0" stop-color="#4FC4FC"/><stop offset=".38" stop-color="#6DD3BE"/><stop offset=".72" stop-color="#A5DC43"/><stop offset="1" stop-color="#D8E24B"/></linearGradient></defs><rect width="180" height="180" fill="#111111"/><g transform="translate(36 36) scale(4.5)"><path d="M12 4.6Q14.2 9.8 19.4 12Q14.2 14.2 12 19.4Q9.8 14.2 4.6 12Q9.8 9.8 12 4.6Z" fill="url(#kbi)" stroke="url(#kbi)" stroke-width="4.4" stroke-linejoin="round"/><rect x="11.05" y="8.3" width="1.9" height="7.4" rx=".25" fill="#111111"/></g></svg></span>'};
 var MORE='<button class="icon-btn" id="more" aria-label="더보기" aria-haspopup="true"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="#2B2A27"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></button>';
 var plat=/iPhone|iPad|iPod/.test(navigator.userAgent)?'ios':/Android/.test(navigator.userAgent)?'and':'ios';
@@ -2110,7 +2112,8 @@ var deferred=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
 var SHARE_I='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B2A27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 15V3M8 7l4-4 4 4M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1"/></svg>';
 var STEPS={ios:['Safari에서 이 페이지를 열어요. 카카오톡이나 앱 안에서 열었다면 Safari로 옮겨 주세요.','아래쪽 공유 버튼 '+SHARE_I+' 을 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 오른쪽 위 “추가”를 눌러요.'],
-          and:['Chrome에서 이 페이지를 열어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.']};
+          and:['Chrome이나 삼성 인터넷에서 이 페이지를 열어요. 카카오톡 같은 앱 안에서 열었다면 브라우저로 옮겨 주세요.','Chrome은 오른쪽 위 ⋮, 삼성 인터넷은 아래쪽 ≡ 메뉴를 눌러요.','Chrome은 “홈 화면에 추가”, 삼성 인터넷은 “현재 페이지 추가”에서 “홈 화면”을 눌러요. 안 보이면 “앱 설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.'],
+          fold:['Chrome에서 폴드8 전용 주소를 열어요. 카카오톡 안에서 열면 설치가 안 돼요. 아래 “링크 복사”로 주소를 복사해 Chrome에 붙여 넣어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“앱 설치”를 눌러요. 안 보이면 “홈 화면에 추가”를 누르고 “설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “설치”를 눌러요.','설치 후에는 홈 화면의 아이콘으로 열어요. 그래야 주소창과 아래쪽 메뉴 없이 전체 화면이에요.']};
 function ovClose(){var o=$('#ov');o.innerHTML='';o.className=''}
 function ovMenu(){
   var o=$('#ov');o.className='on';
@@ -2119,9 +2122,9 @@ function ovMenu(){
 function ovSheet(){
   var o=$('#ov');o.className='on dim';
   var h='<div class="ov-bg" data-ov="close"></div><div class="sheetp fade" role="dialog" aria-label="홈 화면에 추가"><div class="sp-h">'+APP_ICON(64)+'<div><b>홈 화면에 추가</b><span>'+APP_NAME+'</span></div></div>';
-  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button></div><ol class="sp-steps">';
+  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button><button data-plat="fold" aria-pressed="'+(plat==='fold')+'">Z폴드8</button></div><ol class="sp-steps">';
   STEPS[plat].forEach(function(t){h+='<li>'+t+'</li>'});
-  h+='</ol><p class="sp-note">이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.</p><div class="sp-btns">';
+  h+='</ol><p class="sp-note">'+(plat==='fold'?'폴드8 전용 화면이에요. 예전에 추가한 아이콘이 있으면 지우고 다시 설치해 주세요.':'이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.')+'</p><div class="sp-btns">';
   h+='<button class="chipb" data-ov="copy"><span id="copy-t">링크 복사</span></button>';
   h+=deferred?'<button class="next" data-ov="install">바로 추가</button>':'<button class="next" data-ov="close">확인</button>';
   h+='</div><div id="copy-fb"></div></div>';
@@ -2130,8 +2133,8 @@ function ovSheet(){
 function ovCopy(){
   var t=$('#copy-t');
   var done=function(){if(t){t.textContent='복사됐어요';setTimeout(function(){if($('#copy-t'))$('#copy-t').textContent='링크 복사'},1600)}};
-  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+APP_URL+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
-  try{navigator.clipboard.writeText(APP_URL).then(done,fb)}catch(e){fb()}
+  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+(plat==='fold'?FOLD_URL:APP_URL)+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
+  try{navigator.clipboard.writeText(plat==='fold'?FOLD_URL:APP_URL).then(done,fb)}catch(e){fb()}
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('button,[data-ov]');if(!b)return;
@@ -2846,7 +2849,7 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('keydown',function(e){if(e.target.id==='in'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();sendText()}});
 /* ---------- 더보기 · 홈 화면에 바로가기 추가 ---------- */
-var APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
+var FOLD_URL='https://kakaobank-ai-agents.vercel.app/fold8/', APP_NAME='카카오뱅크 에이전트', APP_URL='https://kakaobank-ai-agents.vercel.app/';
 var APP_ICON=function(s){return '<span style="flex:none;display:inline-block;width:'+s+'px;height:'+s+'px;border-radius:'+Math.round(s*.225)+'px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.16)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="100%" height="100%"><defs><linearGradient id="kbi" x1="0.1" y1="0.05" x2="0.9" y2="0.95"><stop offset="0" stop-color="#4FC4FC"/><stop offset=".38" stop-color="#6DD3BE"/><stop offset=".72" stop-color="#A5DC43"/><stop offset="1" stop-color="#D8E24B"/></linearGradient></defs><rect width="180" height="180" fill="#111111"/><g transform="translate(36 36) scale(4.5)"><path d="M12 4.6Q14.2 9.8 19.4 12Q14.2 14.2 12 19.4Q9.8 14.2 4.6 12Q9.8 9.8 12 4.6Z" fill="url(#kbi)" stroke="url(#kbi)" stroke-width="4.4" stroke-linejoin="round"/><rect x="11.05" y="8.3" width="1.9" height="7.4" rx=".25" fill="#111111"/></g></svg></span>'};
 var MORE='<button class="icon-btn" id="more" aria-label="더보기" aria-haspopup="true"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="#2B2A27"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg></button>';
 var plat=/iPhone|iPad|iPod/.test(navigator.userAgent)?'ios':/Android/.test(navigator.userAgent)?'and':'ios';
@@ -2854,7 +2857,8 @@ var deferred=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e});
 var SHARE_I='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2B2A27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><path d="M12 15V3M8 7l4-4 4 4M6 11H5a1 1 0 00-1 1v8a1 1 0 001 1h14a1 1 0 001-1v-8a1 1 0 00-1-1h-1"/></svg>';
 var STEPS={ios:['Safari에서 이 페이지를 열어요. 카카오톡이나 앱 안에서 열었다면 Safari로 옮겨 주세요.','아래쪽 공유 버튼 '+SHARE_I+' 을 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 오른쪽 위 “추가”를 눌러요.'],
-          and:['Chrome에서 이 페이지를 열어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“홈 화면에 추가”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.']};
+          and:['Chrome이나 삼성 인터넷에서 이 페이지를 열어요. 카카오톡 같은 앱 안에서 열었다면 브라우저로 옮겨 주세요.','Chrome은 오른쪽 위 ⋮, 삼성 인터넷은 아래쪽 ≡ 메뉴를 눌러요.','Chrome은 “홈 화면에 추가”, 삼성 인터넷은 “현재 페이지 추가”에서 “홈 화면”을 눌러요. 안 보이면 “앱 설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “추가”를 눌러요.'],
+          fold:['Chrome에서 폴드8 전용 주소를 열어요. 카카오톡 안에서 열면 설치가 안 돼요. 아래 “링크 복사”로 주소를 복사해 Chrome에 붙여 넣어요.','오른쪽 위 ⋮ 메뉴를 눌러요.','“앱 설치”를 눌러요. 안 보이면 “홈 화면에 추가”를 누르고 “설치”를 눌러요.','이름이 “'+APP_NAME+'”인지 확인하고 “설치”를 눌러요.','설치 후에는 홈 화면의 아이콘으로 열어요. 그래야 주소창과 아래쪽 메뉴 없이 전체 화면이에요.']};
 function ovClose(){var o=$('#ov');o.innerHTML='';o.className=''}
 function ovMenu(){
   var o=$('#ov');o.className='on';
@@ -2863,9 +2867,9 @@ function ovMenu(){
 function ovSheet(){
   var o=$('#ov');o.className='on dim';
   var h='<div class="ov-bg" data-ov="close"></div><div class="sheetp fade" role="dialog" aria-label="홈 화면에 추가"><div class="sp-h">'+APP_ICON(64)+'<div><b>홈 화면에 추가</b><span>'+APP_NAME+'</span></div></div>';
-  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button></div><ol class="sp-steps">';
+  h+='<div class="sp-tabs"><button data-plat="ios" aria-pressed="'+(plat==='ios')+'">iPhone</button><button data-plat="and" aria-pressed="'+(plat==='and')+'">Android</button><button data-plat="fold" aria-pressed="'+(plat==='fold')+'">Z폴드8</button></div><ol class="sp-steps">';
   STEPS[plat].forEach(function(t){h+='<li>'+t+'</li>'});
-  h+='</ol><p class="sp-note">이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.</p><div class="sp-btns">';
+  h+='</ol><p class="sp-note">'+(plat==='fold'?'폴드8 전용 화면이에요. 예전에 추가한 아이콘이 있으면 지우고 다시 설치해 주세요.':'이 화면에서는 바로 추가되지 않아요. 브라우저의 홈 화면 추가 기능으로 만들어요.')+'</p><div class="sp-btns">';
   h+='<button class="chipb" data-ov="copy"><span id="copy-t">링크 복사</span></button>';
   h+=deferred?'<button class="next" data-ov="install">바로 추가</button>':'<button class="next" data-ov="close">확인</button>';
   h+='</div><div id="copy-fb"></div></div>';
@@ -2874,8 +2878,8 @@ function ovSheet(){
 function ovCopy(){
   var t=$('#copy-t');
   var done=function(){if(t){t.textContent='복사됐어요';setTimeout(function(){if($('#copy-t'))$('#copy-t').textContent='링크 복사'},1600)}};
-  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+APP_URL+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
-  try{navigator.clipboard.writeText(APP_URL).then(done,fb)}catch(e){fb()}
+  var fb=function(){var f=$('#copy-fb');if(f){f.innerHTML='<input class="fbin" readonly value="'+(plat==='fold'?FOLD_URL:APP_URL)+'" aria-label="링크">';var i=f.firstChild;i.focus();i.select()}else{ovSheet();fb()}};
+  try{navigator.clipboard.writeText(plat==='fold'?FOLD_URL:APP_URL).then(done,fb)}catch(e){fb()}
 }
 document.addEventListener('click',function(e){
   var b=e.target.closest('button,[data-ov]');if(!b)return;
