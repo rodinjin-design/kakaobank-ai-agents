@@ -1889,6 +1889,8 @@ body.drw-open #app>*{pointer-events:none}
 #hs .hs-sh{bottom:var(--kb,0px);max-height:calc(100% - var(--kb,0px) - 16px);min-height:min(44%,calc(100% - var(--kb,0px) - 16px));transition:transform .4s cubic-bezier(.2,.85,.2,1),bottom .22s ease}
 #hs .hs-c{min-height:60px}
 
+
+#hs .hs-sh::after{content:'';position:absolute;left:0;right:0;top:100%;height:240px;background:#fff}
 </style>
 <div id="stage"><div id="ov"></div><div id="app"></div></div>
 <script>
@@ -2153,7 +2155,11 @@ function openHomeAsk(){
   var inp=d.querySelector('#hsin');
   try{inp.focus({preventScroll:true})}catch(x){inp.focus()}
   d.querySelector('.hs-x').onclick=function(){closeHomeAsk()};
-  d.querySelector('.hs-bg').onclick=function(){closeHomeAsk()};
+  var t0=Date.now();
+  function fk(){if(document.activeElement!==inp){try{inp.focus({preventScroll:true})}catch(x){inp.focus()}}}
+  d.querySelector('.hs-bg').onclick=function(){if(Date.now()-t0<700){fk();return}closeHomeAsk()};
+  d.querySelector('.hs-sh').addEventListener('click',function(e){if(!e.target.closest('button'))fk()});
+  d.addEventListener('touchend',function(e){if(Date.now()-t0<700)fk()},{passive:true});
   inp.addEventListener('input',function(){d.querySelector('#hss').classList.toggle('on',!!inp.textContent.trim())});
   d.querySelector('#hsf').addEventListener('submit',function(e){e.preventDefault();hsSend(inp.textContent.trim())});
   inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();hsSend(inp.textContent.trim())}});
