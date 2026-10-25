@@ -18,8 +18,9 @@ body{background:#fff;overflow:hidden}
 /* iOS 키보드가 올라오면 아래에 붙은 바텀시트를 키보드 위로 올려 주기 위해, 키보드 높이를 모든 화면(iframe)에 알려준다 */
 (function(){var vv=window.visualViewport;if(!vv)return;
  function send(){var st=document.getElementById('stage'),z=parseFloat(st&&st.style.zoom)||1;
-  var inset=Math.max(0,Math.round((innerHeight-vv.height-vv.offsetTop)/z));
-  document.querySelectorAll('iframe').forEach(function(f){try{f.contentWindow.postMessage({type:'kb',h:inset},'*')}catch(e){}})}
+  document.querySelectorAll('iframe').forEach(function(f){try{
+   var r=f.getBoundingClientRect(),inset=Math.max(0,Math.round((r.bottom-(vv.offsetTop+vv.height))/z));
+   f.contentWindow.postMessage({type:'kb',h:inset},'*')}catch(e){}})}
  vv.addEventListener('resize',send);vv.addEventListener('scroll',send);
  window.__kbSend=send})();
 </script><script>
@@ -2165,6 +2166,7 @@ function openHomeAsk(){
   hsMiss=0;
   var d=document.createElement('div');d.id='hs';
   d.innerHTML='<div class="hs-bg"></div><div class="hs-sh" role="dialog" aria-label="에이전트에게 요청"><div class="hs-h"><span>무엇을 도와드릴까요?</span><button class="hs-x" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="hs-c" id="hsc"><p class="hs-tip">공모주 청약 · 월급 나눠 담기 · 세금 계산 · 우리 집 사는 날 중에서 말씀해 주세요.</p></div><form class="hs-in" id="hsf"><input id="hsin" type="text" autocomplete="off" spellcheck="false" enterkeyhint="send" placeholder="무엇이든 물어보세요" aria-label="메시지"><span class="hs-m">'+MIC+'</span><button class="hs-s" id="hss" type="submit" aria-label="보내기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>';
+  if(/iPhone|iPad|iPod/.test(navigator.userAgent)&&!hsKb)hsKb=345; /* iOS: 키보드 높이를 미리 짐작해 시트를 위로 둬서 화면이 밀리지 않게 */
   document.body.appendChild(d);hsApplyKb();
   var inp=d.querySelector('#hsin');
   try{inp.focus({preventScroll:true})}catch(x){inp.focus()}
