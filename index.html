@@ -2500,12 +2500,52 @@ body.drw-open #app>*{pointer-events:none}
 .notif.mn:has(+.mn)::after{content:"";position:absolute;left:8px;top:26px;bottom:6px;width:2px;background:#E1E4EA}
 .notif.mn+.card{margin-top:6px}
 .notif.mn b{font-size:15px;margin-top:2px;color:#5B6270;font-weight:600}
+.lst .notif.mn::after{display:none!important}
+.lst .notif.mn .nh{position:absolute;right:0;top:3px}
+.lst .notif.mn b{padding-right:90px}
+.lst .notif.mn{padding-bottom:22px!important}
+.notif.mn p{font-size:13px;line-height:1.55;color:#8A909C}
 .notif.mn .mf{margin-top:2px;gap:8px}
 .notif.mn .mr{display:block;padding:0}
 .notif.mn .mr i,.notif.mn .mr::before{display:none!important}
 .notif.mn .mw{font-size:12px;font-weight:600;color:var(--blue)}
 .notif.mn .mr.m .mw{color:#5B6270}
 .notif.mn .mt,.notif.mn .mr.m .mt{font-size:13px;line-height:1.55;color:#8A909C;font-weight:400;margin-top:1px}
+
+/* 작업 분배 리스트: 체크+칩 한 덩어리, 순서대로 체크 */
+.lst{margin-top:8px}
+.lst .li{display:flex;align-items:flex-start;gap:12px;padding:9px 0}
+.chart.nl .trow{border-top:0!important}
+.chart.nl{padding-top:8px;padding-bottom:8px}
+.chart.nl .trow{padding:6px 0!important;gap:12px}
+.ai + .chart.nl{margin-top:12px}
+.chart.nl+.replies{margin-top:12px}
+.trow .lc{flex:none;width:74px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;height:30px;padding:0 6px;border:1px solid var(--blue);border-radius:15px;color:var(--blue);font-size:13px;font-weight:700;white-space:nowrap}
+.lst .ck{flex:none;width:20px;height:20px;border-radius:50%;background:#D5D8DE;display:flex;align-items:center;justify-content:center;animation:lck .4s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i)*.55s + .5s)}
+.lst .ck svg{width:12px;height:12px}
+.lst .ck path{stroke-dasharray:1;stroke-dashoffset:1;animation:lcd .3s ease-out both;animation-delay:calc(var(--i)*.55s + .62s)}
+@keyframes lck{0%{background:#D5D8DE;transform:scale(.8)}50%{transform:scale(1.2)}100%{background:var(--blue);transform:scale(1)}}
+@keyframes lcd{to{stroke-dashoffset:0}}
+.lst .li p{text-wrap:balance;margin:0;flex:1;min-width:0;font-size:14px;line-height:1.5;color:#5B6270;word-break:keep-all;padding-top:3px}
+
+/* 호출 현황: 타임라인 */
+.chart.tlc{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;border-radius:0!important;gap:0}
+.ai + .chart.tlc{margin-top:24px}
+.tlc .crow{position:relative;display:block;padding:0 0 18px 32px;border:0!important}
+.tlc .crow:last-child{padding-bottom:4px}
+.tlc .ci{position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;box-sizing:border-box;border:2px solid #D5D8DE;background:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tlc .crow.ok .ci{background:var(--blue);border:0}
+.tlc .crow.on .ci{background:#E8EFFC;border:0}
+.tlc .cki{display:flex}.tlc .cki svg{width:11px;height:11px}
+.tlc .cwait{display:none}
+.tlc .tdots{transform:scale(.55)}
+.tlc .crow:not(:last-child)::after{content:"";position:absolute;left:8px;top:26px;bottom:6px;width:2px;background:#E1E4EA}
+.tlc .cc{display:inline-flex;align-items:center;height:26px;padding:2px 11px 0;border:1px solid var(--blue);border-radius:13px;color:var(--blue);font-size:12px;font-weight:700;box-sizing:border-box}
+.tlc .crow:not(.ok) .cc{border-color:#C9CED8;color:#9AA1AE}
+.tlc .crow.on .cc{border-color:var(--blue);color:var(--blue)}
+.tlc .ct b{font-size:15px;font-weight:600;color:#5B6270;margin-top:6px}
+.tlc .crow:not(.ok):not(.on) .ct b{color:#9AA1AE}
+.tlc .ct em,.tlc .crow.ok .ct em{font-size:13px;line-height:1.55;color:#8A909C;margin-top:2px}
 </style>
 <div id="stage"><div id="ov"></div><div id="app"></div></div>
 <script>
@@ -2619,8 +2659,8 @@ var CALLS=[['자산조회','자산 한 번에 조회','본인·배우자 계좌�
 ['실행','실행 준비','전용 통장·자금 집결·적립','승인하면 바로 실행할 수 있게 준비했어요']];
 function callRow(x,state){
   var ic=state===2?'<i class="cki">'+CHECK(12)+'</i>':state===1?'<span class="tdots" aria-hidden="true"><i></i><i></i><i></i></span>':'<i class="cwait"></i>';
-  var tx=state===2?x[3]:('요청: '+x[1]+(state===1?' · 호출 중':''));
-  return '<div class="crow'+(state===2?' ok':'')+(state===1?' on':'')+'"><span class="ci">'+ic+'</span><span class="ct"><b>'+x[0]+' 에이전트</b><em>'+tx+'</em></span></div>';
+  var tx=state===2?x[3]:(state===1?'호출 중이에요':'차례를 기다리고 있어요');
+  return '<div class="crow'+(state===2?' ok':'')+(state===1?' on':'')+'"><span class="ci">'+ic+'</span><span class="ct"><span class="cc">'+x[0]+'</span><b>'+x[1]+'</b><em>'+tx+'</em></span></div>';
 }
 function agrow(list){return '<div class="agrow">'+list.map(function(a){return '<span class="ag ok">'+a+'</span>'}).join('')+'</div>'}
 function stepHTML(c){
@@ -2631,14 +2671,14 @@ function stepHTML(c){
     h+='<div class="replies fade">'+gp('data-k="who" data-v="both"','두 사람 모두 동의',st.who==='both')+gp('data-k="who" data-v="self"','내 것만 조회',st.who==='self')+'</div>';
   }
   if(s===1){
-    h+='<p class="ai'+F+'">마스터 에이전트가 <b>필요한 에이전트를 나눠 부를게요.</b><span class="ai-s">5개 에이전트가 각자 맡은 일을 하고, 결과는 마스터 에이전트가 하나로 합쳐요.</span></p>';
-    h+='<div class="chart fade"><span class="k">작업 분배</span>'+CALLS.map(function(x,i){return trow(String(i+1),x[1],x[2],x[0])}).join('')+'</div>';
+    h+='<p class="ai'+F+'">마스터 에이전트가<br><b>필요한 에이전트를 나눠 부를게요.</b><span class="ai-s">5개 에이전트가 각자 맡은 일을 하고, 결과는 마스터 에이전트가 하나로 합쳐요.</span></p>';
+    h+='<div class="chart fade nl">'+CALLS.map(function(x){return '<div class="trow"><span class="lc">'+x[0]+'</span><span class="n">'+x[1]+'<em>'+x[2]+'</em></span></div>'}).join('')+'</div>';
     h+='<div class="replies fade">'+gp('data-k="go" data-v="ok"','에이전트 호출하기',true)+'</div>';
   }
   if(s===2){
     var all=st.n>=CALLS.length;
     h+='<p class="ai">'+(all?'<b>모든 에이전트가 답했어요.</b>':'마스터 에이전트가 <b>에이전트를 호출하고 있어요.</b>')+'</p>';
-    h+='<div class="chart"><span class="k">에이전트 호출 현황</span>'+CALLS.map(function(x,i){return callRow(x,i<st.n?2:(i===st.n?1:0))}).join('')+'</div>';
+    h+='<div class="chart tlc">'+CALLS.map(function(x,i){return callRow(x,i<st.n?2:(i===st.n?1:0))}).join('')+'</div>';
     if(all)h+=dots('결과를 하나로 합치는 중이에요');
   }
   if(s===3){
