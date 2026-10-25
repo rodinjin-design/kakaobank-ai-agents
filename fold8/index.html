@@ -17,7 +17,11 @@ body{background:#fff;overflow:hidden}
 <script>
 /* iOS 키보드가 올라오면 아래에 붙은 바텀시트를 키보드 위로 올려 주기 위해, 키보드 높이를 모든 화면(iframe)에 알려준다 */
 (function(){var vv=window.visualViewport;if(!vv)return;
- function send(){var st=document.getElementById('stage'),z=parseFloat(st&&st.style.zoom)||1;
+ var IOS=/iPhone|iPad|iPod/.test(navigator.userAgent),de=document.documentElement;
+ function fitKb(){if(!IOS)return;var open=(window.innerHeight-vv.height)>120;
+  if(open){de.style.height=vv.height+'px';de.style.paddingBottom='0px';de.style.overflow='hidden';if(window.scrollY||vv.offsetTop)window.scrollTo(0,0)}
+  else{de.style.height='';de.style.paddingBottom='';de.style.overflow=''}}
+ function send(){fitKb();var st=document.getElementById('stage'),z=parseFloat(st&&st.style.zoom)||1;
   document.querySelectorAll('iframe').forEach(function(f){try{
    var r=f.getBoundingClientRect(),inset=Math.max(0,Math.round((r.bottom-(vv.offsetTop+vv.height))/z));
    f.contentWindow.postMessage({type:'kb',h:inset},'*')}catch(e){}})}
@@ -40,7 +44,11 @@ body{background:#fff;overflow:hidden}
 function fit(){var vv=window.visualViewport,w=Math.min(innerWidth,document.documentElement.clientWidth||innerWidth),h=Math.min(innerHeight,(vv&&vv.height)||innerHeight,document.documentElement.clientHeight||innerHeight),z=1;
  if(w>450)z=Math.max(1,Math.min(1.45,w/450,h/740));
  st.style.zoom=z;st.style.maxWidth='none';st.style.width=Math.min(480,w/z)+'px';st.style.height=(h/z)+'px';st.style.margin='0 auto'}
-fit();addEventListener('resize',fit);if(window.visualViewport)visualViewport.addEventListener('resize',fit);addEventListener('orientationchange',fit)})();
+function fit2(){fit();[80,250,600,1200].forEach(function(d){setTimeout(fit,d)})}
+fit();addEventListener('resize',fit2);if(window.visualViewport)visualViewport.addEventListener('resize',fit2);addEventListener('orientationchange',fit2);
+/* 접었다 펼칠 때 resize 이벤트가 빠지는 경우를 대비: 복귀·포커스 시 다시 맞추고, 화면 크기가 바뀌면 바로 감지 */
+document.addEventListener('visibilitychange',fit2);addEventListener('pageshow',fit2);addEventListener('focus',fit2);
+var lw=0,lh=0;setInterval(function(){var v=window.visualViewport,w=innerWidth,h=(v&&v.height)||innerHeight;if(w!==lw||Math.abs(h-lh)>1){lw=w;lh=h;fit()}},300)})();
 </script>
 <script type="text/plain" id="src-ipo"><title>공모주 청약 v2</title>
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEbElEQVR42u3dvyt9fxzA8c+/cP2oT0gZkMmiFItNSbIoKcIgBnYbm9FsEIPdYqBsNoMyWSQGlCIp+f3+dm5d3ft1fb74fHHP2+Ndj+Hz+Rzdm8+z49zXOc75lclkAsTil28CggZBg6BB0AgaBA2CBkGDoBE0CBoEDYIGQSNoEDQIGgQNgkbQIGgQNAgaBI2gQdAgaBA0CBpBg6BB0CBoEDSCBkGDoEHQCNo3AkGDoEHQIGgEDYIGQYOgQdAIGgQNggZBg6ARNAgaBA2CBkEjaEpcf39/ODk5CV+1ktdKXlPQfIrj4+Pw1St5TUETTdDJEjRRHHIImlRrbW0NFxcXgib9Ghsbw+HhoT006VdVVRW2t7cdcpB+FRUVYW1tzTE0cVhYWPChkDjMzs6+iHdnZ0fQpM/IyEh4fHwsCDf5UJh8OBQ0qdLV1RVubm4Kor28vAzt7e3Zfxc0qZo1n5+fFwR7e3sbent7n7cRNKlQX18f9vf3C2J9enoK4+PjBdsJmtTOmmdmZl5sK2hSOWteXl4uur2gSd2seWNjI1RWVgqaOGbNNTU1r36NoEndrPlPXydoUjdrFjRRzZoFTVSzZkET1axZ0EQ1axY0Uc2aBU1Us2ZBE9WsWdBENWsWNFHNmjNvvEOTW4GRillz5g13aHKzRlIza864nS4xzZoFHbGhoaHnH7FTU1Ml+z4XFxdfxLy+vp4NXdBkDQ8Ph/v7+4JINjc3Q1NTU9SzZkH/kJhz6+zsLAwODkY7axZ0ZEZHR1+NOX+trKyE2trab3uf3d3dL2bNyS1vk7FdxjNWhPxazMmfd3d3i0ad7A2TsErhfs1J3N/xXgSdosOMh4eHMDY2FsrLy8P09PSLPWJuzru0tJQdm8UwaxZ05DHnb9fW1vbq3npvby90dHSYNQs6HTHn/P79O8zPz2e3+fe6u7sLc3NznzIuM2sW9P8ec77Ozs4XP/pzK9mLtrS0lOx1zYIWc1HJlCM5fi62rq+vs8fdZWVlZs2CLv2Y8/X19YXT09OiYf/tyRizZkF/acw5DQ0Nrz6T5KMnYz7rumZBi/nNJiYmwtXVVdGwV1dXQ11d3bdf1yxoMb9Lc3Nz2NraKhr10dFR6OnpMWsWdDpizvnoyRizZkGXXMwfPRlj1izoko75vSdjzJoF/e4LjZK//84r5F57bvbBwUHRWXN1dbVIf3rQpRhz/smY5NLT/1pmzYIu+ZjzJXPpZD5dbLmuWdAldcz8NydjzJoFnao9czGTk5PPv4w7MDAgyp8edNr2zAhazMQftJiJJmgxE03QYiaaoMVMNEGLmWiCFjPRBC1moglazEQTtJiJJmgxE03QyZ3z03qhEYIOf3p8mJiJKmgxk/qg85+Hlxx++E/Cb30jaBA0CBoEDYJG0CBoEDQIGgSNoEHQIGgQNAgaQYOgQdAgaBA0ggZBg6BB0CBoBA2CBkGDoEHQCBoEDYIGQSNoEDQIGgQNgkbQIGgQNAgaBI2gQdAgaBA0CJqf4h9mb+BoaDFx0wAAAABJRU5ErkJggg==">
