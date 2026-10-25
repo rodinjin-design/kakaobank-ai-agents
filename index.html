@@ -1861,7 +1861,7 @@ body.drw-open #app>*{pointer-events:none}
 #hs{position:fixed;inset:0;z-index:60}
 #hs .hs-bg{position:absolute;inset:0;background:rgba(20,24,32,.38);opacity:0;transition:opacity .35s}
 #hs.on .hs-bg{opacity:1}
-#hs .hs-sh{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:20px 18px 24px;transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.85,.2,1);display:flex;flex-direction:column;gap:16px;box-shadow:0 -12px 40px rgba(20,30,60,.18);min-height:44%}
+#hs .hs-sh{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:20px 18px 10px;transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.85,.2,1);display:flex;flex-direction:column;gap:16px;box-shadow:0 -12px 40px rgba(20,30,60,.18);min-height:44%}
 #hs.on .hs-sh{transform:none}
 #hs .hs-h{display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600;color:#1B1F2A}
 #hs .hs-x{border:0;background:none;padding:4px;color:#1B1F2A;cursor:pointer}
@@ -1878,7 +1878,8 @@ body.drw-open #app>*{pointer-events:none}
 #hs .hs-dots i:nth-child(3){animation-delay:.3s}
 #hs .hs-in{display:flex;align-items:center;gap:10px;background:#F3F4F8;border-radius:28px;padding:10px 10px 10px 18px;min-height:48px;margin:0}
 #hs #hsin{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:#1B1F2A;caret-color:var(--blue);padding:0}
-#hs #hsin::placeholder{color:#9AA0AE}
+#hs #hsin:empty::before{content:attr(data-ph);color:#9AA0AE}
+#hs #hsin{white-space:pre-wrap;word-break:break-all;max-height:96px;overflow-y:auto;-webkit-user-select:text;user-select:text;line-height:1.4}
 #hs .hs-m{color:#1B1F2A;display:flex}
 #hs .hs-s{width:38px;height:38px;border-radius:50%;border:0;background:#E4E7EE;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .2s;padding:0}
 #hs .hs-s.on{background:#2B2A27}
@@ -1887,6 +1888,7 @@ body.drw-open #app>*{pointer-events:none}
 
 #hs .hs-sh{bottom:var(--kb,0px);max-height:calc(100% - var(--kb,0px) - 16px);min-height:min(44%,calc(100% - var(--kb,0px) - 16px));transition:transform .4s cubic-bezier(.2,.85,.2,1),bottom .22s ease}
 #hs .hs-c{min-height:60px}
+
 </style>
 <div id="stage"><div id="ov"></div><div id="app"></div></div>
 <script>
@@ -2128,7 +2130,7 @@ function homeReply(t){kbAsk(t,'이 시연에서는 “세금 계산해줘”만 
 /* ---------- 홈 입력창: 바텀시트로 열기 · 맥락에 맞는 화면으로 이동 ---------- */
 var hsT=[],hsMiss=0,hsN=0;
 var hsKb=0;
-function hsApplyKb(){var d=$('#hs');if(d)d.style.setProperty('--kb',hsKb+'px')}
+function hsApplyKb(){var d=$('#hs');if(d){d.style.setProperty('--kb',hsKb+'px');d.classList.toggle('kbon',hsKb>0)}}
 window.addEventListener('message',function(e){var m=e.data;if(m&&m.type==='kb'){hsKb=+m.h||0;hsApplyKb();if(hsKb>0)hsScroll()}});
 
 function hsScroll(){var c=$('#hsc');if(c)c.scrollTop=c.scrollHeight}
@@ -2145,21 +2147,23 @@ function openHomeAsk(){
   if($('#hs')||st.phase!=='home')return;
   hsMiss=0;
   var d=document.createElement('div');d.id='hs';
-  d.innerHTML='<div class="hs-bg"></div><div class="hs-sh" role="dialog" aria-label="에이전트에게 요청"><div class="hs-h"><span>무엇을 도와드릴까요?</span><button class="hs-x" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="hs-c" id="hsc"><p class="hs-tip">공모주 청약 · 월급 나눠 담기 · 세금 계산 · 우리 집 사는 날 중에서 말씀해 주세요.</p></div><form class="hs-in" id="hsf"><input id="hsin" type="text" autocomplete="off" spellcheck="false" enterkeyhint="send" placeholder="무엇이든 물어보세요" aria-label="메시지"><span class="hs-m">'+MIC+'</span><button class="hs-s" id="hss" type="submit" aria-label="보내기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>';
-  if(/iPhone|iPad|iPod/.test(navigator.userAgent)&&!hsKb)hsKb=345; /* iOS: 키보드 높이를 미리 짐작해 시트를 위로 둬서 화면이 밀리지 않게 */
+  d.innerHTML='<div class="hs-bg"></div><div class="hs-sh" role="dialog" aria-label="에이전트에게 요청"><div class="hs-h"><span>무엇을 도와드릴까요?</span><button class="hs-x" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="hs-c" id="hsc"><p class="hs-tip">공모주 청약 · 월급 나눠 담기 · 세금 계산 · 우리 집 사는 날 중에서 말씀해 주세요.</p></div><form class="hs-in" id="hsf"><div id="hsin" contenteditable="true" role="textbox" aria-label="메시지" enterkeyhint="send" autocapitalize="off" spellcheck="false" data-ph="무엇이든 물어보세요"></div><span class="hs-m">'+MIC+'</span><button class="hs-s" id="hss" type="submit" aria-label="보내기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>';
+  if(/iPhone|iPad|iPod/.test(navigator.userAgent)&&!hsKb)hsKb=300; /* iOS: 키보드 높이를 미리 짐작해 시트를 위로 둬서 화면이 밀리지 않게 */
   document.body.appendChild(d);hsApplyKb();
   var inp=d.querySelector('#hsin');
   try{inp.focus({preventScroll:true})}catch(x){inp.focus()}
   d.querySelector('.hs-x').onclick=function(){closeHomeAsk()};
   d.querySelector('.hs-bg').onclick=function(){closeHomeAsk()};
-  inp.addEventListener('input',function(){d.querySelector('#hss').classList.toggle('on',!!inp.value.trim())});
-  d.querySelector('#hsf').addEventListener('submit',function(e){e.preventDefault();hsSend(inp.value.trim())});
+  inp.addEventListener('input',function(){d.querySelector('#hss').classList.toggle('on',!!inp.textContent.trim())});
+  d.querySelector('#hsf').addEventListener('submit',function(e){e.preventDefault();hsSend(inp.textContent.trim())});
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();hsSend(inp.textContent.trim())}});
+  inp.addEventListener('paste',function(e){e.preventDefault();var s=(e.clipboardData||window.clipboardData).getData('text').replace(/\s+/g,' ');document.execCommand('insertText',false,s)});
   requestAnimationFrame(function(){requestAnimationFrame(function(){d.classList.add('on')})});
 }
 function hsSend(v){
   var d=$('#hs');if(!d||!v||d.classList.contains('busy'))return;
   d.classList.add('busy');
-  var inp=$('#hsin'),cc=$('#hsc');inp.value='';inp.blur();$('#hss').classList.remove('on');
+  var inp=$('#hsin'),cc=$('#hsc');inp.textContent='';inp.blur();$('#hss').classList.remove('on');
   var tip=cc.querySelector('.hs-tip');if(tip)tip.remove();
   hsScroll();
   cc.insertAdjacentHTML('beforeend','<div class="hs-u">'+v.replace(/[<>&]/g,'')+'</div>');
