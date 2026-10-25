@@ -13,7 +13,16 @@ body{background:#fff;overflow:hidden}
 .fr.on{opacity:1;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){.fr{transition:none}}
 </style>
-<div id="stage"></div><script>
+<div id="stage"></div>
+<script>
+/* iOS 키보드가 올라오면 아래에 붙은 바텀시트를 키보드 위로 올려 주기 위해, 키보드 높이를 모든 화면(iframe)에 알려준다 */
+(function(){var vv=window.visualViewport;if(!vv)return;
+ function send(){var st=document.getElementById('stage'),z=parseFloat(st&&st.style.zoom)||1;
+  var inset=Math.max(0,Math.round((innerHeight-vv.height-vv.offsetTop)/z));
+  document.querySelectorAll('iframe').forEach(function(f){try{f.contentWindow.postMessage({type:'kb',h:inset},'*')}catch(e){}})}
+ vv.addEventListener('resize',send);vv.addEventListener('scroll',send);
+ window.__kbSend=send})();
+</script><script>
 /* 주소창·메뉴 숨기기: 설치형(전체 화면)이 아니면 첫 터치에서 전체 화면 요청 */
 (function(){
  try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
@@ -1894,6 +1903,9 @@ body.drw-open #app>*{pointer-events:none}
 #hs .hs-s.on{background:#2B2A27}
 @keyframes hsup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes hsd{0%,100%{opacity:.3}50%{opacity:1}}
+
+#hs .hs-sh{bottom:var(--kb,0px);max-height:calc(100% - var(--kb,0px) - 16px);min-height:min(44%,calc(100% - var(--kb,0px) - 16px));transition:transform .4s cubic-bezier(.2,.85,.2,1),bottom .22s ease}
+#hs .hs-c{min-height:60px}
 </style>
 <div id="stage"><div id="ov"></div><div id="app"></div></div>
 <script>
@@ -2134,6 +2146,10 @@ function kbAsk(t,fb){
 function homeReply(t){kbAsk(t,'이 시연에서는 “세금 계산해줘”만 동작해요. 노란 화살표가 붙은 버튼을 눌러 주세요.')}
 /* ---------- 홈 입력창: 바텀시트로 열기 · 맥락에 맞는 화면으로 이동 ---------- */
 var hsT=[],hsMiss=0,hsN=0;
+var hsKb=0;
+function hsApplyKb(){var d=$('#hs');if(d)d.style.setProperty('--kb',hsKb+'px')}
+window.addEventListener('message',function(e){var m=e.data;if(m&&m.type==='kb'){hsKb=+m.h||0;hsApplyKb();if(hsKb>0)hsScroll()}});
+
 function hsScroll(){var c=$('#hsc');if(c)c.scrollTop=c.scrollHeight}
 function hsAt(f,ms){hsT.push(setTimeout(f,ms))}
 function hsRoute(v){
@@ -2149,7 +2165,7 @@ function openHomeAsk(){
   hsMiss=0;
   var d=document.createElement('div');d.id='hs';
   d.innerHTML='<div class="hs-bg"></div><div class="hs-sh" role="dialog" aria-label="에이전트에게 요청"><div class="hs-h"><span>무엇을 도와드릴까요?</span><button class="hs-x" aria-label="닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="hs-c" id="hsc"><p class="hs-tip">공모주 청약 · 월급 나눠 담기 · 세금 계산 · 우리 집 사는 날 중에서 말씀해 주세요.</p></div><form class="hs-in" id="hsf"><input id="hsin" type="text" autocomplete="off" spellcheck="false" enterkeyhint="send" placeholder="무엇이든 물어보세요" aria-label="메시지"><span class="hs-m">'+MIC+'</span><button class="hs-s" id="hss" type="submit" aria-label="보내기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></form></div>';
-  document.body.appendChild(d);
+  document.body.appendChild(d);hsApplyKb();
   var inp=d.querySelector('#hsin');
   try{inp.focus({preventScroll:true})}catch(x){inp.focus()}
   d.querySelector('.hs-x').onclick=function(){closeHomeAsk()};
