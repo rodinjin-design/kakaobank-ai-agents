@@ -18,7 +18,8 @@ body{background:#fff;overflow:hidden}
   document.querySelectorAll('iframe').forEach(function(f){try{
    var r=f.getBoundingClientRect(),inset=Math.max(0,Math.round((r.bottom-(vv.offsetTop+vv.height))/z));
    f.contentWindow.postMessage({type:'kb',h:inset},'*')}catch(e){}})}
- vv.addEventListener('resize',send);vv.addEventListener('scroll',send);
+ var tm=[];function sendN(){tm.forEach(clearTimeout);tm=[0,120,300,600,1000].map(function(d){return setTimeout(send,d)})}
+  vv.addEventListener('resize',sendN);vv.addEventListener('scroll',send);window.addEventListener('message',function(e){if(e.data&&e.data.type==='kbreq')sendN()});
  window.__kbSend=send})();
 </script>
 <script type="text/plain" id="src-ipo"><title>공모주 청약 v2</title>
@@ -2155,6 +2156,7 @@ function openHomeAsk(){
   var inp=d.querySelector('#hsin');
   try{inp.focus({preventScroll:true})}catch(x){inp.focus()}
   d.querySelector('.hs-x').onclick=function(){closeHomeAsk()};
+  inp.addEventListener('focus',function(){try{window.parent.postMessage({type:'kbreq'},'*')}catch(x){}});
   var t0=Date.now();
   function fk(){if(document.activeElement!==inp){try{inp.focus({preventScroll:true})}catch(x){inp.focus()}}}
   d.querySelector('.hs-bg').onclick=function(){if(Date.now()-t0<700){fk();return}closeHomeAsk()};
