@@ -2,7 +2,7 @@
 
 <style>
 :root{color-scheme:light}
-html,body{height:100%;margin:0}
+html,body{height:100%;margin:0;overflow:hidden}
 body{background:#fff;overflow:hidden}
 #stage{position:relative;height:100%;max-width:420px;margin:0 auto;background:#fff}
 @media (min-width:421px){body{background:#EEF0F2}#stage{box-shadow:0 0 0 1px #E6E2D6,0 0 40px rgba(30,50,80,.06)}}
@@ -26,10 +26,10 @@ body{background:#fff;overflow:hidden}
 </script>
 <script>
 (function(){var st=document.getElementById('stage');
-function fit(){var w=innerWidth,h=innerHeight,z=1;
- if(w>=560){z=Math.max(1,Math.min(1.45,h/740,w/480))}
- st.style.zoom=z;st.style.height=(h/z)+'px'}
-fit();addEventListener('resize',fit);addEventListener('orientationchange',fit)})();
+function fit(){var vv=window.visualViewport,w=Math.min(innerWidth,document.documentElement.clientWidth||innerWidth),h=Math.min(innerHeight,(vv&&vv.height)||innerHeight,document.documentElement.clientHeight||innerHeight),z=1;
+ if(w>450)z=Math.max(1,Math.min(1.45,w/450,h/740));
+ st.style.zoom=z;st.style.maxWidth='none';st.style.width=Math.min(480,w/z)+'px';st.style.height=(h/z)+'px';st.style.margin='0 auto'}
+fit();addEventListener('resize',fit);if(window.visualViewport)visualViewport.addEventListener('resize',fit);addEventListener('orientationchange',fit)})();
 </script>
 <script type="text/plain" id="src-ipo"><title>공모주 청약 v2</title>
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEbElEQVR42u3dvyt9fxzA8c+/cP2oT0gZkMmiFItNSbIoKcIgBnYbm9FsEIPdYqBsNoMyWSQGlCIp+f3+dm5d3ft1fb74fHHP2+Ndj+Hz+Rzdm8+z49zXOc75lclkAsTil28CggZBg6BB0AgaBA2CBkGDoBE0CBoEDYIGQSNoEDQIGgQNgkbQIGgQNAgaBI2gQdAgaBA0CBpBg6BB0CBoEDSCBkGDoEHQCNo3AkGDoEHQIGgEDYIGQYOgQdAIGgQNggZBg6ARNAgaBA2CBkEjaEpcf39/ODk5CV+1ktdKXlPQfIrj4+Pw1St5TUETTdDJEjRRHHIImlRrbW0NFxcXgib9Ghsbw+HhoT006VdVVRW2t7cdcpB+FRUVYW1tzTE0cVhYWPChkDjMzs6+iHdnZ0fQpM/IyEh4fHwsCDf5UJh8OBQ0qdLV1RVubm4Kor28vAzt7e3Zfxc0qZo1n5+fFwR7e3sbent7n7cRNKlQX18f9vf3C2J9enoK4+PjBdsJmtTOmmdmZl5sK2hSOWteXl4uur2gSd2seWNjI1RWVgqaOGbNNTU1r36NoEndrPlPXydoUjdrFjRRzZoFTVSzZkET1axZ0EQ1axY0Uc2aBU1Us2ZBE9WsWdBENWsWNFHNmjNvvEOTW4GRillz5g13aHKzRlIza864nS4xzZoFHbGhoaHnH7FTU1Ml+z4XFxdfxLy+vp4NXdBkDQ8Ph/v7+4JINjc3Q1NTU9SzZkH/kJhz6+zsLAwODkY7axZ0ZEZHR1+NOX+trKyE2trab3uf3d3dL2bNyS1vk7FdxjNWhPxazMmfd3d3i0ad7A2TsErhfs1J3N/xXgSdosOMh4eHMDY2FsrLy8P09PSLPWJuzru0tJQdm8UwaxZ05DHnb9fW1vbq3npvby90dHSYNQs6HTHn/P79O8zPz2e3+fe6u7sLc3NznzIuM2sW9P8ec77Ozs4XP/pzK9mLtrS0lOx1zYIWc1HJlCM5fi62rq+vs8fdZWVlZs2CLv2Y8/X19YXT09OiYf/tyRizZkF/acw5DQ0Nrz6T5KMnYz7rumZBi/nNJiYmwtXVVdGwV1dXQ11d3bdf1yxoMb9Lc3Nz2NraKhr10dFR6OnpMWsWdDpizvnoyRizZkGXXMwfPRlj1izoko75vSdjzJoF/e4LjZK//84r5F57bvbBwUHRWXN1dbVIf3rQpRhz/smY5NLT/1pmzYIu+ZjzJXPpZD5dbLmuWdAldcz8NydjzJoFnao9czGTk5PPv4w7MDAgyp8edNr2zAhazMQftJiJJmgxE03QYiaaoMVMNEGLmWiCFjPRBC1moglazEQTtJiJJmgxE03QyZ3z03qhEYIOf3p8mJiJKmgxk/qg85+Hlxx++E/Cb30jaBA0CBoEDYJG0CBoEDQIGgSNoEHQIGgQNAgaQYOgQdAgaBA0ggZBg6BB0CBoBA2CBkGDoEHQCBoEDYIGQSNoEDQIGgQNgkbQIGgQNAgaBI2gQdAgaBA0CJqf4h9mb+BoaDFx0wAAAABJRU5ErkJggg==">
