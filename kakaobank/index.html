@@ -52,7 +52,8 @@ a,button{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .gtip.on{opacity:1;transform:translateY(0)}
 .hd.sc .gtip{opacity:0}
 </style>
-<style id="darkcss">
+<script>(function(){try{if(localStorage.getItem('kbTheme2')==='dark'){document.write('');document.documentElement.setAttribute('data-dark','1')}}catch(e){}})();</script>
+<style id="darkcss" media="not all">
 /* ===== 다크모드 ===== */
 [style*="color:#191919"]:not([style*="background:#191919;"]){color:#F0F0F2!important}
 [style*="color:#2F3442"]:not([style*="background:#2F3442;"]){color:#E4E4E6!important}
@@ -113,6 +114,7 @@ button[aria-label="홈 화면 설정"] img{filter:brightness(0) invert(0.78)}
 .gtip{background:#E4E4E6!important;color:#17171C!important}
 .gtip::before{border-bottom-color:#E4E4E6!important}
 </style>
+<script>if(document.documentElement.getAttribute('data-dark')){document.getElementById('darkcss').media='all';}</script>
 </head>
 <body>
 
