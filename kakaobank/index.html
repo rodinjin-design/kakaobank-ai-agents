@@ -234,7 +234,7 @@ button[aria-label="홈 화면 설정"] img{filter:brightness(0) invert(0.78)}
 
 </div>
 <script>(function(){var d=document.getElementById('darkcss'),g=document.querySelector('button[aria-label="홈 화면 설정"]');if(!d||!g)return;
-function set(on){d.media=on?'all':'not all';var mt=document.querySelector('meta[name="theme-color"]');if(!mt){mt=document.createElement('meta');mt.name='theme-color';document.head.appendChild(mt);}mt.content=on?'#17171C':'#F5F6F9';document.documentElement.style.background=on?'#17171C':'#F5F6F9';document.documentElement.style.colorScheme=on?'dark':'light';g.setAttribute('aria-pressed',on?'true':'false');g.setAttribute('aria-label','홈 화면 설정');g.title=on?'라이트 모드로 바꾸기':'다크 모드로 바꾸기';try{localStorage.setItem('kbTheme2',on?'dark':'light')}catch(e){}}
+function set(on){d.media=on?'all':'not all';document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.parentNode.removeChild(m)});var mt=document.createElement('meta');mt.name='theme-color';mt.content=on?'#17171C':'#F5F6F9';document.head.appendChild(mt);document.body.style.background=on?'#17171C':'#F5F6F9';document.documentElement.style.background=on?'#17171C':'#F5F6F9';document.documentElement.style.colorScheme=on?'dark':'light';g.setAttribute('aria-pressed',on?'true':'false');g.setAttribute('aria-label','홈 화면 설정');g.title=on?'라이트 모드로 바꾸기':'다크 모드로 바꾸기';try{localStorage.setItem('kbTheme2',on?'dark':'light')}catch(e){}}
 var saved=null;try{saved=localStorage.getItem('kbTheme2')}catch(e){}
 set(saved==='dark');
 g.addEventListener('click',function(){set(d.media!=='all');});})();
