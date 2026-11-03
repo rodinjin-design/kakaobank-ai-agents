@@ -9,11 +9,11 @@
 html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:'Pretendard Variable',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
 button{font-family:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
 p,h1,h2{margin:0}
-.view{position:absolute;inset:0;overflow-y:auto;padding:150px 0 120px;display:none;scrollbar-width:none}
+.view{position:absolute;inset:0;overflow-y:auto;padding:84px 0 120px;display:none;scrollbar-width:none}
 .view::-webkit-scrollbar{display:none}
 .view.on{display:block}
 /* 상단 */
-.top{position:fixed;left:0;right:0;top:0;height:150px;z-index:20;pointer-events:none;background:linear-gradient(#fff 0,#fff 55%,rgba(255,255,255,.85) 75%,rgba(255,255,255,0))}
+.top{position:fixed;left:0;right:0;top:0;height:84px;z-index:20;pointer-events:none;background:linear-gradient(#fff 0,#fff 55%,rgba(255,255,255,.85) 75%,rgba(255,255,255,0))}
 .top .cb{position:absolute;top:calc(14px + env(safe-area-inset-top));height:50px;min-width:50px;padding:0 16px;border-radius:25px;background:#fff;box-shadow:0 2px 14px rgba(25,30,40,.07);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;pointer-events:auto;color:#2F3442}
 .top .l{left:16px;padding:0}.top .r{right:16px}
 .mascot{position:absolute;left:50%;top:calc(6px + env(safe-area-inset-top));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;pointer-events:auto}
@@ -85,10 +85,9 @@ p,h1,h2{margin:0}
 .toast.on{opacity:1}
 </style></head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD6C4"/><stop offset=".5" stop-color="#4F8CF7"/><stop offset="1" stop-color="#F7D84A"/></linearGradient></defs></svg>
 <header class="top">
  <button class="cb l" aria-label="메뉴"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg></button>
- <button class="mascot" id="mascot" aria-label="카뱅 AI와 대화"><span class="ball"><svg width="38" height="38" viewBox="0 0 40 40"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD6C4"/><stop offset=".5" stop-color="#4F8CF7"/><stop offset="1" stop-color="#F7D84A"/></linearGradient></defs><path d="M20 2c1.6 9.2 8.8 16.4 18 18-9.2 1.6-16.4 8.8-18 18-1.6-9.2-8.8-16.4-18-18C11.2 18.4 18.4 11.2 20 2z" fill="url(#sg)"/></svg></span><span class="nm">카뱅 AI</span></button>
- <button class="cb r" id="histBtn">맡긴 일</button>
 </header>
 
 <main class="view on" id="browse">
@@ -191,9 +190,8 @@ function show(v){views.forEach(function(k){document.getElementById(k).classList.
  document.querySelectorAll('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
  document.getElementById('composer').classList.toggle('on',v==='chat');
  if(v==='jobs')renderJobs();if(v==='chat')toBottom()}
-document.querySelector('.bnav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.v==='me'){toast('김하늘님의 정보는 준비 중이에요');return}show(b.dataset.v)});
-document.getElementById('mascot').addEventListener('click',function(){show('chat');if(!document.getElementById('msgs').children.length)hello();document.getElementById('ci').focus()});
-document.getElementById('histBtn').addEventListener('click',function(){show('jobs')});
+document.querySelector('.bnav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.v==='me'){toast('김하늘님의 정보는 준비 중이에요');return}if(b.dataset.v==='chat'){openChat();return}show(b.dataset.v)});
+function openChat(){show('chat');if(!document.getElementById('msgs').children.length)hello()}
 document.querySelector('.cb.l').addEventListener('click',function(){show('browse')});
 var tt;function toast(s){var t=document.getElementById('toast');t.textContent=s;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},1800)}
 
@@ -223,6 +221,6 @@ document.getElementById('cf').addEventListener('submit',function(e){e.preventDef
 function renderJobs(){var L=document.getElementById('jobList');
  L.innerHTML=jobs.length?jobs.map(function(id){var x=byId[id];return '<div class="job">'+icon(x.ic)+'<div><p class="tt">'+x.card.t+'</p><p class="st">'+x.st+'</p></div></div>'}).join(''):'<p class="empty">아직 맡긴 일이 없어요.<br>둘러보기에서 부탁해 보세요.</p>'}
 document.querySelectorAll('.task .ic,.job .ic').forEach(function(){});
-window.kbAgent={open:function(){document.getElementById('mascot').click()}};
+window.kbAgent={open:openChat};
 </script>
 </body></html>
