@@ -46,12 +46,12 @@ button{font-family:inherit}
 @media (max-width:559px){:root{--mw:100%}}
 @media (min-width:560px){:root{--mw:454px}}</style>
 <script>(function(){var r=document.documentElement;function fit(){r.style.zoom='';var w=innerWidth;var z=1;r.style.zoom=z>1?z:''}fit();addEventListener('resize',fit);addEventListener('orientationchange',function(){setTimeout(fit,200)});document.addEventListener('visibilitychange',fit)})();
-if('serviceWorker' in navigator&&location.pathname.indexOf('/fold8/')>-1){try{navigator.serviceWorker.register(location.pathname.replace(/account\/?$/,'')+'sw.js').catch(function(){})}catch(e){}}</script><link rel="manifest" href="../manifest.webmanifest"><style>#minisrch{display:none!important}</style><script id="foldfs">/* 펼친 화면: 상단 상태바·하단 내비게이션바 숨김(전체 화면). 접으면 해제 */
-(function(){var d=document,r=d.documentElement;function wide(){return innerWidth>=560}
+if('serviceWorker' in navigator&&location.pathname.indexOf('/fold8/')>-1){try{navigator.serviceWorker.register(location.pathname.replace(/account\/?$/,'')+'sw.js').catch(function(){})}catch(e){}}</script><link rel="manifest" href="../manifest.webmanifest"><style>#minisrch{display:none!important}</style><script id="foldfs">/* 펼친 화면: 상단 상태바·하단 내비게이션바 숨김(전체 화면). 접으면(폭 560 미만이 0.8초 이상 유지) 해제 */
+(function(){var d=document,r=d.documentElement,t=null;function wide(){return Math.max(innerWidth,screen.width||0)>=560&&innerWidth>=560}
 function fsEl(){return d.fullscreenElement||d.webkitFullscreenElement}
 function go(){if(!wide()||fsEl())return;var f=r.requestFullscreen||r.webkitRequestFullscreen;if(!f)return;try{var p=f.call(r,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){})}catch(e){}}
-function chk(){if(!wide()&&fsEl()){var x=d.exitFullscreen||d.webkitExitFullscreen;try{var p=x&&x.call(d);if(p&&p.catch)p.catch(function(){})}catch(e){}}}
-addEventListener('pointerup',go,true);addEventListener('resize',chk);})();</script></head>
+function chk(){clearTimeout(t);t=setTimeout(function(){if(innerWidth<560&&fsEl()){var x=d.exitFullscreen||d.webkitExitFullscreen;try{var p=x&&x.call(d);if(p&&p.catch)p.catch(function(){})}catch(e){}}},800)}
+['pointerup','touchend','click','keydown'].forEach(function(e){addEventListener(e,go,true)});addEventListener('resize',chk);})();</script></head>
 <body>
 
 <div class="wrap">
