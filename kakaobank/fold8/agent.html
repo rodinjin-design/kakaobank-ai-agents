@@ -9,7 +9,7 @@
 html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:'Pretendard Variable',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
 button{font-family:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
 p,h1,h2{margin:0}
-.view{position:absolute;inset:0;overflow-y:auto;padding:84px 0 120px;display:none;scrollbar-width:none}
+.view{position:absolute;inset:0;overflow-y:auto;padding:84px 0 40px;display:none;scrollbar-width:none}
 .view::-webkit-scrollbar{display:none}
 .view.on{display:block}
 /* 상단 */
@@ -40,7 +40,7 @@ p,h1,h2{margin:0}
 .ask{height:34px;padding:0 14px;border-radius:17px;background:var(--soft);font-size:15px;font-weight:600;color:#2F3442}
 .ask:active{background:#E6E8EB}
 /* 대화 */
-#chat{padding-bottom:200px}
+#chat{padding-bottom:110px}
 .note{margin:0 20px 18px;text-align:center;font-size:13px;color:var(--faint)}
 .msg{padding:0 20px;margin-bottom:16px;display:flex}
 .msg.me{justify-content:flex-end}
@@ -64,7 +64,7 @@ p,h1,h2{margin:0}
 @keyframes bl{0%,100%{opacity:.3}50%{opacity:1}}
 .sugg{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .sugg button{height:36px;padding:0 14px;border-radius:18px;border:1px solid #DFE2E7;font-size:15px;color:#2F3442;background:#fff}
-#composer{position:fixed;left:16px;right:16px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:15;display:none}
+#composer{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:15;display:none}
 #composer.on{display:flex}
 #composer form{flex:1;min-width:0;width:100%;display:flex;align-items:center;gap:8px;height:54px;padding:0 7px 0 18px;border-radius:27px;background:#fff;box-shadow:0 4px 18px rgba(25,30,40,.1);border:1px solid var(--line)}
 #composer input{flex:1;min-width:0;width:100%;border:0;outline:0;font:inherit;font-size:16px;background:none;color:var(--ink)}
@@ -87,7 +87,7 @@ p,h1,h2{margin:0}
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD6C4"/><stop offset=".5" stop-color="#4F8CF7"/><stop offset="1" stop-color="#F7D84A"/></linearGradient></defs></svg>
 <header class="top">
- <button class="cb l" aria-label="메뉴"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg></button>
+ <button class="cb l" aria-label="메뉴"><svg class="i-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg><svg class="i-back" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M15 5l-7 7 7 7"/></svg></button>
 </header>
 
 <main class="view on" id="browse">
@@ -105,12 +105,6 @@ p,h1,h2{margin:0}
 
 <div id="composer"><form id="cf" autocomplete="off"><input id="ci" placeholder="카뱅 AI에게 부탁해 보세요" aria-label="메시지"><button class="send" aria-label="보내기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></form></div>
 
-<nav class="bnav" aria-label="메뉴">
- <button data-v="chat" aria-label="대화"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#191919" stroke-width="2" stroke-linejoin="round"><path d="M12 4c4.7 0 8.5 3.2 8.5 7.3s-3.8 7.2-8.5 7.2c-1 0-2-.1-2.9-.4L4.5 20l1.2-3.6C4.3 15.1 3.5 13.3 3.5 11.3 3.5 7.2 7.3 4 12 4z"/></svg></button>
- <button data-v="browse" class="on" aria-label="둘러보기"><svg width="30" height="30" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="#191919"/><path d="M15.8 8.2l-2.2 5.4-5.4 2.2 2.2-5.4z" fill="#fff"/></svg></button>
- <button data-v="jobs" aria-label="맡긴 일"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#191919" stroke-width="2" stroke-linejoin="round"><path d="M4 13l2.2-6.2A2 2 0 0 1 8.1 5.5h7.8a2 2 0 0 1 1.9 1.3L20 13v4.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 13h4.5l1 2h5l1-2H20"/></svg></button>
- <button data-v="me" aria-label="내 정보"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#191919" stroke-width="2"><circle cx="12" cy="8.5" r="4"/><path d="M4.5 20c.8-3.6 3.8-5.5 7.5-5.5s6.7 1.9 7.5 5.5z" stroke-linejoin="round"/></svg></button>
-</nav>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -188,9 +182,9 @@ document.getElementById('list').addEventListener('click',function(e){var a=e.tar
 var views=['browse','chat','jobs'];
 function show(v){views.forEach(function(k){document.getElementById(k).classList.toggle('on',k===v)});
  document.querySelectorAll('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
- document.getElementById('composer').classList.toggle('on',v==='chat');
+ document.getElementById('composer').classList.toggle('on',v==='chat');var L=document.querySelector('.cb.l');L.querySelector('.i-menu').style.display=v==='browse'?'':'none';L.querySelector('.i-back').style.display=v==='browse'?'none':'';L.setAttribute('aria-label',v==='browse'?'메뉴':'둘러보기로');
  if(v==='jobs')renderJobs();if(v==='chat')toBottom()}
-document.querySelector('.bnav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.v==='me'){toast('김하늘님의 정보는 준비 중이에요');return}if(b.dataset.v==='chat'){openChat();return}show(b.dataset.v)});
+
 function openChat(){show('chat');if(!document.getElementById('msgs').children.length)hello()}
 document.querySelector('.cb.l').addEventListener('click',function(){show('browse')});
 var tt;function toast(s){var t=document.getElementById('toast');t.textContent=s;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},1800)}
