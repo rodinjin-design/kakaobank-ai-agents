@@ -126,7 +126,7 @@ if('serviceWorker' in navigator&&location.pathname.indexOf('/fold8/')>-1){try{na
 function fsEl(){return d.fullscreenElement||d.webkitFullscreenElement}
 function go(){if(!wide()||fsEl())return;var f=r.requestFullscreen||r.webkitRequestFullscreen;if(!f)return;try{var p=f.call(r,{navigationUI:'hide'});if(p&&p.catch)p.catch(function(){})}catch(e){}}
 function chk(){if(!wide()&&fsEl()){var x=d.exitFullscreen||d.webkitExitFullscreen;try{var p=x&&x.call(d);if(p&&p.catch)p.catch(function(){})}catch(e){}}}
-addEventListener('pointerup',go,true);addEventListener('resize',chk);})();</script></head>
+addEventListener('pointerup',go,true);addEventListener('resize',chk);})();</script><style id="noscbar">[style*="overflow-x:auto"]{scrollbar-width:none;-ms-overflow-style:none}[style*="overflow-x:auto"]::-webkit-scrollbar{display:none;width:0;height:0}</style></head>
 <body>
 
 <h1 class="sr">카카오뱅크 홈 개선안</h1>
