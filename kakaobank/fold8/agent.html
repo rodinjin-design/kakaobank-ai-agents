@@ -12,6 +12,7 @@ p,h1,h2{margin:0}
 .view{position:absolute;inset:0;overflow-y:auto;padding:84px 0 40px;display:none;scrollbar-width:none}
 .view::-webkit-scrollbar{display:none}
 .view.on{display:block}
+.view>*{max-width:680px;margin-left:auto;margin-right:auto}
 /* 상단 */
 .top{position:fixed;left:0;right:0;top:0;height:84px;z-index:20;pointer-events:none;background:linear-gradient(#fff 0,#fff 55%,rgba(255,255,255,.85) 75%,rgba(255,255,255,0))}
 .top .cb{position:absolute;top:calc(14px + env(safe-area-inset-top));height:50px;min-width:50px;padding:0 16px;border-radius:25px;background:#fff;box-shadow:0 2px 14px rgba(25,30,40,.07);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;pointer-events:auto;color:#2F3442}
@@ -64,7 +65,7 @@ p,h1,h2{margin:0}
 @keyframes bl{0%,100%{opacity:.3}50%{opacity:1}}
 .sugg{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .sugg button{height:36px;padding:0 14px;border-radius:18px;border:1px solid #DFE2E7;font-size:15px;color:#2F3442;background:#fff}
-#composer{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:15;display:none}
+#composer{position:fixed;left:16px;right:16px;max-width:680px;margin:0 auto;bottom:calc(16px + env(safe-area-inset-bottom));z-index:15;display:none}
 #composer.on{display:flex}
 #composer form{flex:1;min-width:0;width:100%;display:flex;align-items:center;gap:8px;height:54px;padding:0 7px 0 18px;border-radius:27px;background:#fff;box-shadow:0 4px 18px rgba(25,30,40,.1);border:1px solid var(--line)}
 #composer input{flex:1;min-width:0;width:100%;border:0;outline:0;font:inherit;font-size:16px;background:none;color:var(--ink)}

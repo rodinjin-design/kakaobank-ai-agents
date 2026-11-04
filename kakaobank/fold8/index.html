@@ -13,7 +13,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#fff}
 #rp{border-left:1px solid #E3E5EA;box-sizing:border-box}
 </style></head>
 <body>
-<!-- 펼친 화면: 왼쪽 기본 홈, 오른쪽 카뱅 AI 대화·둘러보기. 접힌 화면: 홈만 -->
+<!-- 펼친 화면: 왼쪽 기본 홈(4), 오른쪽 카뱅 AI 대화·둘러보기(6). 접힌 화면: 홈만 -->
 <div id="wrap">
  <div class="pane" id="lp"><iframe id="home" src="home.html" title="카카오뱅크 홈"></iframe></div>
  <div class="pane" id="rp"><iframe id="agent" src="agent.html" title="카뱅 AI"></iframe></div>
@@ -21,9 +21,9 @@ html,body{margin:0;height:100%;overflow:hidden;background:#fff}
 <script>
 (function(){
 var D=390,lp=document.getElementById('lp'),rp=document.getElementById('rp'),h=document.getElementById('home'),a=document.getElementById('agent');
-function fit(f,w,H){var s=Math.min(1.2,w/D);f.style.width=D+'px';f.style.height=Math.ceil(H/s)+'px';f.style.transform='scale('+s+')'}
+function fit(f,w,H,s){f.style.width=Math.round(w/s)+'px';f.style.height=Math.ceil(H/s)+'px';f.style.transform='scale('+s+')'}
 function lay(){var W=innerWidth,H=innerHeight;
- if(W>=560){var half=Math.floor(W/2);lp.style.width=half+'px';rp.style.width=(W-half)+'px';rp.style.display='block';fit(h,half,H);fit(a,W-half,H)}
+ if(W>=560){/* 클로드 앱처럼 왼쪽 4 : 오른쪽 6, 양쪽 같은 배율 */var L=Math.round(W*0.4),s=Math.min(1.2,L/D);lp.style.width=L+'px';rp.style.width=(W-L)+'px';rp.style.display='block';fit(h,L,H,s);fit(a,W-L,H,s)}
  else{lp.style.width=W+'px';rp.style.display='none';h.style.transform='none';h.style.width=W+'px';h.style.height=H+'px'}}
 lay();addEventListener('resize',lay);addEventListener('orientationchange',function(){setTimeout(lay,200)});
 var lw=0,lh=0;setInterval(function(){if(innerWidth!==lw||innerHeight!==lh){lw=innerWidth;lh=innerHeight;lay()}},300);
