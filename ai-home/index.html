@@ -606,6 +606,11 @@ body:not(.chat) .chatview{transition:opacity .35s ease .45s,visibility 0s linear
 .bs-tabs .bs-fav{width:44px;padding:0;color:#1C1C1E}
 .bs-tabs .bs-fav[aria-pressed="true"]{background:#1C1C1E;color:#fff}
 .bs-tabs .bs-fav[aria-pressed="true"] svg path{fill:#fff;stroke:#fff}
+
+/* faster return from chat: the list answers the tap at once and settles in under half a second */
+main{transition:transform .46s cubic-bezier(.2,.9,.25,1)}
+body:not(.chat) .chatview{transition:opacity .22s ease .12s,visibility 0s linear .34s}
+.acct{touch-action:manipulation}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -909,16 +914,16 @@ body:not(.chat) .chatview{transition:opacity .35s ease .45s,visibility 0s linear
     body.classList.add('chat'); cv.setAttribute('aria-hidden','false'); acct.tabIndex=0;
   }
   function closeChat(){
-    thread.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
     body.classList.remove('chat'); cv.setAttribute('aria-hidden','true'); q.blur(); acct.tabIndex=-1;
-    setTimeout(function(){body.classList.remove('task-mode')},reduce?0:380);
+    setTimeout(function(){body.classList.remove('task-mode');thread.scrollTop=0},reduce?0:500);
   }
   q.addEventListener('focus',function(){openChat();body.classList.add('typing')});
   q.addEventListener('blur',function(){body.classList.remove('typing')});
   thread.addEventListener('pointerdown',function(e){if(document.activeElement===q&&!e.target.closest('button,a,input'))q.blur()});
   q.addEventListener('pointerdown',openChat);
   document.getElementById('chat-close').addEventListener('click',closeChat);
-  acct.addEventListener('click',closeChat);
+  acct.addEventListener('pointerdown',function(e){if(e.button===0){e.preventDefault();closeChat()}});
+  acct.addEventListener('click',function(){if(body.classList.contains('chat'))closeChat()});
   /* 26주적금, 예적금: open their accounts in place */
   document.querySelectorAll('.group .more').forEach(function(b){
     b.addEventListener('click',function(){
