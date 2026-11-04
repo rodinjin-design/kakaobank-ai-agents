@@ -58,6 +58,13 @@ header{display:flex;align-items:center;padding-block:12px 0}
 /* sheet */
 main{position:relative;z-index:16;flex:1;background:var(--sheet);color:var(--fg);border-radius:28px 28px 0 0;padding-block:10px calc(120px + env(safe-area-inset-bottom,0px));transition:transform .6s var(--sheet-ease);will-change:transform}
 body.chat main{transform:translateY(105vh);pointer-events:none}
+/* First visit: the sheet dips to show the chat waiting under it, then settles back */
+.peek{position:relative;z-index:15;height:0}
+.peek-in{position:absolute;top:36px;left:max(20px,env(safe-area-inset-left,0px));right:max(20px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:12px}
+.peek-in .kicker{margin:0}
+.peek-in .chips{margin:0}
+body.peek main{transform:translateY(var(--peek,164px));transition:transform .7s var(--sheet-ease)}
+body.peek-back main{transition:transform .8s cubic-bezier(.5,0,.2,1)}
 .grab{width:40px;height:4px;border-radius:2px;background:#CFCBC2;margin:0 auto 18px}
 main h2{margin:24px 4px 12px;font-size:15px;font-weight:700}
 main h2:first-of-type{margin-top:0}
@@ -170,6 +177,16 @@ body.chat .field{background:var(--top-card);box-shadow:none}
     </div>
   </section>
 
+  <div class="peek pad" aria-hidden="true">
+    <div class="peek-in">
+      <p class="kicker">아래 입력창으로 AI에게 이렇게 물어보세요</p>
+      <div class="chips">
+        <button tabindex="-1" data-ask="월급 나눠줘">월급 나눠줘</button>
+        <button tabindex="-1" data-ask="카드값 얼마 남았어?">카드값 얼마 남았어?</button>
+        <button tabindex="-1" data-ask="목표적금 월 10만원 늘려줘">목표적금 늘리기</button>
+      </div>
+    </div>
+  </div>
   <main class="pad" id="sheet" aria-label="내 금융">
     <div class="grab" aria-hidden="true"></div>
     <h2>입출금</h2>
@@ -372,6 +389,22 @@ body.chat .field{background:var(--top-card);box-shadow:none}
   document.getElementById('menu-close').addEventListener('click',closeMenu);
   document.getElementById('scrim').addEventListener('click',closeMenu);
   drawer.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+  /* first visit: dip the sheet once so the chat underneath shows, then bring it back */
+  (function(){
+    if(reduce)return;
+    var seen=false; try{seen=sessionStorage.getItem('aihome-peek')==='1'}catch(e){}
+    if(seen)return;
+    var t1=setTimeout(function(){
+      if(body.classList.contains('chat')||window.scrollY>0)return;
+      body.classList.add('peek');
+      setTimeout(function(){body.classList.add('peek-back');body.classList.remove('peek');
+        setTimeout(function(){body.classList.remove('peek-back')},850)},1500);
+      try{sessionStorage.setItem('aihome-peek','1')}catch(e){}
+    },700);
+    function cancel(){clearTimeout(t1);body.classList.remove('peek')}
+    q.addEventListener('focus',cancel);
+    window.addEventListener('scroll',cancel,{once:true,passive:true});
+  })();
 })();
 </script>
 
