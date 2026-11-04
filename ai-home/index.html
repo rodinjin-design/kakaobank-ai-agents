@@ -631,6 +631,32 @@ body.chat::before{background:#E4F1EE}
 /* opened from the side menu: the sheet fills the whole screen */
 .bsheet.page .bs-panel{height:100%;border-radius:0;padding-top:env(safe-area-inset-top,0px);background:#F7F6F3}
 .bsheet.page .bs-grab{visibility:hidden}
+
+/* ---- side menu in the reference layout: menu first, then the task list ---- */
+.drawer{width:min(320px,84vw);background:#F7F7F8;padding-top:calc(16px + env(safe-area-inset-top,0px));box-shadow:none}
+.scrim{background:rgba(28,28,30,.18)}
+.d-head{padding:0 16px 0 24px;min-height:56px}
+.d-head h2{font-size:24px;font-weight:800;letter-spacing:-0.03em}
+.x{width:48px;height:48px;background:#fff;box-shadow:0 2px 10px rgba(20,30,50,.08);color:#1C1C1E}
+.d-scroll{flex:1;min-height:0;overflow-y:auto;padding:14px 0 12px}
+.drawer .d-menu{margin:0 12px;padding:0;background:transparent;border-radius:0;gap:2px;border:0}
+.drawer .d-menu a{height:52px;padding:0 14px;border-radius:16px;font-size:17px;font-weight:500;gap:14px;color:#1C1C1E}
+.drawer .d-menu a+a{border-top:0}
+.drawer .d-menu a[aria-current]{background:#EBEBED}
+.drawer .d-menu a:hover{background:#EFEFF1;color:#1C1C1E}
+.drawer .d-menu svg{width:22px;height:22px}
+.d-rule{height:1px;margin:14px 26px 6px;background:#E3E3E6}
+.drawer .hist{padding:0 12px;overflow:visible;flex:none}
+.drawer .hist h3{margin:14px 14px 4px;font-size:14px;font-weight:500;color:#9A9AA0}
+.drawer .hist ul{background:transparent;border-radius:0;padding:0;gap:0}
+.drawer .hist li+li{border-top:0}
+.drawer .hist li button{padding:10px 14px;border-radius:14px;gap:8px;align-items:flex-start}
+.drawer .hist li button:hover{background:#EFEFF1}
+.drawer .hi{flex:none;margin-top:3px;color:#1C1C1E}
+.drawer .hi.wait{color:#B4B4BA}
+.drawer .hist .t{font-size:17px;font-weight:500;line-height:1.4;max-width:230px;color:#1C1C1E}
+.drawer .hist .m{font-size:14px;margin-top:3px;color:#A3A3A9;margin-left:-26px}
+.drawer .me{margin:0;padding:14px 24px calc(4px + env(safe-area-inset-bottom,0px));background:#F7F7F8;border-radius:0;border-top:1px solid #E3E3E6}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -886,31 +912,29 @@ body.chat::before{background:#E4F1EE}
   <div class="scrim" id="scrim"></div>
   <aside class="drawer" id="drawer" aria-label="메뉴" tabindex="-1">
     <div class="d-head">
-      <h2>내가 맡긴 일</h2>
+      <h2>카카오뱅크</h2>
       <button class="x" id="menu-close" aria-label="메뉴 닫기"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
     </div>
-    <div class="hist">
-      <h3>오늘</h3>
-      <ul id="today">
-        <li><button><span class="st" aria-hidden="true"></span><span><span class="t">이번 달 카드값 확인</span><span class="m num">11월 4일 · 842,000원</span></span></button></li>
-      </ul>
-      <h3>이번 주</h3>
-      <ul>
-        <li><button><span class="st" aria-hidden="true"></span><span><span class="t">해외결제 대비 달러 충전</span><span class="m num">11월 1일 · 100 USD 완료</span></span></button></li>
-        <li><button><span class="st" aria-hidden="true"></span><span><span class="t">모임통장 문화데이 회비 정산</span><span class="m num">10월 31일 · 4명 완료</span></span></button></li>
-      </ul>
-      <h3>지난 달</h3>
-      <ul>
-        <li><button><span class="st wait" aria-hidden="true"></span><span><span class="t">종합소득세 예상액 확인</span><span class="m num">10월 28일 · 납부 알림 예약</span></span></button></li>
-        <li><button><span class="st" aria-hidden="true"></span><span><span class="t">우리아이 용돈 자동이체 설정</span><span class="m num">10월 20일 · 매주 월요일</span></span></button></li>
-        <li><button><span class="st" aria-hidden="true"></span><span><span class="t">26주적금 4개 진행률 정리</span><span class="m num">10월 12일 · 완료</span></span></button></li>
-      </ul>
+    <div class="d-scroll">
+      <nav class="d-menu" aria-label="주요 메뉴">
+        <a href="#" aria-current="page" id="d-home"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10L11 4l7.5 6v8h-5v-5h-5v5h-5z"/></svg>AI 홈</a>
+        <a href="#" data-browse><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8.5"/><path d="M14.2 7.8l-1.8 4.6-4.6 1.8 1.8-4.6z" fill="currentColor"/></svg>둘러보기</a>
+        <a href="#"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="15" height="10.5" rx="2"/><path d="M11 8v10.5M3.5 12h15M11 8c-1.5-3-5-3-5-1s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z"/></svg>혜택</a>
+        <a href="#"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h14M4 11h14M4 16h14"/></svg>전체</a>
+      </nav>
+      <div class="d-rule" aria-hidden="true"></div>
+      <div class="hist">
+        <h3>내가 맡긴 일</h3>
+        <ul id="today">
+        <li><button><svg class="hi" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">이번 달 카드값 확인</span><span class="m num">11월 4일 · 842,000원</span></span></button></li>
+        <li><button><svg class="hi" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">해외결제 대비 달러 충전</span><span class="m num">11월 1일 · 100 USD 완료</span></span></button></li>
+        <li><button><svg class="hi" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">모임통장 문화데이 회비 정산</span><span class="m num">10월 31일 · 4명 완료</span></span></button></li>
+        <li><button><svg class="hi wait" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">종합소득세 예상액 확인</span><span class="m num">10월 28일 · 납부 알림 예약</span></span></button></li>
+        <li><button><svg class="hi" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">우리아이 용돈 자동이체 설정</span><span class="m num">10월 20일 · 매주 월요일</span></span></button></li>
+        <li><button><svg class="hi" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg><span><span class="t">26주적금 4개 진행률 정리</span><span class="m num">10월 12일 · 완료</span></span></button></li>
+        </ul>
+      </div>
     </div>
-    <nav class="d-menu" aria-label="주요 메뉴">
-      <a href="#" data-browse><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M12.8 7.2l-1.6 4-4 1.6 1.6-4z"/></svg>둘러보기</a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M10 7v10M7 4l3 3 3-3"/></svg>혜택</a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h12"/></svg>전체</a>
-    </nav>
     <div class="me">
       <div class="pic" aria-hidden="true"><span>하</span></div>
       <div><b>김하늘</b><small>내 정보 보기</small></div>
@@ -971,7 +995,7 @@ body.chat::before{background:#E4F1EE}
   function startTask(t){thread.querySelectorAll('.msg').forEach(function(m){m.classList.add('prior')});body.classList.add('task-mode');thread.scrollTop=0;ask(t)}
   window.__startTask=startTask;
   function addHistory(t){
-    var li=el('li'),b=el('button'),st=el('span','st wait'),w=el('span');
+    var li=el('li'),b=el('button'),st=el('span'),w=el('span');st.innerHTML='<svg class="hi wait" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2.5c.9 3.6 3.4 6.1 7 7-3.6.9-6.1 3.4-7 7-.9-3.6-3.4-6.1-7-7 3.6-.9 6.1-3.4 7-7z"/></svg>';st=st.firstChild;
     w.appendChild(el('span','t',t)); w.appendChild(el('span','m','방금 · 진행 중'));
     b.appendChild(st); b.appendChild(w); li.appendChild(b);
     var today=document.getElementById('today'); today.insertBefore(li,today.firstChild);
@@ -987,7 +1011,7 @@ body.chat::before{background:#E4F1EE}
     setTimeout(function(){
       var r=reply(t); txt.removeChild(typing); txt.appendChild(document.createTextNode(r.text));
       if(r.card){var c=el('div','card');r.card.forEach(function(p){var d=el('div');d.appendChild(el('span',null,p[0]));d.appendChild(el('b','num',p[1]));c.appendChild(d)});
-        if(r.act){var a=el('button','act',r.act);a.addEventListener('click',function(){a.textContent='완료했어요';a.disabled=true;h.querySelector('.st').classList.remove('wait');h.querySelector('.m').textContent='방금 · 완료'});c.appendChild(a)}
+        if(r.act){var a=el('button','act',r.act);a.addEventListener('click',function(){a.textContent='완료했어요';a.disabled=true;h.querySelector('.hi').classList.remove('wait');h.querySelector('.m').textContent='방금 · 완료'});c.appendChild(a)}
         txt.appendChild(c)}
       scroll();
     },reduce?0:700);
@@ -1005,6 +1029,7 @@ body.chat::before{background:#E4F1EE}
   function closeMenu(){layer.classList.remove('open');if(opener){opener.setAttribute('aria-expanded','false');opener.focus()}setTimeout(function(){layer.hidden=true},reduce?0:280)}
   document.querySelectorAll('.menu-open').forEach(function(b){b.addEventListener('click',function(){openMenu(b)})});
   document.getElementById('menu-close').addEventListener('click',closeMenu);
+  document.getElementById('d-home').addEventListener('click',function(e){e.preventDefault();closeMenu()});
   document.getElementById('scrim').addEventListener('click',closeMenu);
   drawer.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
   /* ---- 둘러보기: shortcuts of tasks people hand to the AI ---- */
