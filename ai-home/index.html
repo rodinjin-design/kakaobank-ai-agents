@@ -657,6 +657,18 @@ body.chat::before{background:#E4F1EE}
 .drawer .hist .t{font-size:17px;font-weight:500;line-height:1.4;max-width:230px;color:#1C1C1E}
 .drawer .hist .m{font-size:14px;margin-top:3px;color:#A3A3A9;margin-left:-26px}
 .drawer .me{margin:0;padding:14px 24px calc(4px + env(safe-area-inset-bottom,0px));background:#F7F7F8;border-radius:0;border-top:1px solid #E3E3E6}
+
+/* ---- side menu sits underneath: the page slides right to reveal it ---- */
+:root{--dw:min(320px,84vw)}
+.app{position:relative;z-index:2}
+.app,.composer,.chatview,body::before{transition:transform .36s cubic-bezier(.3,.7,.2,1),border-radius .36s,box-shadow .36s}
+body.menu-open .app,body.menu-open .composer,body.menu-open .chatview,body.menu-open::before{transform:translateX(var(--dw))}
+body.menu-open .app{border-radius:28px 0 0 28px;box-shadow:-8px 0 30px rgba(20,30,50,.10);overflow:hidden}
+body.menu-open{overflow:hidden}
+.drawer{z-index:1;width:var(--dw);transform:translateX(-24px);opacity:0;transition:transform .36s cubic-bezier(.3,.7,.2,1),opacity .25s}
+.open .drawer{transform:none;opacity:1}
+.scrim{left:var(--dw);z-index:46;background:transparent;opacity:1}
+@media (prefers-reduced-motion:reduce){.app,.composer,.chatview,.drawer{transition:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1025,8 +1037,8 @@ body.chat::before{background:#E4F1EE}
 
   /* drawer */
   var layer=document.getElementById('layer'),drawer=document.getElementById('drawer'),opener=null;
-  function openMenu(btn){opener=btn;layer.hidden=false;requestAnimationFrame(function(){layer.classList.add('open');drawer.focus()});btn.setAttribute('aria-expanded','true')}
-  function closeMenu(){layer.classList.remove('open');if(opener){opener.setAttribute('aria-expanded','false');opener.focus()}setTimeout(function(){layer.hidden=true},reduce?0:280)}
+  function openMenu(btn){opener=btn;layer.hidden=false;requestAnimationFrame(function(){layer.classList.add('open');body.classList.add('menu-open');drawer.focus()});btn.setAttribute('aria-expanded','true')}
+  function closeMenu(){layer.classList.remove('open');body.classList.remove('menu-open');if(opener){opener.setAttribute('aria-expanded','false');opener.focus()}setTimeout(function(){layer.hidden=true},reduce?0:380)}
   document.querySelectorAll('.menu-open').forEach(function(b){b.addEventListener('click',function(){openMenu(b)})});
   document.getElementById('menu-close').addEventListener('click',closeMenu);
   document.getElementById('d-home').addEventListener('click',function(e){e.preventDefault();closeMenu()});
