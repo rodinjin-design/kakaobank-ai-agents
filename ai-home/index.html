@@ -719,6 +719,11 @@ body.sa.menu-open .chatview{border-radius:28px 0 0 28px}
 
 /* no close button in the menu: tap the page on the right, AI 홈, or Esc */
 .drawer #menu-close{display:none}
+
+/* menu open: the page itself always grows up under the status bar (no-op where there is none), so there is never a separate strip */
+body.menu-open::before{opacity:0!important}
+body.menu-open .app{margin-top:calc(-1 * env(safe-area-inset-top,0px))!important;padding-top:env(safe-area-inset-top,0px)!important;border-radius:28px 0 0 28px!important}
+body.menu-open .chatview{border-radius:28px 0 0 28px!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
