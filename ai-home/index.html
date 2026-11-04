@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#E4F1EE">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -689,6 +692,11 @@ body.menu-open .chatview{border-radius:0 0 0 28px}
 /* rounded corner always on the slid page; the top band only adds to it where a safe area exists */
 body.menu-open .app{border-radius:28px 0 0 28px}
 body.menu-open .chatview{border-radius:28px 0 0 28px}
+
+/* when the page draws under the status bar (translucent mode), the band joins the slid page and carries the corner */
+body.sa.menu-open .app,body.sa.menu-open .chatview{border-radius:0 0 0 28px}
+body.sa.menu-open::before{border-radius:28px 0 0 0}
+body:not(.sa).menu-open::before{border-radius:0}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1058,6 +1066,8 @@ body.menu-open .chatview{border-radius:28px 0 0 28px}
   /* drawer */
   var layer=document.getElementById('layer'),drawer=document.getElementById('drawer'),opener=null;
   /* the phone's status bar takes the page's top color; it follows the menu when it opens */
+  (function(){var t=document.createElement('div');t.style.cssText='position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none';document.body.appendChild(t);
+    function chk(){body.classList.toggle('sa',t.offsetHeight>0)} chk(); window.addEventListener('resize',chk)})();
   var themeMeta=document.querySelector('meta[name="theme-color"]');
   if(!themeMeta){themeMeta=document.createElement('meta');themeMeta.name='theme-color';themeMeta.content='#E4F1EE';document.head.appendChild(themeMeta)}
   var BASE_THEME='#E4F1EE';
