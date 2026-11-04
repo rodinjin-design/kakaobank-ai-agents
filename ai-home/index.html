@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F3F8FB">
+<meta name="theme-color" content="#E4F1EE">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -23,7 +23,7 @@
 :root{
   --top:#F4F4F1; --top-card:#FFFFFF; --top-line:#E2E0DA;
   --top-fg:#1C1C1E; --top-sub:#6B6A6F;
-  --wash:radial-gradient(440px 380px at 0 0,#D6EFFA 0%,rgba(214,239,250,0) 100%),radial-gradient(400px 340px at 100% 60px,#E8F4CC 0%,rgba(232,244,204,0) 100%),linear-gradient(#F8FAFB,#FFFFFF 520px);
+  --wash:linear-gradient(#E4F1EE 0,rgba(228,241,238,0) 150px),radial-gradient(440px 380px at 0 0,#D6EFFA 0%,rgba(214,239,250,0) 100%),radial-gradient(400px 340px at 100% 60px,#E8F4CC 0%,rgba(232,244,204,0) 100%),linear-gradient(#F8FAFB,#FFFFFF 520px);
   --grad-text:linear-gradient(120deg,#0A8FC2,#4E8F0E);
   --ink:#1C1C1E;
   --sheet:#FFFFFF; --card:#FCFBF9; --fg:#1C1C1E; --sub:#66656A; --chip:#F2F4F6;
@@ -612,6 +612,25 @@ body:not(.chat) .chatview{transition:opacity .35s ease .45s,visibility 0s linear
 main{transition:transform .46s cubic-bezier(.2,.9,.25,1)}
 body:not(.chat) .chatview{transition:opacity .22s ease .12s,visibility 0s linear .34s}
 .acct{touch-action:manipulation}
+
+/* status bar band blends into the wash */
+html{background:#E4F1EE}
+body::before{background:#E4F1EE}
+body.chat::before{background:#E4F1EE}
+/* larger type in the side menu */
+.d-head h2{font-size:18px}
+.hist h3{font-size:13px}
+.hist .t{font-size:16px;max-width:220px}
+.hist .m{font-size:13px;margin-top:2px}
+.hist .st{width:7px;height:7px;margin-top:9px}
+.d-menu a{height:48px;font-size:16px}
+.d-menu svg{width:20px;height:20px}
+.me b{font-size:16px}
+.me small{font-size:13px}
+
+/* opened from the side menu: the sheet fills the whole screen */
+.bsheet.page .bs-panel{height:100%;border-radius:0;padding-top:env(safe-area-inset-top,0px);background:#F7F6F3}
+.bsheet.page .bs-grab{visibility:hidden}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1069,10 +1088,10 @@ body:not(.chat) .chatview{transition:opacity .22s ease .12s,visibility 0s linear
     render();
     /* opens at half height; scrolling the list or dragging the handle up takes it full */
     function setFull(on){sheetEl.classList.toggle('full',on);if(!on){scroller.scrollTop=0;fitHalf()}}
-    function openSheet(){lastFocus=document.activeElement;q.blur();setFull(false);scroller.scrollTop=0;sheetEl.hidden=false;fitHalf();body.classList.add('sheet-open');requestAnimationFrame(function(){requestAnimationFrame(function(){sheetEl.classList.add('open');panel.focus()})})}
-    function closeSheet(quiet){panel.style.transform='';sheetEl.classList.remove('open','full');body.classList.remove('sheet-open');setTimeout(function(){sheetEl.hidden=true},reduce?0:320);if(!quiet&&lastFocus&&lastFocus.focus)lastFocus.focus()}
+    function openSheet(full){lastFocus=document.activeElement;q.blur();sheetEl.classList.toggle('page',full===true);setFull(full===true);scroller.scrollTop=0;sheetEl.hidden=false;fitHalf();body.classList.add('sheet-open');requestAnimationFrame(function(){requestAnimationFrame(function(){sheetEl.classList.add('open');panel.focus()})})}
+    function closeSheet(quiet){setTimeout(function(){sheetEl.classList.remove('page')},reduce?0:420);panel.style.transform='';sheetEl.classList.remove('open','full');body.classList.remove('sheet-open');setTimeout(function(){sheetEl.hidden=true},reduce?0:320);if(!quiet&&lastFocus&&lastFocus.focus)lastFocus.focus()}
     window.__openBrowse=openSheet; window.__fitHalf=fitHalf;
-    document.querySelectorAll('[data-browse]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();if(b.closest('#drawer'))document.getElementById('menu-close').click();setTimeout(openSheet,b.closest('#drawer')?200:0)})});
+    document.querySelectorAll('[data-browse]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();if(b.closest('#drawer'))document.getElementById('menu-close').click();setTimeout(function(){openSheet(!!b.closest('#drawer'))},b.closest('#drawer')?200:0)})});
     document.getElementById('bs-close').addEventListener('click',function(){closeSheet()});
     scroller.addEventListener('scroll',function(){if(scroller.scrollTop>4&&!sheetEl.classList.contains('full'))setFull(true)},{passive:true});
     (function(){var ty=null;scroller.addEventListener('touchstart',function(e){ty=e.touches[0].clientY},{passive:true});
