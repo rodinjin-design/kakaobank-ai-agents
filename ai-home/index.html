@@ -724,6 +724,9 @@ body.sa.menu-open .chatview{border-radius:28px 0 0 28px}
 body.menu-open::before{opacity:0!important}
 body.menu-open .app{margin-top:calc(-1 * env(safe-area-inset-top,0px))!important;padding-top:env(safe-area-inset-top,0px)!important;border-radius:28px 0 0 28px!important}
 body.menu-open .chatview{border-radius:28px 0 0 28px!important}
+
+/* chat avatar: the brand's rounded spark on its own, no disc */
+.msg.ai .who{background:transparent!important;box-shadow:none!important;width:30px;height:30px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1014,7 +1017,7 @@ body.menu-open .chatview{border-radius:28px 0 0 28px!important}
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var body=document.body, cv=document.getElementById('chatview'), thread=document.getElementById('thread');
   var q=document.getElementById('q'), send=document.getElementById('send'), sheet=document.getElementById('sheet');
-  var STAR='<svg width="22" height="22" viewBox="0 0 28 28" aria-hidden="true"><path fill="url(#aig)" d="M14 2c1.4 5.6 5.2 9.6 11 11.2a1 1 0 0 1 0 1.6C19.2 16.4 15.4 20.4 14 26c-1.4-5.6-5.2-9.6-11-11.2a1 1 0 0 1 0-1.6C8.8 11.6 12.6 7.6 14 2z"/><rect x="12.8" y="9.6" width="2.4" height="8.8" rx="0.5" fill="#1C1C1E"/></svg>', acct=document.getElementById('acct');
+  var STAR='<svg width="26" height="26" viewBox="0 0 28 28" aria-hidden="true"><defs><linearGradient id="aig2" x1="0.15" y1="0.1" x2="0.85" y2="0.95"><stop offset="0" stop-color="#4FC3F0"/><stop offset="0.55" stop-color="#7FD3A4"/><stop offset="1" stop-color="#B9E04A"/></linearGradient></defs><path d="M14 3.2C15.5 9 19 12.5 24.8 14 19 15.5 15.5 19 14 24.8 12.5 19 9 15.5 3.2 14 9 12.5 12.5 9 14 3.2Z" fill="url(#aig2)" stroke="url(#aig2)" stroke-width="3.2" stroke-linejoin="round"/><rect x="12.85" y="9.6" width="2.3" height="8.8" rx="1.15" fill="#fff"/></svg>', acct=document.getElementById('acct');
 
   /* chat mode */
   function openChat(){
