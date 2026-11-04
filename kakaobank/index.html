@@ -277,5 +277,15 @@ document.querySelectorAll('.amt').forEach(function(el){if(on)el.setAttribute('ar
 </script>
 
 <script>try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}</script>
+<style id="aiovcss">#aiov{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}#aiov.on{background:rgba(0,0,0,.25);pointer-events:auto}#aiov iframe{position:absolute;left:50%;top:0;width:100%;max-width:480px;height:100%;border:0;background:#fff;transform:translate(-50%,100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}#aiov.on iframe{transform:translate(-50%,0)}</style>
+<div id="aiov" aria-hidden="true"></div>
+<script id="aiovjs">/* 우측 하단 AI 버튼 → 카뱅 AI 둘러보기 */
+(function(){var ov=document.getElementById('aiov'),fr=null;
+function open(){if(!fr){fr=document.createElement('iframe');fr.title='카뱅 AI';fr.src='agent.html?solo=1';ov.appendChild(fr);fr.getBoundingClientRect()}ov.setAttribute('aria-hidden','false');requestAnimationFrame(function(){ov.classList.add('on')});document.documentElement.style.overflow='hidden'}
+function close(){ov.classList.remove('on');ov.setAttribute('aria-hidden','true');document.documentElement.style.overflow=''}
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[aria-label="AI 어시스턴트"]');if(!a||e._kbSplit)return;e.preventDefault();open()});
+ov.addEventListener('click',function(e){if(e.target===ov)close()});
+addEventListener('message',function(e){if(e.data==='kbAgentClose')close()});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('on'))close()});})();</script>
 </body>
 </html>

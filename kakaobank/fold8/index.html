@@ -36,8 +36,9 @@ function chk(){clearTimeout(t);t=setTimeout(function(){if(innerWidth<560&&fsEl()
 function hook(w){['pointerup','touchend','click','keydown'].forEach(function(e){w.addEventListener(e,go,true)})}
 hook(window);addEventListener('resize',chk);
 /* 홈의 AI 버튼 → 오른쪽 카뱅 AI 대화 열기 */
-function wire(f,isHome){f.addEventListener('load',function(){try{var w=f.contentWindow;hook(w);
- if(isHome){w.document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('a[aria-label="AI 어시스턴트"]');if(b&&innerWidth>=560&&a.contentWindow.kbAgent){e.preventDefault();a.contentWindow.kbAgent.open()}},true)}}catch(e){}})}
+function wire(f,isHome){function run(){try{var w=f.contentWindow;if(!w||w.__kbWired)return;w.__kbWired=1;hook(w);
+ if(isHome){w.document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('a[aria-label="AI 어시스턴트"]');if(b&&innerWidth>=560&&a.contentWindow.kbAgent){e.preventDefault();e._kbSplit=true;a.contentWindow.kbAgent.open()}},true)}}catch(e){}}
+ f.addEventListener('load',run);try{if(f.contentDocument&&f.contentDocument.readyState==='complete'&&f.contentWindow.location.href!=='about:blank')run()}catch(e){}}
 wire(h,true);wire(a,false);
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
 })();

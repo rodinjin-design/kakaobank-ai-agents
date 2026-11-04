@@ -88,7 +88,7 @@ p,h1,h2{margin:0}
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD6C4"/><stop offset=".5" stop-color="#4F8CF7"/><stop offset="1" stop-color="#F7D84A"/></linearGradient></defs></svg>
 <header class="top">
- <button class="cb l" aria-label="메뉴"><svg class="i-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg><svg class="i-back" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M15 5l-7 7 7 7"/></svg></button>
+ <button class="cb l" aria-label="메뉴"><svg class="i-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg><svg class="i-back" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M15 5l-7 7 7 7"/></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F3442" stroke-width="2.2" stroke-linecap="round" style="display:none"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
 </header>
 
 <main class="view on" id="browse">
@@ -180,14 +180,16 @@ document.getElementById('chips').addEventListener('click',function(e){var b=e.ta
 document.getElementById('list').addEventListener('click',function(e){var a=e.target.closest('.ask');if(a){start(byId[a.dataset.id]);return}var m=e.target.closest('[data-cat]');if(m){cur=m.dataset.cat;render();document.getElementById('browse').scrollTop=0}});
 
 /* 화면 전환 */
-var views=['browse','chat','jobs'];
+var views=['browse','chat','jobs'],CUR='browse',SOLO=/[?&]solo=1/.test(location.search);
 function show(v){views.forEach(function(k){document.getElementById(k).classList.toggle('on',k===v)});
  document.querySelectorAll('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
- document.getElementById('composer').classList.toggle('on',v==='chat');var L=document.querySelector('.cb.l');L.querySelector('.i-menu').style.display=v==='browse'?'':'none';L.querySelector('.i-back').style.display=v==='browse'?'none':'';L.setAttribute('aria-label',v==='browse'?'메뉴':'둘러보기로');
+ document.getElementById('composer').classList.toggle('on',v==='chat');CUR=v;var L=document.querySelector('.cb.l'),b=v==='browse';L.querySelector('.i-menu').style.display=b&&!SOLO?'':'none';L.querySelector('.i-close').style.display=b&&SOLO?'':'none';L.querySelector('.i-back').style.display=b?'none':'';L.setAttribute('aria-label',b?(SOLO?'닫기':'메뉴'):'둘러보기로');
  if(v==='jobs')renderJobs();if(v==='chat')toBottom()}
 
 function openChat(){show('chat');if(!document.getElementById('msgs').children.length)hello()}
-document.querySelector('.cb.l').addEventListener('click',function(){show('browse')});
+document.querySelector('.cb.l').addEventListener('click',function(){if(CUR==='browse'&&SOLO){closeMe();return}show('browse')});
+function closeMe(){try{if(parent!==window){parent.postMessage('kbAgentClose','*');return}}catch(e){}if(history.length>1)history.back();else location.href='./'}
+show('browse');
 var tt;function toast(s){var t=document.getElementById('toast');t.textContent=s;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},1800)}
 
 /* 대화 */
