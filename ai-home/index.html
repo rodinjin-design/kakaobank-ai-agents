@@ -669,6 +669,14 @@ body.menu-open{overflow:hidden}
 .open .drawer{transform:none;opacity:1}
 .scrim{left:var(--dw);z-index:46;background:transparent;opacity:1}
 @media (prefers-reduced-motion:reduce){.app,.composer,.chatview,.drawer{transition:none}}
+
+/* menu open: the menu owns the whole screen edge to edge, status bar included */
+html:has(body.menu-open),body.menu-open{background:#F7F7F8}
+.drawer{top:0;bottom:0;height:auto;padding-top:calc(2px + env(safe-area-inset-top,0px))}
+.d-head{min-height:52px;padding:0 16px 0 22px}
+.d-head h2{font-size:26px}
+.d-scroll{padding-top:10px}
+body.menu-open .app{min-height:100vh}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
