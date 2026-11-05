@@ -865,6 +865,11 @@ body.band-white:not(.menu-open)::before{background:#fff}
 .pin .main-acc.acct-row{border-color:#B9BFC8}
 .dots i{background:rgba(0,0,0,.1)}
 .dots i.on{background:rgba(0,0,0,.2)}
+
+/* pinned account: nothing behind it shows through, above or beside the card */
+.pin.stuck{background:#fff!important;-webkit-backdrop-filter:none;backdrop-filter:none;transition:none}
+.pin.stuck::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:120px;background:#fff;pointer-events:none}
+.pin.stuck::after{height:36px!important;background:linear-gradient(#fff 45%,rgba(255,255,255,0))!important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1486,7 +1491,7 @@ body.band-white:not(.menu-open)::before{background:#fff}
       var h=top.offsetHeight||1, y=window.scrollY, p=Math.min(1,Math.max(0,y/h));
       if(!reduce){brief.style.opacity=String(1-p*0.85);brief.style.transform='translateY('+(p*h*0.25).toFixed(1)+'px) scale('+(1-p*0.04).toFixed(3)+')'}
       var r=pin.getBoundingClientRect(), t=parseFloat(getComputedStyle(pin).top)||0;
-      pin.classList.toggle('stuck',r.top<=t+0.5&&y>0);
+      pin.classList.toggle('stuck',r.top<=t+2&&y>0);
       /* the status-bar band follows the page: mint over the briefing, white once the white area reaches the top */
       var white=y>140; if(white!==body.classList.contains('band-white')){body.classList.toggle('band-white',white);if(!body.classList.contains('menu-open')){var tm=document.querySelector('meta[name="theme-color"]');if(tm)tm.setAttribute('content',white?'#FFFFFF':'#E4F1EE')}}
     }
