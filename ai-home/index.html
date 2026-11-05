@@ -805,6 +805,9 @@ body.page-open .composer{opacity:0;pointer-events:none}
 .pg-hv b{display:block;font-size:16px}
 .pg-hv small{display:block;margin-top:2px;font-size:13px;color:#3D6AF2}
 @media (prefers-reduced-motion:reduce){.subpage{transition:none}}
+
+body::before{transition:background-color .25s ease}
+body.band-white:not(.menu-open)::before{background:#fff}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4FC8F0"/><stop offset="1" stop-color="#B8E04A"/></linearGradient></defs></svg>
@@ -1397,6 +1400,8 @@ body.page-open .composer{opacity:0;pointer-events:none}
       if(!reduce){brief.style.opacity=String(1-p*0.85);brief.style.transform='translateY('+(p*h*0.25).toFixed(1)+'px) scale('+(1-p*0.04).toFixed(3)+')'}
       var r=pin.getBoundingClientRect(), t=parseFloat(getComputedStyle(pin).top)||0;
       pin.classList.toggle('stuck',r.top<=t+0.5&&y>0);
+      /* the status-bar band follows the page: mint over the briefing, white once the white area reaches the top */
+      var white=y>140; if(white!==body.classList.contains('band-white')){body.classList.toggle('band-white',white);if(!body.classList.contains('menu-open')){var tm=document.querySelector('meta[name="theme-color"]');if(tm)tm.setAttribute('content',white?'#FFFFFF':'#E4F1EE')}}
     }
     window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});
     window.addEventListener('resize',upd);upd();
