@@ -858,7 +858,7 @@ body.band-white:not(.menu-open)::before{background:#fff}
 /* ==== dark: briefing, chat and menu on near-black; the accounts sit on a white sheet ==== */
 :root{
   --top:#1B1B20; --top-card:#26272E; --top-line:#3A3B44; --top-fg:#EDEDF0; --top-sub:#A4A5AE; --ink:#EDEDF0;
-  --wash:radial-gradient(420px 320px at 0 0,rgba(79,200,240,.16) 0%,rgba(79,200,240,0) 100%),linear-gradient(#1B1B20,#1B1B20);
+  --wash:linear-gradient(#1B1B20,#1B1B20);
   color-scheme:dark;
 }
 html,html:has(body.menu-open),body.menu-open{background:#1B1B20}
@@ -898,17 +898,19 @@ body.chat .acct{background:var(--top-card);color:var(--top-fg);box-shadow:0 6px 
 .typing i{background:var(--top-sub)}
 .cv-title{color:var(--top-fg)}
 /* menu */
-.drawer{background:#141417;color:var(--top-fg)}
+.drawer{background:#1B1B20;color:var(--top-fg)}
 .d-head h2{color:var(--top-fg)}
 .drawer .d-menu a{color:var(--top-fg)}
 .drawer .d-menu a[aria-current]{background:#26272E}
+.drawer .d-menu a:hover,.drawer .hist li button:hover,.drawer .me:hover{background:#232429}
+body.menu-open .icon-btn,body.menu-open .icon-btn:hover{background:transparent}
 .drawer .d-menu a:hover,.drawer .hist li button:hover,.drawer .me:hover{background:#202127}
 .d-rule{background:#2C2D34}
 .drawer .hist h3{color:#7E808A}
 .drawer .hist .t,.drawer .hi{color:var(--top-fg)}
 .drawer .hi.wait{color:#5C5E68}
 .drawer .hist .m{color:#7E808A}
-.drawer .me{background:#141417;border-top-color:#2C2D34}
+.drawer .me{background:#1B1B20;border-top-color:#2C2D34}
 .drawer .me b{color:var(--top-fg)}
 .drawer .me small{color:#7E808A}
 .drawer .me .pic span{background:#26272E;color:var(--top-fg)}
@@ -1357,7 +1359,7 @@ body.menu-open .app{box-shadow:-8px 0 30px rgba(0,0,0,.5)}
   if(!themeMeta){themeMeta=document.createElement('meta');themeMeta.name='theme-color';themeMeta.content='#1B1B20';document.head.appendChild(themeMeta)}
   var BASE_THEME='#1B1B20';
   function setTheme(c){themeMeta.setAttribute('content',c)}
-  function openMenu(btn){opener=btn;layer.hidden=false;requestAnimationFrame(function(){layer.classList.add('open');body.classList.add('menu-open');setTheme('#141417');drawer.focus()});btn.setAttribute('aria-expanded','true')}
+  function openMenu(btn){opener=btn;layer.hidden=false;requestAnimationFrame(function(){layer.classList.add('open');body.classList.add('menu-open');setTheme('#1B1B20');drawer.focus()});btn.setAttribute('aria-expanded','true')}
   function closeMenu(){layer.classList.remove('open');body.classList.remove('menu-open');setTheme(body.classList.contains('band-white')?'#FFFFFF':BASE_THEME);if(opener){opener.setAttribute('aria-expanded','false');opener.focus()}setTimeout(function(){layer.hidden=true},reduce?0:380)}
   document.querySelectorAll('.menu-open').forEach(function(b){b.addEventListener('click',function(){openMenu(b)})});
   document.getElementById('menu-close').addEventListener('click',closeMenu);
