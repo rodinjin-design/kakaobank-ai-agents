@@ -871,6 +871,13 @@ body.band-white:not(.menu-open)::before{background:#fff}
 .pin.stuck::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:120px;background:#fff;pointer-events:none}
 .pin.stuck::after{height:36px!important;background:linear-gradient(#fff 45%,rgba(255,255,255,0))!important}
 
+/* menu footer: roomier */
+.drawer .me{padding:18px 24px max(18px,calc(env(safe-area-inset-bottom,0px) + 6px))!important;gap:12px;min-height:0}
+.drawer .me .pic{width:44px;height:44px;padding:2px}
+.drawer .me .pic span{font-size:16px}
+.drawer .me b{font-size:16px;line-height:1.3}
+.drawer .me small{font-size:13px;line-height:1.3}
+
 /* ==== dark: briefing, chat and menu on near-black; the accounts sit on a white sheet ==== */
 :root{
   --top:#1B1B20; --top-card:#26272E; --top-line:#3A3B44; --top-fg:#EDEDF0; --top-sub:#A4A5AE; --ink:#EDEDF0;
@@ -904,7 +911,8 @@ body.chat .field{background:linear-gradient(var(--top-card),var(--top-card)) pad
 .field input::placeholder{color:#8F949B}
 body.chat .field .browse,body.chat .field input{color:var(--top-fg)}
 body.chat .field input::placeholder{color:var(--top-sub)}
-body.chat .send:disabled{background:#33343C}
+body.chat .send,body.chat .send:disabled{background:linear-gradient(135deg,#4FC3F0 0%,#7FD3A4 55%,#B9E04A 100%);opacity:1}
+body.chat .send svg,body.chat .send:disabled svg{stroke:#fff}
 body.chat .acct{background:var(--top-card);color:var(--top-fg);box-shadow:0 6px 20px rgba(0,0,0,.35),inset 0 0 0 1px var(--top-line)}
 .msg.me{background:var(--top-card);color:var(--top-fg);box-shadow:none}
 .msg .card{background:var(--top-card);box-shadow:none}
