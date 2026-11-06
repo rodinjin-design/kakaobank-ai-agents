@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1795,7 +1795,12 @@ window.__splashMs=10000;
 <script>
 (function(){
   var mq=window.matchMedia('(min-width:600px)'),layer=document.getElementById('layer');
-  function sync(){ if(mq.matches&&layer){layer.hidden=false;layer.classList.add('open')} }
+  function sync(){
+    if(!layer)return;
+    if(mq.matches){layer.hidden=false;layer.classList.add('open')}
+    else{layer.classList.remove('open');layer.hidden=true;document.body.classList.remove('menu-open')}
+    window.scrollTo(0,window.scrollY);
+  }
   sync(); mq.addEventListener&&mq.addEventListener('change',sync);
   // keep the open menu item highlighted
   var links=[].slice.call(document.querySelectorAll('.drawer .d-menu a'));
