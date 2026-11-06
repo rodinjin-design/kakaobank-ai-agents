@@ -945,6 +945,8 @@ body.menu-open .app{box-shadow:-8px 0 30px rgba(0,0,0,.5)}
 /* ==== fold: unfolded screen = menu (left) + home (right) ==== */
 @media (min-width:600px){
   :root{--L:clamp(280px,40vw,400px)}
+  html,body,.drawer,.drawer .hist,.subpage,.chatview,.bs-scroll{scrollbar-width:none}
+  ::-webkit-scrollbar{display:none;width:0;height:0}
   html,body{background:#141418}
   body{padding-left:var(--L)}
   .app{max-width:none;margin:0}
