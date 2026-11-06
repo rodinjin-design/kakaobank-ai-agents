@@ -943,6 +943,11 @@ body.menu-open .icon-btn,body.menu-open .icon-btn:hover{background:transparent}
 body.menu-open .app{box-shadow:-8px 0 30px rgba(0,0,0,.5)}
 
 /* ==== fold: unfolded screen = menu (left) + home (right) ==== */
+/* cover screen is wider than a phone: fill it edge to edge */
+.app{max-width:none!important;margin:0!important}
+.composer form{max-width:none}
+.composer{padding-left:16px;padding-right:16px}
+html,body{background:#1B1B20}
 @media (min-width:600px){
   :root{--L:clamp(280px,40vw,400px)}
   html,body,.drawer,.drawer .hist,.subpage,.chatview,.bs-scroll{scrollbar-width:none}
