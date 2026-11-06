@@ -945,6 +945,7 @@ body.menu-open .app{box-shadow:-8px 0 30px rgba(0,0,0,.5)}
 /* ==== fold: unfolded screen = menu (left) + home (right) ==== */
 /* cover screen is wider than a phone: fill it edge to edge */
 .app{max-width:none!important;margin:0!important}
+.cv-in,.bs-panel,.pg-in{max-width:none!important}
 .composer form{max-width:none}
 .composer{padding-left:16px;padding-right:16px}
 html,body{background:#1B1B20}
@@ -965,7 +966,9 @@ html,body{background:#1B1B20}
   body.menu-open .app,body.menu-open .composer,body.menu-open .chatview,body.menu-open::before{transform:none!important}
   body.menu-open{overflow:visible}
   body.menu-open .app{margin-top:0!important;padding-top:0!important;border-radius:0!important;box-shadow:none!important}
-  html::after{content:"";position:fixed;top:0;bottom:0;left:var(--L);right:0;border-radius:28px 0 0 28px;box-shadow:0 0 0 40px #141418;pointer-events:none;z-index:59}
+  html::after{content:"";position:fixed;top:0;bottom:0;left:var(--L);right:0;border-radius:28px 0 0 28px;box-shadow:0 0 0 40px #141418;pointer-events:none;z-index:61}
+  .drawer{z-index:62!important}
+  .bsheet .bs-scrim{display:none}
 }
 </style>
 
@@ -1810,8 +1813,14 @@ window.__splashMs=10000;
   // keep the open menu item highlighted
   var links=[].slice.call(document.querySelectorAll('.drawer .d-menu a'));
   function mark(a){links.forEach(function(x){x===a?x.setAttribute('aria-current','page'):x.removeAttribute('aria-current')})}
-  links.forEach(function(a){a.addEventListener('click',function(){if(mq.matches&&!a.hasAttribute('data-browse'))mark(a)})});
-  document.addEventListener('click',function(e){if(mq.matches&&e.target.closest('.pg-back'))mark(document.getElementById('d-home'))});
+  var home=document.getElementById('d-home');
+  links.forEach(function(a){a.addEventListener('click',function(){if(mq.matches)mark(a)})});
+  document.addEventListener('click',function(e){if(mq.matches&&e.target.closest('.pg-back,#bs-close'))mark(home)});
+  // AI 홈 from the menu brings the right pane back to the home
+  home.addEventListener('click',function(){ if(!mq.matches)return;
+    var bs=document.querySelector('.bsheet.open'); if(bs){var c=document.getElementById('bs-close');c&&c.click()}
+    document.querySelectorAll('.subpage.open').forEach(function(pg){var b=pg.querySelector('.pg-back');b&&b.click()});
+    mark(home); });
   // after closeMenu() hides the layer, show it again
   new MutationObserver(function(){ if(mq.matches&&layer.hidden)layer.hidden=false }).observe(layer,{attributes:true,attributeFilter:['hidden']});
 })();
