@@ -1141,7 +1141,7 @@ window.__splashMs=10000;
       <button class="icon-btn menu-open" aria-label="메뉴 열기" aria-controls="drawer" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h16M3 11h16M3 16h10"/></svg></button>
     </header>
     <div class="brief">
-      <p id="brief-roll">좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어,<br><a class="hl" href="#acc-goal">목표적금</a>을 늘려볼 만해요.</p>
+      <p id="brief-roll">좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어요.<br><a class="hl" href="#acc-goal">목표적금</a> 추가 납입, 해드릴까요?</p>
     </div>
     <div class="promo2 promo-dark">
       <a class="promo2-t" href="#">카카오뱅크 카드로 결제하면<br>지금 바로 최대 5만원</a>
@@ -1785,8 +1785,8 @@ window.__splashMs=10000;
   var el=document.getElementById('brief-roll'); if(!el)return;
   var MSG=[
     el.innerHTML,
-    '이번 주 해외결제가 예정돼 있어요.<br>달러 잔액이 <a class="hl num" href="#acc-fx">24 USD</a> 부족해,<br>오늘 환율로 <a class="hl" href="#acc-fx">외화 충전</a>을<br>미리 해두면 좋아요.',
-    '내일은 26주적금 <span class="hl num">4주차</span> 납입일이에요.<br>생활비 통장에서 <span class="hl num">25,000원</span>을<br>옮겨두면 <a class="hl" href="#g26">26주적금</a>을<br>빠짐없이 이어갈 수 있어요.'
+    '이번 주 해외결제가 예정돼 있어요.<br>달러 잔액이 <a class="hl num" href="#acc-fx">24 USD</a> 부족해요.<br>오늘 환율로 <a class="hl" href="#acc-fx">외화 충전</a>을<br>미리 해드릴까요?',
+    '내일은 26주적금 <span class="hl num">4주차</span> 납입일이에요.<br>생활비 통장의 <span class="hl num">25,000원</span>으로<br><a class="hl" href="#g26">26주적금</a> 납입을<br>미리 해드릴까요?'
   ];
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   // keep the height of the tallest message so the page below never jumps
