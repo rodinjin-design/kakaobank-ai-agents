@@ -878,6 +878,13 @@ body.band-white:not(.menu-open)::before{background:#fff}
 .drawer .me b{font-size:16px;line-height:1.3}
 .drawer .me small{font-size:13px;line-height:1.3}
 
+/* briefing: three messages roll in, typed with a soft blur */
+#brief-roll{position:relative}
+#brief-roll .tc{display:inline;opacity:0;filter:blur(8px);animation:tcIn .55s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes tcIn{to{opacity:1;filter:blur(0)}}
+#brief-roll.leaving{transition:opacity .5s ease,filter .5s ease;opacity:0;filter:blur(10px)}
+@media (prefers-reduced-motion:reduce){#brief-roll .tc{animation:none;opacity:1;filter:none}}
+
 /* ==== dark: briefing, chat and menu on near-black; the accounts sit on a white sheet ==== */
 :root{
   --top:#1B1B20; --top-card:#26272E; --top-line:#3A3B44; --top-fg:#EDEDF0; --top-sub:#A4A5AE; --ink:#EDEDF0;
@@ -1132,7 +1139,7 @@ window.__splashMs=10000;
       <button class="icon-btn menu-open" aria-label="메뉴 열기" aria-controls="drawer" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h16M3 11h16M3 16h10"/></svg></button>
     </header>
     <div class="brief">
-      <p>좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어,<br><a class="hl" href="#acc-goal">목표적금</a>을 늘려볼 만해요.</p>
+      <p id="brief-roll">좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어,<br><a class="hl" href="#acc-goal">목표적금</a>을 늘려볼 만해요.</p>
     </div>
     <div class="promo2 promo-dark">
       <a class="promo2-t" href="#">카카오뱅크 카드로 결제하면<br>지금 바로 최대 5만원</a>
@@ -1771,5 +1778,43 @@ window.__splashMs=10000;
   })();
 })();
 </script>
+<script>
+(function(){
+  var el=document.getElementById('brief-roll'); if(!el)return;
+  var MSG=[
+    el.innerHTML,
+    '이번 주 해외결제가 예정돼 있어요.<br>달러 잔액이 <a class="hl num" href="#acc-fx">24 USD</a> 부족해,<br>오늘 환율로 <a class="hl" href="#acc-fx">외화 충전</a>을<br>미리 해두면 좋아요.',
+    '내일은 26주적금 <span class="hl num">4주차</span> 납입일이에요.<br>생활비 통장에서 <span class="hl num">25,000원</span>을<br>옮겨두면 <a class="hl" href="#g26">26주적금</a>을<br>빠짐없이 이어갈 수 있어요.'
+  ];
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // keep the height of the tallest message so the page below never jumps
+  var h=0; MSG.forEach(function(m){el.innerHTML=m;h=Math.max(h,el.offsetHeight)}); el.style.minHeight=h+'px';
+  function type(html){
+    el.innerHTML=html; if(reduce)return 0;
+    var n=0,STEP=34;
+    (function walk(node){
+      [].slice.call(node.childNodes).forEach(function(c){
+        if(c.nodeType===3){
+          var f=document.createDocumentFragment();
+          Array.from(c.nodeValue).forEach(function(ch){var s=document.createElement('span');s.className='tc';s.textContent=ch;s.style.animationDelay=(n++*STEP)+'ms';f.appendChild(s)});
+          c.parentNode.replaceChild(f,c);
+        } else if(c.nodeType===1&&c.tagName!=='BR') walk(c);
+      });
+    })(el);
+    return n*STEP+550;
+  }
+  var i=0,HOLD=4200;
+  function next(){
+    var t=type(MSG[i]);
+    setTimeout(function(){
+      if(reduce){i=(i+1)%MSG.length;return next()}
+      el.classList.add('leaving');
+      setTimeout(function(){el.classList.remove('leaving');i=(i+1)%MSG.length;next()},520);
+    },t+HOLD);
+  }
+  next();
+})();
+</script>
+
 
 </html>
