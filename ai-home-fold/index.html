@@ -882,7 +882,9 @@ body.band-white:not(.menu-open)::before{background:#fff}
 #brief-roll{position:relative}
 #brief-roll .tc{display:inline;opacity:0;filter:blur(8px);animation:tcIn .55s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes tcIn{to{opacity:1;filter:blur(0)}}
-#brief-roll.leaving{transition:opacity .5s ease,filter .5s ease;opacity:0;filter:blur(10px)}
+#brief-roll .ghost{position:absolute;left:0;top:0;right:0;pointer-events:none;animation:ghostOut .8s ease forwards}
+#brief-roll .ghost .tc{animation:none;opacity:1;filter:none}
+@keyframes ghostOut{to{opacity:0;filter:blur(10px)}}
 @media (prefers-reduced-motion:reduce){#brief-roll .tc{animation:none;opacity:1;filter:none}}
 
 /* ==== dark: briefing, chat and menu on near-black; the accounts sit on a white sheet ==== */
@@ -1168,7 +1170,7 @@ window.__splashMs=10000;
       <button class="icon-btn menu-open" aria-label="메뉴 열기" aria-controls="drawer" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h16M3 11h16M3 16h10"/></svg></button>
     </header>
     <div class="brief">
-      <p id="brief-roll">좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어,<br><a class="hl" href="#acc-goal">목표적금</a>을 늘려볼 만해요.</p>
+      <p id="brief-roll">좋은 아침이에요, 하늘님.<br>오늘 월급 <a class="hl num" href="#acc-main">3,240,000원</a>이 들어왔어요.<br>카드값 <span class="hl num">842,000원</span>을 빼도 여유가 있어요.<br><a class="hl" href="#acc-goal">목표적금</a> 추가 납입, 해드릴까요?</p>
     </div>
     <div class="promo2 promo-dark">
       <a class="promo2-t" href="#">카카오뱅크 카드로 결제하면<br>지금 바로 최대 5만원</a>
@@ -1556,6 +1558,7 @@ window.__splashMs=10000;
     if(/코스피|주식|투자|펀드|MMF/i.test(t))return {text:'코스피가 다시 7천을 넘을지는 누구도 장담하기 어려워요. 대신 지금 하늘님이 투자 중인 자산을 정리해 봤어요.',card:[['MMF박스','30,571,724원'],['펀드 3개','98,000원'],['오늘 손익','+653원']],act:'투자 현황 보기'};
     if(/카드/.test(t))return {text:'이번 달 카드값은 842,000원이고 11월 14일에 대표 통장에서 나가요. 지금 잔액 43,016,000원으로 충분해요.',card:[['결제일','11월 14일'],['결제 예정','842,000원'],['결제 후 잔액','42,174,000원']],act:'지금 미리 갚기'};
     if(/나눠|배분/.test(t))return {text:'월급 3,240,000원을 지난 3개월 패턴대로 나눠봤어요. 확인하시면 바로 옮길게요.',card:[['생활비','1,600,000원'],['카드값','842,000원'],['목표적금','300,000원'],['26주적금','58,000원'],['세이프박스','440,000원']],act:'이대로 나누기'};
+    if(/26주/.test(t))return {text:'내일 26주적금 4주차 납입일이라, 생활비 통장에서 25,000원을 미리 옮겨둘게요. 잔액이 부족해 회차가 빠질 일은 없어요.',card:[['납입','26주적금 4주차'],['금액','25,000원'],['출금 통장','김하늘의 생활비 통장']],act:'미리 납입하기'};
     if(/적금|목표/.test(t))return {text:'목표적금(명품목걸이사기)을 월 10만원 늘리면 목표 300만원에 4개월 빨리 도달해요.',card:[['현재','월 200,000원'],['변경 후','월 300,000원'],['목표 달성','2027년 6월 → 2월']],act:'월 10만원 늘리기'};
     if(/달러|환전|외화|해외/.test(t))return {text:'외화통장에 90.00 USD가 있어요. 오늘 환율로 100 USD를 채우면 약 138,000원이 들어요.',card:[['충전 금액','100 USD'],['예상 원화','약 138,000원'],['충전 후','190.00 USD']],act:'100 USD 충전'};
     return {text:'확인했어요. 관련 계좌를 살펴보고 정리해 드릴게요.'};
@@ -1812,13 +1815,15 @@ window.__splashMs=10000;
   var el=document.getElementById('brief-roll'); if(!el)return;
   var MSG=[
     el.innerHTML,
-    '이번 주 해외결제가 예정돼 있어요.<br>달러 잔액이 <a class="hl num" href="#acc-fx">24 USD</a> 부족해,<br>오늘 환율로 <a class="hl" href="#acc-fx">외화 충전</a>을<br>미리 해두면 좋아요.',
-    '내일은 26주적금 <span class="hl num">4주차</span> 납입일이에요.<br>생활비 통장에서 <span class="hl num">25,000원</span>을<br>옮겨두면 <a class="hl" href="#g26">26주적금</a>을<br>빠짐없이 이어갈 수 있어요.'
+    '이번 주 해외결제가 예정돼 있어요.<br>달러 잔액이 <a class="hl num" href="#acc-fx">24 USD</a> 부족해요.<br>오늘 환율로 <a class="hl" href="#acc-fx">외화 충전</a>을<br>미리 해드릴까요?',
+    '내일은 26주적금 <span class="hl num">4주차</span> 납입일이에요.<br>생활비 통장의 <span class="hl num">25,000원</span>으로<br><a class="hl" href="#g26">26주적금</a> 납입을<br>미리 해드릴까요?'
   ];
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   // keep the height of the tallest message so the page below never jumps
   var h=0; MSG.forEach(function(m){el.innerHTML=m;h=Math.max(h,el.offsetHeight)}); el.style.minHeight=h+'px';
   function type(html){
+    var old=el.querySelector('.ghost'); if(old)old.remove();
+    var prev=el.innerHTML;
     el.innerHTML=html; if(reduce)return 0;
     var n=0,STEP=34;
     (function walk(node){
@@ -1830,15 +1835,22 @@ window.__splashMs=10000;
         } else if(c.nodeType===1&&c.tagName!=='BR') walk(c);
       });
     })(el);
+    // the outgoing message dissolves on top while the next one types in
+    if(prev&&el.dataset.rolled){var g=document.createElement('div');g.className='ghost';g.setAttribute('aria-hidden','true');g.innerHTML=prev;el.appendChild(g);setTimeout(function(){g.remove()},850)}
+    el.dataset.rolled='1';
     return n*STEP+550;
   }
   var i=0,HOLD=4200;
+  // tapping the briefing hands that request to the chat
+  var ASK=['목표적금 추가 납입해줘','외화 미리 충전해줘','26주적금 4주차 납입 미리 해줘'];
+  el.style.cursor='pointer'; el.setAttribute('role','button'); el.tabIndex=0;
+  function go(e){ if(e){e.preventDefault();e.stopPropagation()} if(window.__startTask)window.__startTask(ASK[i]) }
+  el.addEventListener('click',go);
+  el.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' ')go(e)});
   function next(){
     var t=type(MSG[i]);
     setTimeout(function(){
-      if(reduce){i=(i+1)%MSG.length;return next()}
-      el.classList.add('leaving');
-      setTimeout(function(){el.classList.remove('leaving');i=(i+1)%MSG.length;next()},520);
+      i=(i+1)%MSG.length; next();
     },t+HOLD);
   }
   next();
