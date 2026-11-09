@@ -1063,7 +1063,7 @@ window.__splashMs=10000;
   if(tm)tm.setAttribute('content','#000000');
   document.documentElement.style.overflow='hidden';
   var done=false;
-  function end(){ if(done)return; done=true; sp.classList.add('out');
+  function end(){ if(done)return; done=true; sp.classList.add('out'); window.dispatchEvent(new Event('splash-end'));
     document.documentElement.style.overflow='';
     if(tm){var b=document.body;tm.setAttribute('content',prev)}
     setTimeout(function(){window.__splashDone=true;sp.remove()},650); }
@@ -1704,13 +1704,16 @@ window.__splashMs=10000;
     if(reduce)return;
     var seen=false; try{seen=sessionStorage.getItem('aihome-peek')==='1'}catch(e){}
     if(seen)return;
-    var t1=setTimeout(function(){
+    var t1, run=function(){
       if(body.classList.contains('chat')||window.scrollY>0)return;
       body.classList.add('peek');
       setTimeout(function(){body.classList.add('peek-back');body.classList.remove('peek');
         setTimeout(function(){body.classList.remove('peek-back')},1350)},1500);
       try{sessionStorage.setItem('aihome-peek','1')}catch(e){}
-    },(window.__splashMs?window.__splashMs+500:0)+700);
+    };
+    // start right as the splash clears (or almost at once without one)
+    if(document.getElementById('splash')){window.addEventListener('splash-end',function(){t1=setTimeout(run,150)},{once:true})}
+    else t1=setTimeout(run,400);
     function cancel(){clearTimeout(t1);body.classList.remove('peek')}
     q.addEventListener('focus',cancel);
     window.addEventListener('scroll',cancel,{once:true,passive:true});
