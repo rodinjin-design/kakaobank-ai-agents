@@ -986,6 +986,11 @@ html,body{background:#1B1B20}
   html::after{content:"";position:fixed;top:0;bottom:0;left:var(--L);right:0;border-radius:28px 0 0 28px;box-shadow:0 0 0 40px #141418;pointer-events:none;z-index:61}
   .drawer{z-index:62!important}
   .bsheet .bs-scrim{display:none}
+  /* pages opened from the menu slide in from the right */
+  .subpage{opacity:0;transform:translateX(100%);transition:transform .42s cubic-bezier(.22,.8,.2,1),opacity 0s linear .42s,left .3s ease}
+  .subpage.open{opacity:1;transform:none;transition:transform .42s cubic-bezier(.22,.8,.2,1),opacity 0s,left .3s ease}
+  .bsheet.page .bs-panel{transform:translateX(100%)!important;transition:transform .42s cubic-bezier(.22,.8,.2,1)!important}
+  .bsheet.page.open .bs-panel{transform:none!important}
 }
 </style>
 
@@ -1878,7 +1883,7 @@ window.__splashMs=10000;
   }
   sync(); mq.addEventListener&&mq.addEventListener('change',sync);
   var mb=document.querySelector('.icon-btn.menu-open');
-  if(mb)mb.addEventListener('click',function(e){ if(!mq.matches)return; e.stopImmediatePropagation(); e.preventDefault();
+  if(mb)mb.addEventListener('click',function(e){ if(!mq.matches)return; e.stopImmediatePropagation(); e.preventDefault(); if(!e.isTrusted)return;
     var h=document.body.classList.toggle('fold-hide'); mb.setAttribute('aria-expanded',String(!h)); },true);
   // keep the open menu item highlighted
   var links=[].slice.call(document.querySelectorAll('.drawer .d-menu a'));
