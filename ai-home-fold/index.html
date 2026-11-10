@@ -973,7 +973,13 @@ html,body{background:#1B1B20}
   .drawer{transform:none!important;opacity:1!important;visibility:visible!important;width:var(--L)!important;background:#141418!important;box-shadow:none!important;z-index:51}
   .drawer .me{background:#141418!important}
   .drawer .d-menu a[aria-current]{background:#23242B}
-  .icon-btn.menu-open,.pg-menu,#menu-close{display:none!important}
+  .pg-menu,#menu-close{display:none!important}
+  /* the list button folds the menu away and gives the home the full width */
+  body.fold-hide{--L:0px}
+  body.fold-hide .drawer{visibility:hidden!important}
+  body.fold-hide::after{display:none}
+  html:has(body.fold-hide)::after{border-radius:0;box-shadow:none}
+  body,.composer,.chatview,.bsheet,.subpage{transition:padding-left .3s ease,left .3s ease}
   body.menu-open .app,body.menu-open .composer,body.menu-open .chatview,body.menu-open::before{transform:none!important}
   body.menu-open{overflow:visible}
   body.menu-open .app{margin-top:0!important;padding-top:0!important;border-radius:0!important;box-shadow:none!important}
@@ -1871,6 +1877,9 @@ window.__splashMs=10000;
     window.scrollTo(0,window.scrollY);
   }
   sync(); mq.addEventListener&&mq.addEventListener('change',sync);
+  var mb=document.querySelector('.icon-btn.menu-open');
+  if(mb)mb.addEventListener('click',function(e){ if(!mq.matches)return; e.stopImmediatePropagation(); e.preventDefault();
+    var h=document.body.classList.toggle('fold-hide'); mb.setAttribute('aria-expanded',String(!h)); },true);
   // keep the open menu item highlighted
   var links=[].slice.call(document.querySelectorAll('.drawer .d-menu a'));
   function mark(a){links.forEach(function(x){x===a?x.setAttribute('aria-current','page'):x.removeAttribute('aria-current')})}
