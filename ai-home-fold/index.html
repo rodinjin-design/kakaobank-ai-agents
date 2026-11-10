@@ -953,6 +953,7 @@ body.menu-open .icon-btn,body.menu-open .icon-btn:hover{background:transparent}
 .drawer .me .pic span{background:#26272E;color:var(--top-fg)}
 body.menu-open .app{box-shadow:-8px 0 30px rgba(0,0,0,.5)}
 
+@keyframes foldIn{from{transform:translateX(100%)}to{transform:none}}
 /* ==== fold: unfolded screen = menu (left) + home (right) ==== */
 /* cover screen is wider than a phone: fill it edge to edge */
 .app{max-width:none!important;margin:0!important}
@@ -987,10 +988,12 @@ html,body{background:#1B1B20}
   .drawer{z-index:62!important}
   .bsheet .bs-scrim{display:none}
   /* pages opened from the menu slide in from the right */
-  .subpage{opacity:0;transform:translateX(100%);transition:transform .42s cubic-bezier(.22,.8,.2,1),opacity 0s linear .42s,left .3s ease}
-  .subpage.open{opacity:1;transform:none;transition:transform .42s cubic-bezier(.22,.8,.2,1),opacity 0s,left .3s ease}
-  .bsheet.page .bs-panel{transform:translateX(100%)!important;transition:transform .42s cubic-bezier(.22,.8,.2,1)!important}
-  .bsheet.page.open .bs-panel{transform:none!important}
+  .subpage,.subpage.open{transform:none;opacity:1;transition:left .3s ease!important}
+  .subpage.open{animation:foldIn .45s cubic-bezier(.22,.8,.2,1) both}
+  .subpage:not(.open){transform:translateX(100%)}
+  .bsheet.page:not(.open) .bs-panel{transform:translateX(100%)}
+  .bsheet.page .bs-panel,.bsheet.page.open .bs-panel{transform:none;transition:none!important}
+  .bsheet.page.open .bs-panel{animation:foldIn .45s cubic-bezier(.22,.8,.2,1) both}
 }
 </style>
 
