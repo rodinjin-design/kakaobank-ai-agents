@@ -1,0 +1,64 @@
+/* Intelligent UI Kit — generated from tokens.json */
+@font-face{font-family:'Pretendard';src:url(fonts/PretendardVariable.woff2) format('woff2');font-weight:45 920;font-style:normal;font-display:swap}
+:root{
+  --ink: #1C1C1E;
+  --ink-body: #3A3D42;
+  --ink-sub: #6B6A6F;
+  --ink-sub-strong: #6B707A;
+  --ink-mute: #8A8F98;
+  --ink-faint: #9AA0A8;
+  --brand: #3D6AF2;
+  --brand-hover: #2F5FE8;
+  --brand-tint: #EBF1FE;
+  --brand-tint-hover: #DFE8FD;
+  --on-brand: #FFFFFF;
+  --hl-line: #B9CBFB;
+  --chip-line: #A9BEF7;
+  --chip-fill: rgba(255,255,255,0.8);
+  --grad-a: #4FC8F0;
+  --grad-b: #B8E04A;
+  --on-grad: #111111;
+  --rise: #D5483A;
+  --wash-mint: #E4F1EE;
+  --wash-sky: #D6EFFA;
+  --wash-lime: #E8F4CC;
+  --wash-base: #F8FAFB;
+  --surface: #FFFFFF;
+  --surface-sunk: #F2F4F6;
+  --surface-warm: #F7F6F3;
+  --line: #E3E7EC;
+  --rule: #E6E8EB;
+  --dot: #C3C7CD;
+  --press: rgba(28,28,30,0.06);
+  --focus: #3D6AF2;
+  --logo-yellow: #FFE14F;
+  --logo-orange: #EE8A5C;
+  --logo-teal: #4BB5B8;
+  --logo-purple: #8E4FA8;
+  --logo-sky: #7AA3D6;
+  --logo-gold: #ECC23A;
+  --logo-pink: #E48FA6;
+  --space-chip: 8px;
+  --space-card: 14px;
+  --space-thread: 16px;
+  --space-gutter: 24px;
+  --radius-card: 16px;
+  --radius-chip: 18px;
+  --radius-bubble: 18px;
+  --radius-pill: 20px;
+  --radius-tile: 24px;
+  --radius-field: 28px;
+  --shadow-card: 0 1px 2px rgba(28,28,30,0.04), 0 6px 18px rgba(28,28,30,0.06);
+  --shadow-bubble: 0 1px 2px rgba(28,28,30,0.05), 0 4px 14px rgba(28,28,30,0.06);
+  --shadow-field: 0 6px 20px rgba(20,30,50,0.1);
+  --font-sans: Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+}
+.t-brief{font-family:var(--font-sans);font-size:19px;line-height:1.6;font-weight:500}
+.t-say{font-family:var(--font-sans);font-size:17px;line-height:1.45;font-weight:700}
+.t-message{font-family:var(--font-sans);font-size:15px;line-height:1.6;font-weight:400}
+.t-input{font-family:var(--font-sans);font-size:16px;line-height:1.2;font-weight:400}
+.t-chip{font-family:var(--font-sans);font-size:13px;line-height:1.2;font-weight:500}
+.t-amount{font-family:var(--font-sans);font-size:20px;line-height:1.3;font-weight:700}
+.t-account-name{font-family:var(--font-sans);font-size:15px;line-height:1.3;font-weight:400}
+.t-card-row{font-family:var(--font-sans);font-size:14px;line-height:1.5;font-weight:400}
+.t-button{font-family:var(--font-sans);font-size:14px;line-height:1.2;font-weight:700}
