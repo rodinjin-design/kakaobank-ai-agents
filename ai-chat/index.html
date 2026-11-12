@@ -236,6 +236,17 @@ body.menu-open #menu-open{background:rgba(255,255,255,.7)}
 .bs-close .bs-menu-ic{display:none}
 .bsheet.page .bs-close .bs-menu-ic{display:block}
 .bsheet.page .bs-close .bs-x-ic{display:none}
+
+/* 오늘 변화 카드: 가로형, 바뀐 내용만 */
+.chg-list{display:flex;flex-direction:column;gap:10px}
+.chg{width:100%;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:0;border-radius:16px;background:var(--card);text-align:left;font:inherit;color:var(--fg);box-shadow:0 1px 2px rgba(28,28,30,.04),0 6px 18px rgba(28,28,30,.06)}
+.chg:active{transform:scale(.99)}
+.chg .lg{margin-top:1px}
+.chg-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.chg-name{font-size:15px;font-weight:600;color:var(--ink2);line-height:28px;margin-top:-2px}
+.chg-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:15px}
+.chg-row span{color:var(--mute);min-width:0}
+.chg-row b{flex:none;font-weight:700}
 </style>
 </head>
 <body>
@@ -249,32 +260,29 @@ body.menu-open #menu-open{background:rgba(255,255,255,.7)}
 
     <div class="msg">
       <h2 class="say">오늘 <em>3곳</em>에서 돈이 움직였어요</h2>
-      <div class="acct-row" id="acc-main">
-        <span class="lg lg-y" aria-hidden="true">B</span>
-        <div class="ar-name">김하늘님의 통장 <span class="ar-dot" aria-hidden="true">·</span> <span class="ar-kind">저금통</span></div>
-        <div class="ar-amt num">43,016,000<small>원</small></div>
-        <button class="ar-go" type="button" data-ask="이체할래요">이체</button>
-        <div class="ar-today num">
-          <span class="up">+3,240,000원 <span>월급 · 하늘상사</span></span>
-          <span class="down">-842,000원 <span>카드값 자동출금</span></span>
-        </div>
-        <div class="ar-sub num">마이너스 <b>21,041,621원</b><br>세이프박스 <b>100,000,000원</b> · 이자 <b>180,000원</b></div>
-      </div>
-      <div class="inv">
-        <a class="inv-card" href="#acc-main">
-          <span class="inv-h"><span class="lg" style="background:#EE8A5C" aria-hidden="true">₩</span><span><b>MMF박스</b><small>당일 출금 가능</small></span></span>
-          <svg class="spark" viewBox="0 0 140 36" preserveAspectRatio="none" aria-hidden="true"><path d="M2 30c10-1 18-3 28-3s18 2 28-1 18-6 28-9 14-3 22-7 18-5 30-8" fill="none" stroke="#D5483A" stroke-width="2.4" stroke-linecap="round"/></svg>
-          <b class="inv-amt num">30,571,724원</b>
-          <span class="inv-r up num">↗ 연 3.12%</span>
-          <span class="inv-d num">오늘 <em class="up">+2,613원</em></span>
-        </a>
-        <a class="inv-card" href="#acc-main">
-          <span class="inv-h"><span class="lg" style="background:#4BB5B8" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="7" width="3" height="6" rx="1" fill="#fff"/><rect x="5.5" y="4" width="3" height="9" rx="1" fill="#fff"/><rect x="10" y="1" width="3" height="12" rx="1" fill="#fff"/></svg></span><span><b>펀드</b><small>투자펀드 3개</small></span></span>
-          <svg class="spark" viewBox="0 0 140 36" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6c10 0 20 0 28 1s14 5 24 6 16 1 26 4 14 4 24 6 18 3 34 6" fill="none" stroke="#3D6AF2" stroke-width="2.4" stroke-linecap="round"/></svg>
-          <b class="inv-amt num">98,000원</b>
-          <span class="inv-r down num">↘ 2.00%</span>
-          <span class="inv-d num">오늘 <em class="down">-1,960원</em></span>
-        </a>
+      <div class="chg-list">
+        <button class="chg" type="button" id="acc-main" data-ask="월급 들어온 통장 내역 보여줘">
+          <span class="lg lg-y" aria-hidden="true">B</span>
+          <span class="chg-body">
+            <span class="chg-name">김하늘님의 통장</span>
+            <span class="chg-row num"><span>월급 · 하늘상사</span><b class="up">+3,240,000원</b></span>
+            <span class="chg-row num"><span>카드값 자동출금</span><b class="down">-842,000원</b></span>
+          </span>
+        </button>
+        <button class="chg" type="button" data-ask="MMF박스 수익 보여줘">
+          <span class="lg" style="background:#EE8A5C" aria-hidden="true">₩</span>
+          <span class="chg-body">
+            <span class="chg-name">MMF박스</span>
+            <span class="chg-row num"><span>오늘 수익</span><b class="up">+2,613원</b></span>
+          </span>
+        </button>
+        <button class="chg" type="button" data-ask="펀드 평가손익 보여줘">
+          <span class="lg" style="background:#4BB5B8" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="7" width="3" height="6" rx="1" fill="#fff"/><rect x="5.5" y="4" width="3" height="9" rx="1" fill="#fff"/><rect x="10" y="1" width="3" height="12" rx="1" fill="#fff"/></svg></span>
+          <span class="chg-body">
+            <span class="chg-name">펀드</span>
+            <span class="chg-row num"><span>오늘 평가손익</span><b class="down">-1,960원</b></span>
+          </span>
+        </button>
       </div>
     </div>
 
@@ -387,11 +395,13 @@ body.menu-open #menu-open{background:rgba(255,255,255,.7)}
     'card':function(){return '<div class="msg"><div>이번 달 카드값 <span class="hl num">842,000원</span>은 오늘 자동출금으로 다 빠져나갔어요.</div><div class="card num"><div class="row"><span>출금 계좌</span><b>김하늘님의 통장</b></div><div class="row"><span>출금 금액</span><b>842,000원</b></div><div class="row"><span>출금 후 잔액</span><b>43,016,000원</b></div></div></div>'},
     'goal':function(){return '<div class="msg"><div>얼마를 더 넣을까요? <span class="hl">김하늘님의 통장</span>에서 옮길게요.</div><div class="chips"><button type="button" data-pay="50000">5만원</button><button type="button" data-pay="100000">10만원</button><button type="button" data-pay="300000">30만원</button></div></div>'},
     'stock':function(){return '<div class="msg"><div>시장 전망은 지금 데모에서 답할 수 없지만, 하늘님 증권 계좌는 이렇게 움직이고 있어요.</div><div class="card num"><div class="row"><span>평가금액</span><b>7,358,533원</b></div><div class="row"><span>수익률</span><b class="down">-16.71% (1,476,713원)</b></div><div class="row"><span>QQQ · 7.025주</span><b>6,517,073원</b></div><div class="row"><span>TIGER 미국우주테크 · 50주</span><b>288,750원</b></div><div class="row"><span>ACE 미국우주테크액티브</span><b>204,270원</b></div></div></div>'},
+    'today':function(){return '<div class="msg"><div>오늘 움직임을 정리했어요.</div><div class="card num"><div class="row"><span>김하늘님의 통장 잔액</span><b>43,016,000원</b></div><div class="row"><span>MMF박스 · 연 3.12%</span><b>30,571,724원</b></div><div class="row"><span>펀드 · 투자펀드 3개</span><b>98,000원</b></div></div></div>'},
     'none':function(){return '<div class="msg"><div>지금은 데모 화면이라 그 질문에는 답할 수 없어요. 아래 질문으로 이어가 볼까요?</div></div>'}
   };
   function route(t){
     if(/26주/.test(t)) return 'w26';
     if(/외화|달러|USD|환전/.test(t)) return 'fx';
+    if(/MMF|펀드|월급 들어온/.test(t)) return 'today';
     if(/카드/.test(t)) return 'card';
     if(/코스피|ETF|주식|증권|투자/.test(t)) return 'stock';
     if(/목표|납입|적금/.test(t)) return 'goal';
