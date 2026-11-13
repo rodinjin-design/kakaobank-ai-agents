@@ -26,7 +26,8 @@
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{background:var(--ground)}
+html{background:var(--surface)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:41;background:var(--surface)}
 body{margin:0;min-height:100%;background:radial-gradient(420px 360px at 0 40%,#DDF0F7 0%,rgba(221,240,247,0) 100%),radial-gradient(420px 360px at 100% 55%,#EAF3D6 0%,rgba(234,243,214,0) 100%),var(--ground);background-attachment:fixed;color:var(--ink);font-family:var(--font);letter-spacing:-0.01em;word-break:keep-all;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font-family:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
@@ -36,16 +37,19 @@ em{font-style:normal}
 .gut{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 
 /* ---------- 위: 통장 패널 ---------- */
-.panel{position:fixed;top:0;left:0;right:0;z-index:40;max-width:440px;margin:0 auto;background:var(--surface);border-radius:0 0 34px 34px;box-shadow:0 1px 0 rgba(28,28,30,.04),0 14px 40px rgba(20,30,50,.12);padding-top:calc(14px + env(safe-area-inset-top,0px));transition:box-shadow .3s}
+.panel{position:fixed;top:0;border-top:0;left:0;right:0;z-index:40;max-width:440px;margin:0 auto;background:var(--surface);border-radius:0 0 34px 34px;box-shadow:0 1px 0 rgba(28,28,30,.04),0 14px 40px rgba(20,30,50,.12);padding-top:calc(14px + env(safe-area-inset-top,0px));transition:box-shadow .3s}
 .p-top{display:flex;align-items:baseline;gap:12px;padding-bottom:6px;cursor:pointer}
 .p-title{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1}
 .p-title i{display:inline-block;width:8px;height:8px;margin-left:3px;border-radius:50%;background:var(--up);vertical-align:2px}
 .p-date{flex:1;font-size:15px;font-weight:500;color:var(--mute)}
-.p-big{font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:.9}
-.p-big small{margin-left:2px;font-size:17px;font-weight:700;letter-spacing:-0.01em;color:var(--ink2)}
+.p-big{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1}
+.p-big small{margin-left:1px;font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--ink2)}
 .p-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s var(--ease)}
 .p-in{min-height:0;overflow:hidden}
-.panel.mini .p-body{grid-template-rows:0fr}
+.fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s var(--ease),opacity .25s}
+.fold>div{min-height:0;overflow:hidden}
+.panel.mini .fold{grid-template-rows:0fr;opacity:0}
+.panel.mini .acc.main{padding-top:4px}
 .p-label{margin:12px 0 4px;font-size:13px;font-weight:600;color:var(--sub)}
 .p-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
 .panel.full .p-more{grid-template-rows:1fr}
@@ -54,6 +58,7 @@ em{font-style:normal}
 
 .acc{width:100%;display:flex;align-items:center;gap:12px;padding:11px 0;border:0;background:transparent;text-align:left}
 .acc+.acc{border-top:1px solid var(--soft)}
+.fold .acc:first-child{border-top:1px solid var(--soft)}
 .lg{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
 .acc-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .acc-name{font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -118,19 +123,22 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
 </head>
 <body>
 <header class="panel gut" id="panel" aria-label="내 통장">
+  <div class="fold"><div>
   <div class="p-top" id="p-top" role="button" tabindex="0" aria-expanded="false" aria-controls="p-more">
     <span class="p-title">오늘<i aria-hidden="true"></i></span>
     <span class="p-date num">11월 13일 금요일</span>
     <span class="p-big num">3<small>곳</small></span>
   </div>
+  <p class="p-label">오늘 돈이 움직인 통장</p>
+  </div></div>
   <div class="p-body"><div class="p-in"><div class="p-scroll">
-    <p class="p-label">오늘 돈이 움직인 통장</p>
     <div class="p-list">
-      <button class="acc" type="button" data-ask="김하늘님의 통장 오늘 내역 보여줘">
+      <button class="acc main" type="button" data-ask="김하늘님의 통장 오늘 내역 보여줘">
         <span class="lg" style="background:#FFE14F;color:#1C1C1E" aria-hidden="true">B</span>
         <span class="acc-mid"><span class="acc-name">김하늘님의 통장</span><span class="acc-sub">월급 입금 · 카드값 출금</span></span>
         <span class="acc-end num"><span class="acc-bal">43,016,000원</span><span class="acc-chg up">+2,398,000원</span></span>
       </button>
+      <div class="fold"><div>
       <button class="acc" type="button" data-ask="MMF박스 수익 보여줘">
         <span class="lg" style="background:#EE8A5C" aria-hidden="true">₩</span>
         <span class="acc-mid"><span class="acc-name">MMF박스</span><span class="acc-sub">오늘 수익 · 연 3.12%</span></span>
@@ -141,6 +149,7 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
         <span class="acc-mid"><span class="acc-name">펀드</span><span class="acc-sub">평가손익 · 투자펀드 3개</span></span>
         <span class="acc-end num"><span class="acc-bal">98,000원</span><span class="acc-chg down">-1,960원</span></span>
       </button>
+      </div></div>
     </div>
     <div class="p-more" id="p-more"><div>
       <p class="p-label">다른 통장</p>
