@@ -38,34 +38,33 @@ em{font-style:normal}
 
 /* ---------- 위: 통장 패널 ---------- */
 .panel{position:fixed;top:0;border-top:0;left:0;right:0;z-index:40;max-width:440px;margin:0 auto;background:var(--surface);border-radius:0 0 34px 34px;box-shadow:0 1px 0 rgba(28,28,30,.04),0 14px 40px rgba(20,30,50,.12);padding-top:calc(14px + env(safe-area-inset-top,0px));transition:box-shadow .3s}
-.p-top{display:flex;align-items:baseline;gap:12px;padding-bottom:6px;cursor:pointer}
-.p-title{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1}
-.p-title i{display:inline-block;width:8px;height:8px;margin-left:3px;border-radius:50%;background:var(--up);vertical-align:2px}
-.p-date{flex:1;font-size:15px;font-weight:500;color:var(--mute)}
-.p-big{font-size:30px;font-weight:800;letter-spacing:-0.03em;line-height:1}
-.p-big small{margin-left:1px;font-size:15px;font-weight:700;letter-spacing:-0.01em;color:var(--ink2)}
+.p-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:4px 0 6px;cursor:pointer}
+.p-say{min-width:0;font-size:20px;font-weight:700;letter-spacing:-0.02em;line-height:1.35}
+.p-say em{color:var(--brand)}
+.p-date{flex:none;font-size:14px;font-weight:500;color:var(--mute)}
 .p-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s var(--ease)}
 .p-in{min-height:0;overflow:hidden}
 .fold{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s var(--ease),opacity .25s}
 .fold>div{min-height:0;overflow:hidden}
 .panel.mini .fold{grid-template-rows:0fr;opacity:0}
-.panel.mini .acc.main{padding-top:4px}
-.p-label{margin:12px 0 4px;font-size:13px;font-weight:600;color:var(--sub)}
+.panel.mini .acc.main{padding-top:2px;padding-bottom:6px}
+.p-label{margin:18px 0 2px;font-size:14px;font-weight:600;color:var(--sub)}
 .p-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}
 .panel.full .p-more{grid-template-rows:1fr}
 .p-more>div{min-height:0;overflow:hidden}
-.panel.full .p-scroll{max-height:calc(100dvh - 210px);overflow-y:auto;overscroll-behavior:contain}
+.panel.full{bottom:0;border-radius:0;display:flex;flex-direction:column;box-shadow:none}
+.panel.full .p-body{flex:1;min-height:0;display:block}
+.panel.full .p-in{height:100%;overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+.panel.full .p-grab{display:none}
 
-.acc{width:100%;display:flex;align-items:center;gap:12px;padding:11px 0;border:0;background:transparent;text-align:left}
-.acc+.acc{border-top:1px solid var(--soft)}
-.fold .acc:first-child{border-top:1px solid var(--soft)}
-.lg{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
-.acc-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.acc-name{font-size:15px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.acc-sub{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.acc-end{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-.acc-bal{font-size:15px;font-weight:700}
-.acc-chg{font-size:13px;font-weight:700}
+.acc{width:100%;display:flex;align-items:center;gap:14px;padding:14px 0;border:0;background:transparent;text-align:left}
+.lg{flex:none;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:16px}
+.acc-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.acc-name{font-size:17px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-sub{font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-end{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.acc-bal{font-size:17px;font-weight:700}
+.acc-chg{font-size:14px;font-weight:700}
 .up{color:var(--up)}.down{color:var(--brand)}
 
 .p-grab{display:flex;justify-content:center;align-items:center;width:100%;height:30px;border:0;background:transparent;padding:0}
@@ -74,6 +73,15 @@ em{font-style:normal}
 
 .scrim{position:fixed;inset:0;z-index:35;background:rgba(28,28,30,.22);opacity:0;pointer-events:none;transition:opacity .3s;border:0;padding:0;width:100%}
 .scrim.on{opacity:1;pointer-events:auto}
+
+/* ---------- 글로벌 메뉴: 통장 전체 화면에서만 ---------- */
+.gnb{position:fixed;left:0;right:0;bottom:0;z-index:45;max-width:440px;margin:0 auto;padding:0 max(14px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));transform:translateY(140%);transition:transform .35s var(--ease);pointer-events:none}
+body.full .gnb{transform:none;pointer-events:auto}
+.gnb-in{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:8px;border-radius:40px;background:var(--surface);box-shadow:0 0 0 1px rgba(28,28,30,.04),0 10px 30px rgba(20,30,50,.14)}
+.gnb button{position:relative;height:62px;border:0;border-radius:31px;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;font-weight:600;color:var(--ink)}
+.gnb button[aria-current="page"]{background:#EFEFF1}
+.gnb svg{width:26px;height:26px}
+.gnb .dot{position:absolute;top:10px;right:calc(50% - 18px);width:7px;height:7px;border-radius:50%;background:#E5483A}
 
 /* ---------- 아래: 대화 ---------- */
 .app{max-width:440px;margin:0 auto;min-height:100dvh}
@@ -125,11 +133,9 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
 <header class="panel gut" id="panel" aria-label="내 통장">
   <div class="fold"><div>
   <div class="p-top" id="p-top" role="button" tabindex="0" aria-expanded="false" aria-controls="p-more">
-    <span class="p-title">오늘<i aria-hidden="true"></i></span>
-    <span class="p-date num">11월 13일 금요일</span>
-    <span class="p-big num">3<small>곳</small></span>
+    <span class="p-say">오늘 <em class="num">3곳</em>에서 돈이 움직였어요</span>
+    <span class="p-date num">11.13 금</span>
   </div>
-  <p class="p-label">오늘 돈이 움직인 통장</p>
   </div></div>
   <div class="p-body"><div class="p-in"><div class="p-scroll">
     <div class="p-list">
@@ -166,6 +172,13 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
   <button class="p-grab" id="p-grab" type="button" aria-label="통장 전체 보기"><span></span></button>
 </header>
 <button class="scrim" id="scrim" type="button" aria-label="통장 목록 접기" tabindex="-1"></button>
+<nav class="gnb" id="gnb" aria-label="글로벌 메뉴"><div class="gnb-in">
+  <button type="button" data-tab="home" aria-current="page"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 11.2 13 4l9 7.2V21a2 2 0 0 1-2 2h-4.5v-6h-5v6H6a2 2 0 0 1-2-2z" fill="currentColor"/></svg>홈</button>
+  <button type="button" data-tab="benefit"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="18" height="13" rx="2.5"/><path d="M13 9v13M8.5 9c-1.8-1.3-1.6-4.4.8-4.4 2 0 3.2 2.6 3.7 4.4m0 0c.5-1.8 1.7-4.4 3.7-4.4 2.4 0 2.6 3.1.8 4.4"/></svg>혜택</button>
+  <button type="button" data-tab="ai"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 3.5 22.5 13 13 22.5 3.5 13z"/><path d="M13 8.5v6.5" stroke-linecap="round"/><circle cx="13" cy="17.6" r=".6" fill="currentColor"/></svg>AI</button>
+  <button type="button" data-tab="invest"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="18" height="18" rx="4.5"/><path d="m8 16 3.5-3.5 2.5 2.5L18.5 10M15.5 10h3v3"/></svg>투자</button>
+  <button type="button" data-tab="all"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 7.5h16M5 13h16M5 18.5h16"/></svg><span class="dot" aria-hidden="true"></span>전체</button>
+</div></nav>
 
 <div class="app gut">
   <main class="thread" id="thread" aria-live="polite">
@@ -199,7 +212,8 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
     state=s;
     panel.classList.toggle('mini',s==='mini');
     panel.classList.toggle('full',s==='full');
-    scrim.classList.toggle('on',s==='full');
+    document.body.classList.toggle('full',s==='full');
+    if(s==='full') document.querySelectorAll('#gnb [data-tab]').forEach(function(x){ if(x.dataset.tab==='home')x.setAttribute('aria-current','page'); else x.removeAttribute('aria-current') });
     top.setAttribute('aria-expanded',String(s==='full'));
     document.getElementById('p-grab').setAttribute('aria-label',s==='full'?'통장 목록 접기':'통장 전체 보기');
   }
@@ -212,12 +226,17 @@ body.chat.typing .acctbtn{width:0;margin-left:-8px;opacity:0;transition-delay:0s
   document.getElementById('p-grab').addEventListener('click',toggleFull);
   document.getElementById('acctbtn').addEventListener('click',function(){setState('full')});
   scrim.addEventListener('click',function(){setState(scrollY>40?'mini':'normal')});
+  document.getElementById('gnb').addEventListener('click',function(e){
+    var b=e.target.closest('[data-tab]'); if(!b)return;
+    if(b.dataset.tab==='ai'){ setState(scrollY>40?'mini':'normal'); return; }
+    this.querySelectorAll('[data-tab]').forEach(function(x){ if(x===b)x.setAttribute('aria-current','page'); else x.removeAttribute('aria-current') });
+  });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&state==='full')setState(scrollY>40?'mini':'normal')});
   var ticking=false;
   addEventListener('scroll',function(){ if(ticking||state==='full')return; ticking=true; requestAnimationFrame(function(){ticking=false; if(state!=='full') setState(scrollY>40?'mini':'normal')}) },{passive:true});
   /* 패널을 아래로 끌면 펼치고, 위로 밀면 접기 */
   (function(){var y0=null;
-    panel.addEventListener('touchstart',function(e){y0=e.touches[0].clientY},{passive:true});
+    panel.addEventListener('touchstart',function(e){ y0=(state==='full'&&e.target.closest('.p-in')&&!e.target.closest('.p-top'))?null:e.touches[0].clientY },{passive:true});
     panel.addEventListener('touchend',function(e){ if(y0===null)return; var d=e.changedTouches[0].clientY-y0; y0=null;
       if(d>50&&state!=='full')setState(state==='mini'?'normal':'full'); else if(d<-50)setState(state==='full'?'normal':'mini'); },{passive:true});
   })();
