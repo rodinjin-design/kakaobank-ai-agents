@@ -1737,8 +1737,11 @@ window.__splashMs=10000;
   /* 혜택 · 투자 pages from the menu; their ☰ returns to the menu */
   (function(){
     var cur=null;
-    function openPage(id){var pg=document.getElementById('pg-'+id);if(!pg)return;cur=pg;pg.hidden=false;pg.scrollTop=0;body.classList.add('page-open');requestAnimationFrame(function(){requestAnimationFrame(function(){pg.classList.add('open')})})}
-    function closePage(){if(!cur)return;var pg=cur;cur=null;pg.classList.remove('open');body.classList.remove('page-open');setTimeout(function(){pg.hidden=true},reduce?0:300)}
+    function openPage(id){var pg=document.getElementById('pg-'+id);if(!pg)return;
+      // only one page at a time: drop any page that is still showing
+      document.querySelectorAll('.subpage').forEach(function(x){if(x!==pg&&!x.hidden){x.classList.remove('open');x.hidden=true}});
+      cur=pg;pg.hidden=false;pg.scrollTop=0;body.classList.add('page-open');requestAnimationFrame(function(){requestAnimationFrame(function(){pg.classList.add('open')})})}
+    function closePage(){cur=null;var open=[].filter.call(document.querySelectorAll('.subpage'),function(x){return !x.hidden});if(!open.length)return;body.classList.remove('page-open');open.forEach(function(pg){pg.classList.remove('open');setTimeout(function(){if(!pg.classList.contains('open'))pg.hidden=true},reduce?0:300)})}
     document.querySelectorAll('[data-page]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var id=a.dataset.page;document.getElementById('menu-close').click();setTimeout(function(){openPage(id)},200)})});
     document.querySelector('.drawer .me').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();this.click()}});
     document.querySelectorAll('[data-page-link]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var id=a.dataset.pageLink;closePage();setTimeout(function(){openPage(id)},150)})});
