@@ -974,17 +974,19 @@ html,body{background:#1B1B20}
   .drawer{transform:none!important;opacity:1!important;visibility:visible!important;width:var(--L)!important;background:#141418!important;box-shadow:none!important;z-index:51}
   .drawer .me{background:#141418!important}
   .drawer .d-menu a[aria-current]{background:#23242B}
-  .pg-menu,#menu-close{display:none!important}
+  #menu-close{display:none!important}
+  /* the list button sits beside each page title and folds the menu away */
+  .pg-in>.pg-menu{float:left;width:40px;height:40px;margin:0 6px 0 -8px;background:transparent;box-shadow:none}
+  .bsheet.page .bs-top{flex-direction:row!important;align-items:center!important;gap:6px!important}
+  .bsheet.page .bs-close{width:40px!important;height:40px!important;margin-left:-8px}
+  .drawer{border-right:1px solid #24252B}
   /* the list button folds the menu away and gives the home the full width */
   body.fold-hide{--L:0px}
   body.fold-hide .drawer{visibility:hidden!important}
-  body.fold-hide::after{display:none}
-  html:has(body.fold-hide)::after{border-radius:0;box-shadow:none}
   body,.composer,.chatview,.bsheet,.subpage{transition:padding-left .3s ease,left .3s ease}
   body.menu-open .app,body.menu-open .composer,body.menu-open .chatview,body.menu-open::before{transform:none!important}
   body.menu-open{overflow:visible}
   body.menu-open .app{margin-top:0!important;padding-top:0!important;border-radius:0!important;box-shadow:none!important}
-  html::after{content:"";position:fixed;top:0;bottom:0;left:var(--L);right:0;border-radius:28px 0 0 28px;box-shadow:0 0 0 40px #141418;pointer-events:none;z-index:61}
   .drawer{z-index:62!important}
   .bsheet .bs-scrim{display:none}
   /* pages opened from the menu slide in from the right */
@@ -1505,7 +1507,7 @@ window.__splashMs=10000;
     </div>
     <div class="d-scroll">
       <nav class="d-menu" aria-label="주요 메뉴">
-        <a href="#" aria-current="page" id="d-home"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10L11 4l7.5 6v8h-5v-5h-5v5h-5z"/></svg>AI 홈</a>
+        <a href="#" aria-current="page" id="d-home"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10L11 4l7.5 6v8h-5v-5h-5v5h-5z"/></svg>홈</a>
         <a href="#" data-browse><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8.5"/><path d="M14.2 7.8l-1.8 4.6-4.6 1.8 1.8-4.6z" fill="currentColor"/></svg>둘러보기</a>
         <a href="#" data-page="benefit"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="15" height="10.5" rx="2"/><path d="M11 8v10.5M3.5 12h15M11 8c-1.5-3-5-3-5-1s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z"/></svg>혜택</a>
         <a href="#" data-page="invest"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="16" height="16" rx="4"/><path d="M6.5 14l3.5-3.5 2.5 2.5 3.5-4.5"/></svg>투자</a>
@@ -1888,6 +1890,11 @@ window.__splashMs=10000;
     window.scrollTo(0,window.scrollY);
   }
   sync(); mq.addEventListener&&mq.addEventListener('change',sync);
+  // ☰ on pages and on 둘러보기 folds the menu too (instead of reopening it)
+  document.addEventListener('click',function(e){ if(!mq.matches)return;
+    var t=e.target.closest('.pg-menu,.bsheet.page #bs-close'); if(!t)return;
+    if(!e.isTrusted)return; e.stopImmediatePropagation(); e.preventDefault();
+    document.body.classList.toggle('fold-hide'); },true);
   var mb=document.querySelector('.icon-btn.menu-open');
   if(mb)mb.addEventListener('click',function(e){ if(!mq.matches)return; e.stopImmediatePropagation(); e.preventDefault(); if(!e.isTrusted)return;
     var h=document.body.classList.toggle('fold-hide'); mb.setAttribute('aria-expanded',String(!h)); },true);
